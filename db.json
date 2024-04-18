@@ -1,0 +1,48 @@
+{
+  "permission": [
+    {
+      "service": {
+        "create": true,
+        "delete": true,
+        "edit": true
+      },
+      "variables": {
+        "create": true,
+        "delete": true,
+        "edit": true
+      },
+      "packages": {
+        "create": true,
+        "delete": true,
+        "edit": false
+      },
+      "UserAuthorized": true
+    }
+  ],
+  "services": [
+    {
+      "name": "servico-de-notificao/v1",
+      "aproducao": ["versao", "true online, false indisponivel", "alertas"],
+      "abeta": ["versao", "true online, false indisponivel", "alertas"],
+      "database": true,
+      "api": true,
+      "variables": ["numero variaveis de ambiente", "alertas"]
+    },
+    {
+      "name": "servico-de-notificao/v2",
+      "aproducao": ["versao", "true online, false indisponivel", "alertas"],
+      "abeta": ["versao", "true online, false indisponivel", "alertas"],
+      "database": true,
+      "api": true,
+      "variables": ["numero variaveis de ambiente", "alertas"]
+    },
+    {
+      "name": "servico-de-notificao/v3",
+      "aproducao": ["versao", "true online, false indisponivel", "alertas"],
+      "abeta": ["versao", "true online, false indisponivel", "alertas"],
+      "database": true,
+      "api": true,
+      "variables": ["numero variaveis de ambiente", "alertas"]
+    }
+  ]
+}
