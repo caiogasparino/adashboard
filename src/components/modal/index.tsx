@@ -13,6 +13,7 @@ interface ModalProps {
 const Title = styled.h1`
   font-size: 20px;
   color: ${(props) => props.theme.colors.red};
+  font-family: 'Montserrat';
   width: 10%;
   @media screen and (max-width: 768px) {
     font-size: 20px;
@@ -51,29 +52,31 @@ const ModalComponent: React.FC<ModalProps> = ({
             {children}
           </Typography>
         )}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-          <Button
-            variant="contained"
-            onClick={onClose}
-            sx={{
-              mr: 1,
-              bgcolor: colors.primary,
-              ':hover': { bgcolor: colors.gray },
-            }}
-          >
-            Close
-          </Button>
-          <Button
-            variant="contained"
-            onClick={onClose}
-            sx={{
-              bgcolor: colors.primary,
-              ':hover': { bgcolor: colors.gray },
-            }}
-          >
-            Save
-          </Button>
-        </Box>
+        {!children && (
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={onClose}
+              sx={{
+                mr: 1,
+                bgcolor: colors.primary,
+                ':hover': { bgcolor: colors.gray },
+              }}
+            >
+              Close
+            </Button>
+            <Button
+              variant="contained"
+              onClick={onClose}
+              sx={{
+                bgcolor: colors.primary,
+                ':hover': { bgcolor: colors.gray },
+              }}
+            >
+              Save
+            </Button>
+          </Box>
+        )}
       </Box>
     </Modal>
   )

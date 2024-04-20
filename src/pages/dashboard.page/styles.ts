@@ -16,7 +16,7 @@ export const Content = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 80px;
+  padding: 40px;
   width: 100%;
   background: ${(props) => props.theme.colors.white};
   @media screen and (max-width: 768px) {
@@ -28,7 +28,7 @@ export const ContentHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   justify-content: space-between;
   width: 100%;
 `

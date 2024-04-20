@@ -2,8 +2,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Box, IconButton } from '@mui/material'
 import React, { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Sidebar } from '../../components/sidebar'
+import { Sidebar } from '../../components'
+import Loading from '../../components/loading'
 import TableComponent from '../../components/table/table-service'
+import { useGetServices } from '../../service/dashboard/dashboard.services'
 import { TEXT } from './constants'
 import {
   ButtonCustom,
@@ -15,22 +17,11 @@ import {
 
 const DashScreen: React.FC = () => {
   const navigate = useNavigate()
-  //   const { isLoading, setLoading } = useLoading()
-  //   const { setPermissions } = usePermissionStore()
-
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       setLoading(true)
-  //       const data = await getPermissions()
-  //       setPermissions(data)
-  //       setLoading(false)
-  //     }
-  //     fetchData()
-  //   }, [])
+  const { isLoading } = useGetServices()
 
   return (
     <Fragment>
-      {/* {isLoading && <Loading isLoading={isLoading} />} */}
+      {isLoading && <Loading isLoading={isLoading} />}
       <Container>
         <Sidebar />
         <Content>

@@ -11,7 +11,7 @@ interface Variable {
   abetavalue: string
 }
 
-const AddPostServiceForm: React.FC = () => {
+const UpdateServiceForm: React.FC = () => {
   const [serviceName, setServiceName] = useState('')
   const [hasDatabase, setHasDatabase] = useState(false)
   const [hasApi, setHasApi] = useState(false)
@@ -164,4 +164,4 @@ const AddPostServiceForm: React.FC = () => {
   )
 }
 
-export default AddPostServiceForm
+export default UpdateServiceForm

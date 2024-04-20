@@ -27,7 +27,8 @@
     "strict-boolean-expressions": "off",
     "no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "@ts-expect-error": "off"
   },
   "overrides": [
     {

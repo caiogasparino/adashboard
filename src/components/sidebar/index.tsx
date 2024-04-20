@@ -37,28 +37,37 @@ export const Sidebar: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Content>
-        <Logo src={images.LOGO} alt="Logo" />
         <Menu>
+          <Logo src={images.LOGO} alt="Logo" />
           <MenuItem>
-            <ButtonLink onClick={() => navigate('/dashboard')} active={false}>
+            <ButtonLink
+              onClick={() => navigate('/dashboard')}
+              active={location.pathname === '/dashboard'}
+            >
               {TEXT.DASHBOARD}
             </ButtonLink>
           </MenuItem>
           <MenuItem>
             <ButtonLink
               onClick={() => navigate('/service/create')}
-              active={false}
+              active={location.pathname === '/service/create'}
             >
               {TEXT.CREATESERVICE}
             </ButtonLink>
           </MenuItem>
           <MenuItem>
-            <ButtonLink onClick={() => navigate('/packages')}>
+            <ButtonLink
+              onClick={() => navigate('/packages')}
+              active={location.pathname === '/packages'}
+            >
               {TEXT.PACKAGES}
             </ButtonLink>
           </MenuItem>
           <MenuItem>
-            <ButtonLink onClick={() => navigate('/package/create')}>
+            <ButtonLink
+              onClick={() => navigate('/package/create')}
+              active={location.pathname === '/package/create'}
+            >
               {TEXT.CREATEPACKAGE}
             </ButtonLink>
           </MenuItem>

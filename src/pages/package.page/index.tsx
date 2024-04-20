@@ -1,10 +1,13 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Box, IconButton } from '@mui/material'
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Sidebar } from '../../components/sidebar'
-
+import { Sidebar } from '../../components'
+import Loading from '../../components/loading'
 import TablePackage from '../../components/table/table-packages'
+import { useLoading } from '../../context'
+import { getPackages } from '../../service/packages/packages.services'
+import { usePackageStore } from '../../store/package.store'
 import { TEXT } from './constants'
 import {
   ButtonCustom,
@@ -16,22 +19,22 @@ import {
 
 const PackageScreen: React.FC = () => {
   const navigate = useNavigate()
-  //   const { isLoading, setLoading } = useLoading()
-  //   const { setPermissions } = usePermissionStore()
+  const { isLoading, setLoading } = useLoading()
+  const { setPackages } = usePackageStore()
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       setLoading(true)
-  //       const data = await getPermissions()
-  //       setPermissions(data)
-  //       setLoading(false)
-  //     }
-  //     fetchData()
-  //   }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      const packages = await getPackages()
+      setPackages(packages)
+      setLoading(false)
+    }
+    fetchData()
+  }, [])
 
   return (
     <Fragment>
-      {/* {isLoading && <Loading isLoading={isLoading} />} */}
+      {isLoading && <Loading isLoading={isLoading} />}
       <Container>
         <Sidebar />
         <Content>

@@ -25,7 +25,7 @@ export const Item = styled(Grid)(({ theme }) => ({
 
 export const Input = styled.input`
   width: 100%;
-  height: 50px;
+  height: 40px;
   border: none;
   background: ${(props) => props.theme.colors.lightGray};
   border-top-right-radius: 8px;

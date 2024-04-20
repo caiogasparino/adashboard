@@ -16,33 +16,98 @@
         "delete": true,
         "edit": false
       },
-      "UserAuthorized": true
+      "UserAuthorized": true,
+      "id": "8c1d"
     }
   ],
   "services": [
     {
       "name": "servico-de-notificao/v1",
-      "aproducao": ["versao", "true online, false indisponivel", "alertas"],
-      "abeta": ["versao", "true online, false indisponivel", "alertas"],
+      "aproducao": ["10.0.2", "true online", "alertas"],
+      "abeta": ["1.0.5", "false indisponivel", "Servidor offline"],
       "database": true,
       "api": true,
-      "variables": ["numero variaveis de ambiente", "alertas"]
+      "variables": ["numero variaveis de ambiente", "alertas"],
+      "id": "06a7"
     },
     {
       "name": "servico-de-notificao/v2",
-      "aproducao": ["versao", "true online, false indisponivel", "alertas"],
-      "abeta": ["versao", "true online, false indisponivel", "alertas"],
+      "aproducao": ["0.0.1", "false indisponivel", "alertas"],
+      "abeta": ["1.0.2", "true online", "alertas"],
       "database": true,
-      "api": true,
-      "variables": ["numero variaveis de ambiente", "alertas"]
+      "api": false,
+      "variables": ["numero variaveis de ambiente", "alertas"],
+      "id": "35fb"
     },
     {
       "name": "servico-de-notificao/v3",
-      "aproducao": ["versao", "true online, false indisponivel", "alertas"],
-      "abeta": ["versao", "true online, false indisponivel", "alertas"],
+      "aproducao": ["1.0.3", "true online", "alertas"],
+      "abeta": ["1.0.5", "false indisponivel", "Servidor offline", "alertas"],
       "database": true,
       "api": true,
-      "variables": ["numero variaveis de ambiente", "alertas"]
+      "variables": ["numero variaveis de ambiente", "alertas"],
+      "id": "34b0"
+    },
+    {
+      "name": "servico-de-notificao/v1",
+      "aproducao": ["10.0.3", "true online", "alertas"],
+      "abeta": ["1.0.5", "true online", "Servidor offline"],
+      "database": true,
+      "api": true,
+      "variables": ["numero variaveis de ambiente", "alertas"],
+      "id": "06a8"
+    },
+    {
+      "name": "servico-de-notificao/v1",
+      "aproducao": ["10.0.5", "true online", "alertas"],
+      "abeta": ["1.0.9", "true online", "Servidor offline"],
+      "database": true,
+      "api": true,
+      "variables": ["numero variaveis de ambiente", "alertas"],
+      "id": "06a9"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Teste de pkg1",
+      "version": "1.2.3-beta",
+      "links": [
+        {
+          "version": "V.0.1",
+          "link": "https://bitbucket.org/allintra/package#V.0.1"
+        }
+      ],
+      "id": "7021"
+    },
+    {
+      "name": "Teste de pkg 2",
+      "version": "1.2.3-prod",
+      "links": [
+        {
+          "version": "V.0.2",
+          "link": "https://bitbucket.org/allintra/package#V.0.2"
+        }
+      ],
+      "id": "49d1"
+    },
+    {
+      "name": "Teste pkg 3",
+      "version": "1.2.3-beta",
+      "links": [
+        {
+          "version": "V.0.3",
+          "link": "https://bitbucket.org/allintra/package#V.0.3"
+        }
+      ],
+      "id": "47e8"
+    },
+    {
+      "id": "41bc",
+      "nome": "PackageTeste@01"
+    },
+    {
+      "id": "d63d",
+      "nome": "PackageTeste@01"
     }
   ]
 }

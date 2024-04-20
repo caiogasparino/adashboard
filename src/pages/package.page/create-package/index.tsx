@@ -2,9 +2,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { IconButton } from '@mui/material'
 import React, { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import { Sidebar } from '../../../components'
-import AddPostPackageForm from '../../../components/forms/form-package'
+import AddPostPackageForm from '../../../components/forms/create-package'
 import { TEXT } from '../constants'
 import { Container, Content, ContentHeader, Title } from './styles'
 

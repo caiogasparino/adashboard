@@ -13,7 +13,11 @@ import {
   TextUrl,
 } from './styles'
 
-const AddPostPackageForm: React.FC = () => {
+interface PackageProps {
+  onClose: () => void
+}
+
+const UpdatePackageForm: React.FC<PackageProps> = ({ onClose }) => {
   const [packageName, setPackageName] = useState('')
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -25,15 +29,13 @@ const AddPostPackageForm: React.FC = () => {
     <FormControl
       component="form"
       onSubmit={handleSubmit}
-      sx={{ height: '70vh', overflow: 'auto', width: '100%' }}
+      sx={{ height: '30vh', overflow: 'auto', width: '100%' }}
     >
       <Container container sx={{ mx: 'auto', paddingTop: 2, width: '100%' }}>
         <Box
           sx={{
             width: '100%',
             borderRadius: 4,
-            boxShadow: 'none',
-            border: 'none',
           }}
         >
           <Grid container sx={{ width: '100%' }}>
@@ -48,7 +50,7 @@ const AddPostPackageForm: React.FC = () => {
                 backgroundColor: colors.whiteDark,
               }}
             >
-              <Text fontSize={14}>{TEXT.LABEL_PACKAGE_NAME}:</Text>
+              <Text fontSize={12}>{TEXT.LABEL_PACKAGE_NAME}</Text>
             </Box>
             <Box
               sx={{
@@ -96,7 +98,7 @@ const AddPostPackageForm: React.FC = () => {
             <Box
               sx={{
                 width: '20%',
-                height: '55px',
+                height: '40px',
                 borderRadius: 2,
                 zIndex: 11,
                 display: 'flex',
@@ -105,13 +107,13 @@ const AddPostPackageForm: React.FC = () => {
                 backgroundColor: colors.whiteDark,
               }}
             >
-              <Text fontSize={14}>{TEXT.LABEL_RUN_PACKAGE}:</Text>
+              <Text fontSize={12}>{TEXT.LABEL_RUN_PACKAGE}</Text>
             </Box>
             <Box
               sx={{
                 marginLeft: -3,
                 width: '80%',
-                height: '55px',
+                height: '40px',
                 borderTopRightRadius: 8,
                 borderBottomRightRadius: 8,
                 zIndex: 10,
@@ -144,6 +146,14 @@ const AddPostPackageForm: React.FC = () => {
           alignItems={'center'}
         >
           <ButtonCustom
+            sx={{ width: '180px', marginRight: '10px' }}
+            onClick={onClose}
+            variant="contained"
+            type="submit"
+          >
+            {TEXT.BUTTON_CLOSE}
+          </ButtonCustom>
+          <ButtonCustom
             sx={{ width: '180px' }}
             variant="contained"
             type="submit"
@@ -156,4 +166,4 @@ const AddPostPackageForm: React.FC = () => {
   )
 }
 
-export default AddPostPackageForm
+export default UpdatePackageForm
