@@ -138,9 +138,15 @@ export const columnDefs: AgGridReactProps['columnDefs'] = [
   {
     headerName: 'AProd',
     field: 'aproducao',
+    minWidth: 220,
     cellRenderer: statusRendererProd,
   },
-  { headerName: 'ABeta', field: 'abeta', cellRenderer: statusRendererBeta },
+  {
+    headerName: 'ABeta',
+    field: 'abeta',
+    minWidth: 220,
+    cellRenderer: statusRendererBeta,
+  },
 
   { headerName: 'Api', field: 'api', cellRenderer: checkboxRendererApi },
   {
