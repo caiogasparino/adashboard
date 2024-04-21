@@ -26,12 +26,13 @@ export const useCreateService = () => {
   } = useMutation({
     mutationFn: (service: Service) => {
       return axios
-        .post(`${process.env.REACT_APP_API_URL_JSON_SERVER}/service`, service)
+        .post(`${process.env.REACT_APP_API_URL_JSON_SERVER}/services`, service)
         .then((response) => response.data)
     },
+    mutationKey: ['services'], // Set mutationKey to ['services']
 
     onSuccess: () => {
-      toast.success(' Service created successfully!')
+      toast.success('Service created successfully!')
     },
 
     onError: (error) => {

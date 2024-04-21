@@ -42,11 +42,15 @@ const AddPostServiceForm: React.FC = () => {
   }
 
   const handleSubmit = () => {
-    alert({
-      serviceName,
-      hasDatabase,
-      hasApi,
-      variables,
+    createService({
+      name: serviceName,
+      database: hasDatabase,
+      api: hasApi,
+      variables: variables.map((variable) => ({
+        name: variable.name,
+        aprodvalue: variable.aprodvalue,
+        abetavalue: variable.abetavalue,
+      })),
     })
   }
 

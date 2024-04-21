@@ -20,8 +20,7 @@ const ReactQueryDevtoolsProduction = lazy(() =>
 function App() {
   const [showDevtools, setShowDevtools] = useState(false)
   useEffect(() => {
-    // @ts-expect-error
-    window.toggleDevtools = () => setShowDevtools((old) => !old)
+    ;(window as any).toggleDevtools = () => setShowDevtools((old) => !old)
   }, [])
 
   return (

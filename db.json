@@ -27,7 +27,7 @@
       "abeta": ["1.0.5", "false indisponivel", "Servidor offline"],
       "database": true,
       "api": true,
-      "variables": ["numero variaveis de ambiente", "alertas"],
+      "variables": ["1", "server offline"],
       "id": "06a7"
     },
     {
@@ -36,7 +36,7 @@
       "abeta": ["1.0.2", "true online", "alertas"],
       "database": true,
       "api": false,
-      "variables": ["numero variaveis de ambiente", "alertas"],
+      "variables": ["2", "server notification disabled"],
       "id": "35fb"
     },
     {
@@ -45,7 +45,7 @@
       "abeta": ["1.0.5", "false indisponivel", "Servidor offline", "alertas"],
       "database": true,
       "api": true,
-      "variables": ["numero variaveis de ambiente", "alertas"],
+      "variables": ["1"],
       "id": "34b0"
     },
     {
@@ -54,7 +54,7 @@
       "abeta": ["1.0.5", "true online", "Servidor offline"],
       "database": true,
       "api": true,
-      "variables": ["numero variaveis de ambiente", "alertas"],
+      "variables": ["2"],
       "id": "06a8"
     },
     {
@@ -63,7 +63,7 @@
       "abeta": ["1.0.9", "true online", "Servidor offline"],
       "database": true,
       "api": true,
-      "variables": ["numero variaveis de ambiente", "alertas"],
+      "variables": ["1"],
       "id": "06a9"
     }
   ],
