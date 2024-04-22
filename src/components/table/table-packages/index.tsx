@@ -57,12 +57,17 @@ const TablePackage: React.FC = () => {
 
   const versionRenderer = (params: any) => {
     const { data } = params
-    return <Text color={theme.colors.red}>{data?.version}</Text>
+    const version = data?.version || ''
+    console.log('🚀 ~ versionRenderer ~ version:', data?.version)
+
+    return <Text color={theme.colors.red}>{version}</Text>
   }
 
   const renderActions = (params: any) => {
     const { data } = params
-    const { link } = data?.links[0]
+    const [links] = data?.links || []
+    const link = links?.link || ''
+
     return (
       <Box sx={styles.icon}>
         <IconButton onClick={() => copyLinkToClipboard(link)}>

@@ -66,12 +66,14 @@ export const checkboxRendererBase = (params: any) => {
 
 export const statusRendererProd = (params: any) => {
   const { data } = params
-  const [version, status, alerts] = data?.aproducao
+  const [version, status, alerts] = data?.aproducao || []
+
   const color =
     status === 'true online' ? theme.colors.lightGreen : theme.colors.red
+
   return (
     <Box>
-      <Text color={color}>{`${version + ' - ' + status}`}</Text>
+      <Text color={color}>{`${version} - ${status}`}</Text>
       {alerts && status === 'false indisponivel' && (
         <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
@@ -92,12 +94,12 @@ export const statusRendererProd = (params: any) => {
 
 export const statusRendererBeta = (params: any) => {
   const { data } = params
-  const [version, status, alerts] = data?.abeta
+  const [version, status, alerts] = data?.abeta || []
   const color =
     status === 'true online' ? theme.colors.lightGreen : theme.colors.red
   return (
     <Box>
-      <Text color={color}>{`${version + ' - ' + status}`}</Text>
+      <Text color={color}>{`${version} - ${status}`}</Text>
       {alerts && status === 'false indisponivel' && (
         <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
@@ -113,6 +115,17 @@ export const statusRendererBeta = (params: any) => {
         </Tooltip>
       )}
     </Box>
+  )
+}
+
+const renderVariables = (params: any) => {
+  const { data } = params
+  const [numbers, alerts] = data?.variables || []
+  const color = alerts ? theme.colors.red : theme.colors.lightGreen
+  return (
+    <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
+      <Text color={color}>{numbers}</Text>
+    </Tooltip>
   )
 }
 
@@ -157,17 +170,7 @@ export const columnDefs: AgGridReactProps['columnDefs'] = [
   {
     headerName: 'Variables',
     field: 'variables',
-    cellRenderer: (params: any) => {
-      const { data } = params
-      const color = data.variables[1]
-        ? theme.colors.lightGray
-        : theme.colors.lightGray
-      return (
-        <Tooltip title={data.variables[1]} style={{ fontFamily: 'Montserrat' }}>
-          <Text color={color}>{data?.variables[0]}</Text>
-        </Tooltip>
-      )
-    },
+    cellRenderer: renderVariables,
   },
   { headerName: 'Actions', field: 'actions', cellRenderer: actionsRenderer },
 ]

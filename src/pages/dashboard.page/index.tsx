@@ -2,7 +2,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Box, IconButton } from '@mui/material'
 import React, { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Sidebar } from '../../components'
 import Loading from '../../components/loading'
 import TableComponent from '../../components/table/table-service'
 import { useGetServices } from '../../service/dashboard/dashboard.services'
@@ -23,7 +22,7 @@ const DashScreen: React.FC = () => {
     <Fragment>
       {isLoading && <Loading isLoading={isLoading} />}
       <Container>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Content>
           <ContentHeader>
             <Title>{TEXT.TITLE}</Title>
