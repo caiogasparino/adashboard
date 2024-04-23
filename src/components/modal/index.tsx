@@ -14,7 +14,7 @@ const Title = styled.h1`
   font-size: 20px;
   color: ${(props) => props.theme.colors.red};
   font-family: 'Montserrat';
-  width: 10%;
+  width: 100%;
   @media screen and (max-width: 768px) {
     font-size: 20px;
   }

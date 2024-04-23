@@ -37,6 +37,12 @@ export const Input = styled.input`
   font-weight: 600;
   outline: none;
   color: ${(props) => props.theme.colors.primary};
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    height: 32px;
+    padding-left: 16px;
+  }
 `
 
 export const ButtonCustom = styled(Button)(({ theme }) => ({
@@ -62,26 +68,35 @@ export const Title = styled.h1`
   font-size: 20px;
   color: ${(props) => props.theme.colors.red};
   width: 20%;
+
   @media screen and (max-width: 768px) {
-    font-size: 20px;
+    width: auto;
   }
 `
+
 export const Text = styled.span<TextProps>`
   color: ${(props) => props.colorText};
   font-weight: bold;
   font-family: 'Montserrat';
   font-size: ${(props) => props.fontSize || 12}px;
 `
+
 export const TextUrl = styled.span<TextProps>`
   color: ${(props) => props.colorText};
   font-weight: 400;
   font-family: 'Montserrat';
   font-size: ${(props) => props.fontSize || 12}px;
 `
+
 export const TextRunPackages = styled.span<TextProps>`
   margin-left: 85px;
   color: ${(props) => props.colorText};
   font-weight: bold;
   font-family: 'Montserrat';
   font-size: ${(props) => props.fontSize || 12}px;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+    text-align: center;
+  }
 `

@@ -1,6 +1,7 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { Box, FormControl, Grid, IconButton } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Package } from '../../../@types/packages'
 import { colors } from '../../../design/colors'
 import { TEXT } from './constants'
 import {
@@ -15,68 +16,122 @@ import {
 
 interface PackageProps {
   onClose: () => void
+  data: Package
 }
 
-const UpdatePackageForm: React.FC<PackageProps> = ({ onClose }) => {
-  const [packageName, setPackageName] = useState('')
+const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
+  const [packageName, setPackageName] = useState(data.name || '')
+  const [sizefonts, setFontSize] = useState(window.innerWidth <= 700 ? 10 : 14)
+  console.log('🚀 ~ UpdatePackageForm ~ data:', data)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log({})
   }
 
+  useEffect(() => {
+    const handleResize = () => {
+      setFontSize(window.innerWidth <= 700 ? 10 : 14)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  const styles = {
+    form: { height: '30vh', overflow: 'auto', width: '100%' },
+    container: { mx: 'auto', paddingTop: 2, width: '100%' },
+    box: {
+      width: '100%',
+      borderRadius: 4,
+    },
+    boxInput: {
+      width: '20%',
+      borderRadius: 2,
+      zIndex: 11,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.whiteDark,
+      '@media screen and (max-width: 1268px)': {
+        flexDirection: 'column',
+      },
+    },
+    boxInputLabel: {
+      marginLeft: -3,
+      width: '20%',
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
+      zIndex: 10,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.grayMaxLight,
+      '@media screen and (max-width: 1268px)': {
+        display: 'none',
+      },
+    },
+    boxInputName: {
+      width: '60%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    boxInputPackage: {
+      width: '100%',
+      marginTop: 6,
+      borderRadius: 4,
+      boxShadow: 'none',
+      border: 'none',
+    },
+    boxInputPackageLabel: {
+      width: '20%',
+      height: '40px',
+      borderRadius: 2,
+      zIndex: 11,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.whiteDark,
+      '@media screen and (max-width: 1268px)': {
+        display: 'none',
+      },
+    },
+    boxInputPackageCmd: {
+      marginLeft: -3,
+      width: '80%',
+      height: '40px',
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
+      zIndex: 10,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: colors.lightGray,
+      '@media screen and (max-width: 1268px)': {
+        width: '100%',
+        marginLeft: 0,
+      },
+    },
+  }
+
   return (
-    <FormControl
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{ height: '30vh', overflow: 'auto', width: '100%' }}
-    >
-      <Container container sx={{ mx: 'auto', paddingTop: 2, width: '100%' }}>
-        <Box
-          sx={{
-            width: '100%',
-            borderRadius: 4,
-          }}
-        >
+    <FormControl component="form" onSubmit={handleSubmit} sx={styles.form}>
+      <Container container sx={styles.container}>
+        <Box sx={styles.box}>
           <Grid container sx={{ width: '100%' }}>
-            <Box
-              sx={{
-                width: '20%',
-                borderRadius: 2,
-                zIndex: 11,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: colors.whiteDark,
-              }}
-            >
+            <Box sx={styles.boxInput}>
               <Text fontSize={12}>{TEXT.LABEL_PACKAGE_NAME}</Text>
             </Box>
-            <Box
-              sx={{
-                marginLeft: -3,
-                width: '20%',
-                borderTopRightRadius: 8,
-                borderBottomRightRadius: 8,
-                zIndex: 10,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: colors.grayMaxLight,
-              }}
-            >
+            <Box sx={styles.boxInputLabel}>
               <Text fontSize={16} colorText={colors.red}>
                 {TEXT.PRESET_PACKAGE}
               </Text>
             </Box>
-            <Box
-              sx={{
-                width: '60%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <Box sx={styles.boxInputName}>
               <Input
                 value={packageName}
                 required
@@ -85,50 +140,20 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose }) => {
             </Box>
           </Grid>
         </Box>
-        <Box
-          sx={{
-            width: '100%',
-            marginTop: 6,
-            borderRadius: 4,
-            boxShadow: 'none',
-            border: 'none',
-          }}
-        >
+        <Box sx={styles.boxInputPackage}>
           <Grid container sx={{ width: '100%' }}>
-            <Box
-              sx={{
-                width: '20%',
-                height: '40px',
-                borderRadius: 2,
-                zIndex: 11,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: colors.whiteDark,
-              }}
-            >
+            <Box sx={styles.boxInputPackageLabel}>
               <Text fontSize={12}>{TEXT.LABEL_RUN_PACKAGE}</Text>
             </Box>
-            <Box
-              sx={{
-                marginLeft: -3,
-                width: '80%',
-                height: '40px',
-                borderTopRightRadius: 8,
-                borderBottomRightRadius: 8,
-                zIndex: 10,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: colors.lightGray,
-              }}
-            >
-              <TextRunPackages fontSize={16} colorText={colors.primary}>
+            <Box sx={styles.boxInputPackageCmd}>
+              <TextRunPackages fontSize={sizefonts} colorText={colors.primary}>
                 <Text
-                  fontSize={16}
+                  fontSize={sizefonts}
                 >{`${TEXT.LABEL_NPM_PACKAGE}  ${'   '}`}</Text>
-                <TextUrl fontSize={16}>{TEXT.LABEL_URL_BITBUCKET}</TextUrl>
-                <Text fontSize={16}>{packageName}</Text>
+                <TextUrl fontSize={sizefonts}>
+                  {TEXT.LABEL_URL_BITBUCKET}
+                </TextUrl>
+                <Text fontSize={sizefonts}>{packageName}</Text>
               </TextRunPackages>
               <IconButton onClick={() => {}}>
                 <ContentCopyIcon sx={{ color: colors.primary }} />

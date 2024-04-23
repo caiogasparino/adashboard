@@ -19,7 +19,10 @@ export const Content = styled.div`
   width: 100%;
   background: ${(props) => props.theme.colors.white};
   @media screen and (max-width: 768px) {
-    height: auto;
+    margin-top: 80px;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 0;
   }
 `
 
@@ -30,6 +33,9 @@ export const ContentHeader = styled.div`
   margin-bottom: 10px;
   justify-content: space-between;
   width: 100%;
+  @media screen and (max-width: 768px) {
+    justify-content: space-around;
+  }
 `
 
 export const Title = styled.h1`

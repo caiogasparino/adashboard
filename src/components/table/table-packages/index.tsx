@@ -4,8 +4,9 @@ import { Box, IconButton } from '@mui/material'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react'
 import * as React from 'react'
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Package } from '../../../@types/packages'
 import { theme } from '../../../design/theme'
 import { usePackageStore } from '../../../store/package.store'
 import UpdatePackageForm from '../../forms/update-package'
@@ -13,8 +14,9 @@ import ModalComponent from '../../modal'
 import { Input, Text } from './styles'
 
 const TablePackage: React.FC = () => {
-  const [openModal, setOpenModal] = React.useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const { packages } = usePackageStore()
+  const [selectPackages, setSelectPackages] = useState<Package>({} as Package)
   const gridRef = useRef<AgGridReact>(null)
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), [])
   const gridStyle = useMemo(() => ({ height: '600px', width: '100%' }), [])
@@ -42,7 +44,9 @@ const TablePackage: React.FC = () => {
     },
   }
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (params: any) => {
+    const { data } = params
+    setSelectPackages(data)
     setOpenModal(true)
   }
 
@@ -73,7 +77,7 @@ const TablePackage: React.FC = () => {
         <IconButton onClick={() => copyLinkToClipboard(link)}>
           <ContentCopyIcon sx={{ color: theme.colors.lightGray }} />
         </IconButton>
-        <IconButton onClick={handleOpenModal}>
+        <IconButton onClick={() => handleOpenModal(params)}>
           <OpenInNewIcon sx={{ color: theme.colors.lightGray }} />
         </IconButton>
       </Box>
@@ -120,6 +124,7 @@ const TablePackage: React.FC = () => {
                 fontWeight: 400,
               }}
               rowData={packages}
+              animateRows
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
               pagination
@@ -133,7 +138,7 @@ const TablePackage: React.FC = () => {
         onClose={handleCloseModal}
         title="Package View"
       >
-        <UpdatePackageForm onClose={handleCloseModal} />
+        <UpdatePackageForm onClose={handleCloseModal} data={selectPackages} />
       </ModalComponent>
     </div>
   )

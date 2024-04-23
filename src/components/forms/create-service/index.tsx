@@ -1,16 +1,12 @@
 import Delete from '@mui/icons-material/Delete'
 import { Checkbox, FormControl, Grid, IconButton } from '@mui/material'
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+import { Variable } from '../../../@types/variables'
 import { colors } from '../../../design/colors'
 import { useCreateService } from '../../../service/dashboard/dashboard.services'
 import { TEXT } from './constants'
 import { ButtonCustom, Container, Input, Item, Text, Title } from './styles'
-
-interface Variable {
-  name: string
-  aprodvalue: string
-  abetavalue: string
-}
 
 const AddPostServiceForm: React.FC = () => {
   const { createService } = useCreateService()
@@ -41,16 +37,31 @@ const AddPostServiceForm: React.FC = () => {
     setVariables(newVariables)
   }
 
-  const handleSubmit = () => {
-    createService({
+  const handleSubmit = async () => {
+    if (!/^[a-z0-9]+$/.test(serviceName.toLowerCase())) {
+      toast.error('Nome do Serviço deve conter apenas letras e números', {
+        duration: 5000,
+      })
+      return
+    }
+    if (!serviceName) {
+      toast.error('Nome do Serviço não pode estar vazio!', {
+        duration: 5000,
+      })
+      return
+    }
+    if (!hasDatabase && !hasApi) {
+      toast.error('Selecione pelo menos um acesso!', {
+        duration: 5000,
+      })
+      return
+    }
+
+    await createService({
       name: serviceName,
       database: hasDatabase,
       api: hasApi,
-      variables: variables.map((variable) => ({
-        name: variable.name,
-        aprodvalue: variable.aprodvalue,
-        abetavalue: variable.abetavalue,
-      })),
+      variables: [...variables],
     })
   }
 
@@ -74,17 +85,17 @@ const AddPostServiceForm: React.FC = () => {
           padding={2}
           alignItems={'center'}
         >
-          <Text>{TEXT.DATABASEACCESS}</Text>
-          <Checkbox
-            checked={hasDatabase}
-            style={{ color: colors.gray }}
-            onChange={(e) => setHasDatabase(e.target.checked)}
-          />
           <Text>{TEXT.APIPUBLIC}</Text>
           <Checkbox
             checked={hasApi}
             style={{ color: colors.gray }}
             onChange={(e) => setHasApi(e.target.checked)}
+          />
+          <Text>{TEXT.DATABASEACCESS}</Text>
+          <Checkbox
+            checked={hasDatabase}
+            style={{ color: colors.gray }}
+            onChange={(e) => setHasDatabase(e.target.checked)}
           />
         </Item>
 

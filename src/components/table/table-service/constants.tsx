@@ -1,6 +1,5 @@
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
-import { AgGridReactProps } from 'ag-grid-react'
 import { ReactNode } from 'react'
 
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -8,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip'
 import { Box, IconButton, Tooltip } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
+import { Services } from '../../../@types/services'
 import { theme } from '../../../design/theme'
 import { Text } from './styles'
 
@@ -49,7 +49,7 @@ export const checkboxRendererApi = (params: any) => {
     <Checkbox
       style={{ color: theme.colors.lightGray }}
       disabled
-      checked={data?.database}
+      checked={data?.api}
     />
   )
 }
@@ -59,21 +59,22 @@ export const checkboxRendererBase = (params: any) => {
     <Checkbox
       style={{ color: theme.colors.lightGray }}
       disabled
-      checked={data?.api}
+      checked={data?.database}
     />
   )
 }
 
-export const statusRendererProd = (params: any) => {
+export const statusRendererProd = (params: Services | any) => {
   const { data } = params
-  const [version, status, alerts] = data?.aproducao || []
+  const [version, status, alerts] = data?.aproducao
 
   const color =
     status === 'true online' ? theme.colors.lightGreen : theme.colors.red
+  const label = version ? `${version} - ${status}` : 'insight'
 
   return (
     <Box>
-      <Text color={color}>{`${version} - ${status}`}</Text>
+      <Text color={color}>{label}</Text>
       {alerts && status === 'false indisponivel' && (
         <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
@@ -97,9 +98,10 @@ export const statusRendererBeta = (params: any) => {
   const [version, status, alerts] = data?.abeta || []
   const color =
     status === 'true online' ? theme.colors.lightGreen : theme.colors.red
+  const label = version ? `${version} - ${status}` : 'insight'
   return (
     <Box>
-      <Text color={color}>{`${version} - ${status}`}</Text>
+      <Text color={color}>{label}</Text>
       {alerts && status === 'false indisponivel' && (
         <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
@@ -118,22 +120,29 @@ export const statusRendererBeta = (params: any) => {
   )
 }
 
-const renderVariables = (params: any) => {
+export const renderVariables = (params: any) => {
   const { data } = params
   const [numbers, alerts] = data?.variables || []
+  const label = numbers ? `${numbers}` : 'insight'
   const color = alerts ? theme.colors.red : theme.colors.lightGreen
+
   return (
     <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
-      <Text color={color}>{numbers}</Text>
+      <Text color={color}>{label}</Text>
     </Tooltip>
   )
 }
 
-export const actionsRenderer = () => {
+export const actionsRenderer = (params: any) => {
+  const { data } = params
+  console.log('🚀 ~ actionsRenderer ~ params:', data)
   return (
     <Box sx={styles.icon}>
       <IconButton>
-        <DeleteIcon sx={{ color: theme.colors.red }} />
+        <DeleteIcon
+          onClick={() => params.colDef.cellRenderParams.handleOpenModal(data)}
+          sx={{ color: theme.colors.red }}
+        />
       </IconButton>
       <IconButton>
         <EditIcon sx={{ color: theme.colors.grayMaxLight }} />
@@ -141,36 +150,3 @@ export const actionsRenderer = () => {
     </Box>
   )
 }
-
-export const columnDefs: AgGridReactProps['columnDefs'] = [
-  {
-    headerName: 'Name',
-    field: 'name',
-    cellStyle: { color: theme.colors.lightGray, fontWeight: 600 },
-  },
-  {
-    headerName: 'AProd',
-    field: 'aproducao',
-    minWidth: 220,
-    cellRenderer: statusRendererProd,
-  },
-  {
-    headerName: 'ABeta',
-    field: 'abeta',
-    minWidth: 220,
-    cellRenderer: statusRendererBeta,
-  },
-
-  { headerName: 'Api', field: 'api', cellRenderer: checkboxRendererApi },
-  {
-    headerName: 'Database',
-    field: 'database',
-    cellRenderer: checkboxRendererBase,
-  },
-  {
-    headerName: 'Variables',
-    field: 'variables',
-    cellRenderer: renderVariables,
-  },
-  { headerName: 'Actions', field: 'actions', cellRenderer: actionsRenderer },
-]

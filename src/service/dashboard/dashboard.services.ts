@@ -1,18 +1,27 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import toast from 'react-hot-toast'
-import { Service } from '../../@types/services'
+import { Service, ServicesResponse } from '../../@types/services'
+import { Variable } from '../../@types/variables'
+import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetServices = () => {
-  const { isFetching, error, data, isLoading } = useQuery<Service[], Error>({
-    queryKey: ['services'],
+  const { isFetching, error, data, isLoading } = useQuery<
+    ServicesResponse,
+    Error
+  >({
+    queryKey: ['getServices'],
+
     queryFn: () => {
-      return axios
-        .get(`${process.env.REACT_APP_API_URL_JSON_SERVER}/services`)
-        .then((response) => response.data)
+      return axiosClient({
+        method: 'get',
+        url: '/services',
+      }).then((response) => response.data)
     },
+
     refetchInterval: 30000,
   })
+
+  console.log('🚀 ~ useGetServices ~ data:', data)
 
   return { isFetching, isLoading, error, data }
 }
@@ -24,21 +33,92 @@ export const useCreateService = () => {
     error,
     data,
   } = useMutation({
-    mutationFn: (service: Service) => {
-      return axios
-        .post(`${process.env.REACT_APP_API_URL_JSON_SERVER}/services`, service)
-        .then((response) => response.data)
+    mutationFn: async (service: Service) => {
+      return axiosClient({
+        method: 'post',
+        url: '/service',
+        data: service,
+      })
     },
-    mutationKey: ['services'], // Set mutationKey to ['services']
+    mutationKey: ['createService'],
 
     onSuccess: () => {
       toast.success('Service created successfully!')
     },
 
-    onError: (error) => {
-      toast.error(error.message)
+    onError: (error: { response: { data: { error: string } } }) => {
+      console.log('🚀 ~ useCreateService ~ error:', error)
+      const errorMessage = error?.response?.data?.error || 'An error occurred'
+      toast.error(errorMessage)
     },
   })
 
   return { createService, isPending, error, data }
+}
+
+export const useCreateVars = () => {
+  const {
+    mutate: createVars,
+    isPending,
+    error,
+    data,
+  } = useMutation({
+    mutationFn: async (serviceName?: string, variables?: Variable[]) => {
+      console.log('🚀 ~ useCreateVars ~ variables:', variables)
+      console.log('🚀 ~ useCreateVars ~ serviceName:', serviceName)
+      return axiosClient({
+        method: 'post',
+        url: `/service/${serviceName}/variables`,
+        data: {
+          variables: variables?.map((variable) => ({
+            name: variable.name,
+            aprodvalue: variable.aprodvalue,
+            abetavalue: variable.abetavalue,
+          })),
+        },
+      }).then((response) => response.data)
+    },
+    mutationKey: ['createVars'],
+
+    onSuccess: () => {
+      toast.success('Service created successfully!')
+    },
+
+    onError: (error: { response: { data: { error: string } } }) => {
+      console.log('🚀 ~ useCreateService ~ error:', error)
+      const errorMessage = error?.response?.data?.error || 'An error occurred'
+      toast.error(errorMessage)
+    },
+  })
+
+  return { createVars, isPending, error, data }
+}
+
+export const useDeleteService = () => {
+  const {
+    mutate: deleteService,
+    isPending,
+    error,
+    data,
+  } = useMutation({
+    mutationFn: (serviceName: string) => {
+      return axiosClient({
+        method: 'delete',
+        url: `/service/${serviceName}`,
+      }).then((response) => response.data)
+    },
+    mutationKey: ['deleteService'],
+
+    onSuccess: () => {
+      toast.success('Service deleted successfully!')
+    },
+
+    onError: (error: { response: { data: { error: string } } }) => {
+      console.log('🚀 ~ useCreateService ~ error:', error)
+      const errorMessage = error?.response?.data?.error || 'An error occurred'
+      toast.error(errorMessage)
+    },
+  })
+
+  return { deleteService, isPending, error, data }
 }

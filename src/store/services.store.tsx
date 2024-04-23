@@ -1,9 +1,9 @@
 import { create } from 'zustand'
-import { Service } from '../@types/services'
+import { Services } from '../@types/services'
 
 type ServiceStore = {
-  services: Service[]
-  setServices: (services: Service[]) => void
+  services: Services[]
+  setServices: (services: Services[]) => void
 }
 
 export const useServiceStore = create<ServiceStore>((set) => ({

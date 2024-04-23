@@ -60,27 +60,35 @@ export const ButtonCustom = styled(Button)(({ theme }) => ({
 export const Title = styled.h1`
   font-size: 20px;
   color: ${(props) => props.theme.colors.red};
-  width: 20%;
+  width: 100%;
+  text-align: center;
   @media screen and (max-width: 768px) {
-    font-size: 20px;
+    font-size: 16px;
   }
 `
+
 export const Text = styled.span<TextProps>`
   color: ${(props) => props.colorText};
   font-weight: bold;
   font-family: 'Montserrat';
   font-size: ${(props) => props.fontSize || 12}px;
 `
+
 export const TextUrl = styled.span<TextProps>`
   color: ${(props) => props.colorText};
   font-weight: 400;
   font-family: 'Montserrat';
   font-size: ${(props) => props.fontSize || 12}px;
 `
+
 export const TextRunPackages = styled.span<TextProps>`
-  margin-left: 85px;
+  margin-left: 5%;
   color: ${(props) => props.colorText};
   font-weight: bold;
   font-family: 'Montserrat';
   font-size: ${(props) => props.fontSize || 12}px;
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+    text-align: center;
+  }
 `

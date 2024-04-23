@@ -1,4 +1,3 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLoading } from '../../context'
 import { images } from '../../design/images'
@@ -34,6 +33,10 @@ export const Sidebar: React.FC = (): JSX.Element => {
     }, 2000)
   }
 
+  const activeScreen = (path: string) => {
+    if (location.pathname === path) return 'true'
+  }
+
   return (
     <Container>
       <Content>
@@ -42,15 +45,15 @@ export const Sidebar: React.FC = (): JSX.Element => {
           <MenuItem>
             <ButtonLink
               onClick={() => navigate('/dashboard')}
-              active={location.pathname === '/dashboard'}
+              active={activeScreen('/dashboard')}
             >
-              {TEXT.DASHBOARD}
+              DASHBOARD
             </ButtonLink>
           </MenuItem>
           <MenuItem>
             <ButtonLink
               onClick={() => navigate('/service/create')}
-              active={location.pathname === '/service/create'}
+              active={activeScreen('/service/create')}
             >
               {TEXT.CREATESERVICE}
             </ButtonLink>
@@ -58,7 +61,7 @@ export const Sidebar: React.FC = (): JSX.Element => {
           <MenuItem>
             <ButtonLink
               onClick={() => navigate('/packages')}
-              active={location.pathname === '/packages'}
+              active={activeScreen('/packages')}
             >
               {TEXT.PACKAGES}
             </ButtonLink>
@@ -66,7 +69,7 @@ export const Sidebar: React.FC = (): JSX.Element => {
           <MenuItem>
             <ButtonLink
               onClick={() => navigate('/package/create')}
-              active={location.pathname === '/package/create'}
+              active={activeScreen('/package/create')}
             >
               {TEXT.CREATEPACKAGE}
             </ButtonLink>

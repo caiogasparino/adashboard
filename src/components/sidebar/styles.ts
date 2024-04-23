@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import styled from 'styled-components'
 
 interface ButtonLinkProps {
-  active?: boolean
+  active?: string
 }
 
 const media = {
@@ -109,19 +109,25 @@ export const ButtonLink = styled.button<ButtonLinkProps>`
   border-radius: 4px;
   padding: 12px 24px;
   color: ${(props) =>
-    props.active ? props.theme.colors.red : props.theme.colors.primary};
+    props.active === 'true'
+      ? props.theme.colors.red
+      : props.theme.colors.primary};
   margin: 12px 0;
   background: ${(props) => props.active && props.theme.colors.redRgbaLight};
   border-right: 12px solid
     ${(props) =>
-      props.active ? props.theme.colors.red : props.theme.colors.primary};
+      props.active === 'true'
+        ? props.theme.colors.red
+        : props.theme.colors.primary};
   cursor: pointer;
   &:hover {
     background: ${(props) =>
-      props.active
+      props.active === 'true'
         ? props.theme.colors.redRgbaLight
         : props.theme.colors.primary};
     color: ${(props) =>
-      props.active ? props.theme.colors.red : props.theme.colors.white};
+      props.active === 'true'
+        ? props.theme.colors.red
+        : props.theme.colors.white};
   }
 `

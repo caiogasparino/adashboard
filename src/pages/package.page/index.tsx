@@ -6,9 +6,9 @@ import { Sidebar } from '../../components'
 import Loading from '../../components/loading'
 import TablePackage from '../../components/table/table-packages'
 import { useLoading } from '../../context'
-import { getPackages } from '../../service/packages/packages.services'
 import { usePackageStore } from '../../store/package.store'
 import { TEXT } from './constants'
+import { packages } from './mock'
 import {
   ButtonCustom,
   Container,
@@ -25,7 +25,7 @@ const PackageScreen: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
-      const packages = await getPackages()
+      //   const packages = await getPackages()
       setPackages(packages)
       setLoading(false)
     }
