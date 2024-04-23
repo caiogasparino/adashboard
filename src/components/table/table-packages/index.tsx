@@ -18,8 +18,8 @@ const TablePackage: React.FC = () => {
   const { packages } = usePackageStore()
   const [selectPackages, setSelectPackages] = useState<Package>({} as Package)
   const gridRef = useRef<AgGridReact>(null)
-  const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), [])
-  const gridStyle = useMemo(() => ({ height: '600px', width: '100%' }), [])
+  const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
+  const gridStyle = useMemo(() => ({ height: '400px', width: '100%' }), [])
 
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -110,7 +110,7 @@ const TablePackage: React.FC = () => {
         <div className="example-header">
           <Input
             id="filter-text-box"
-            placeholder="Search"
+            label="Search"
             variant="outlined"
             style={{ margin: '10px 0' }}
             onChange={onFilterTextBoxChanged}

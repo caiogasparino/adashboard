@@ -9,6 +9,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { Services } from '../../../@types/services'
 import { colors } from '../../../design/colors'
 import { theme } from '../../../design/theme'
+import { servicesmock } from '../../../pages/dashboard.page/mock'
 import {
   useDeleteService,
   useGetServices,
@@ -27,18 +28,18 @@ import {
 import { Input, Text } from './styles'
 const TableService: React.FC = () => {
   const gridRef = useRef<AgGridReact>(null)
-  const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), [])
-  const gridStyle = useMemo(() => ({ height: '600px', width: '100%' }), [])
-  const [serviceSelectRow, setServiceSelectRow] = useState<Services>(
-    {} as Services,
-  )
+  const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
+  const gridStyle = useMemo(() => ({ height: '400px', width: '100%' }), [])
   const { data } = useGetServices()
   const { setServices } = useServiceStore()
   const { isPending, deleteService } = useDeleteService()
   const [openModal, setOpenModal] = useState(false)
+  const [serviceSelectRow, setServiceSelectRow] = useState<Services>(
+    {} as Services,
+  )
 
   useCallback(() => {
-    setServices(data?.services || [])
+    setServices(data?.services || servicesmock?.services)
   }, [data])
 
   const defaultColDef = useMemo<ColDef>(() => {
@@ -68,7 +69,7 @@ const TableService: React.FC = () => {
     }
   }, [gridRef.current])
 
-  const columnDefs: any = [
+  const columnDefs = [
     {
       headerName: 'Name',
       field: 'name',
@@ -86,7 +87,6 @@ const TableService: React.FC = () => {
       minWidth: 220,
       cellRenderer: statusRendererBeta,
     },
-
     { headerName: 'Api', field: 'api', cellRenderer: checkboxRendererApi },
     {
       headerName: 'Database',
@@ -112,7 +112,7 @@ const TableService: React.FC = () => {
         <div className="example-header">
           <Input
             id="filter-text-box"
-            placeholder="Search"
+            label="Search"
             variant="outlined"
             style={{ margin: '10px 0' }}
             onChange={onFilterTextBoxChanged}
@@ -127,7 +127,7 @@ const TableService: React.FC = () => {
               }}
               onGridSizeChanged={onFilterTextBoxChanged}
               onFilterChanged={onFilterTextBoxChanged}
-              rowData={data?.services}
+              rowData={data?.services || servicesmock?.services}
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
               pagination

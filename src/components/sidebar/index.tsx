@@ -47,7 +47,7 @@ export const Sidebar: React.FC = (): JSX.Element => {
               onClick={() => navigate('/dashboard')}
               active={activeScreen('/dashboard')}
             >
-              DASHBOARD
+              {TEXT.DASHBOARD}
             </ButtonLink>
           </MenuItem>
           <MenuItem>

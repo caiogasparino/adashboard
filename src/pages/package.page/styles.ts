@@ -28,7 +28,6 @@ export const ContentHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 40px;
   justify-content: space-between;
   width: 100%;
 `
