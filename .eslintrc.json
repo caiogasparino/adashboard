@@ -1,7 +1,7 @@
 {
   "env": {
     "browser": true,
-    "es2021": true,
+    "es2024": true,
     "node": true
   },
   "extends": [
@@ -14,7 +14,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 2021,
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint"],
@@ -28,7 +28,8 @@
     "no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "comma-dangle": "off",
-    "@ts-expect-error": "off"
+    "@ts-expect-error": "off",
+    "multiline-ternary": "off"
   },
   "overrides": [
     {

@@ -4,22 +4,28 @@ import { Box, IconButton } from '@mui/material'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react'
 import * as React from 'react'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { useTheme } from 'styled-components'
 import { Package } from '../../../@types/packages'
-import { theme } from '../../../design/theme'
 import { usePackageStore } from '../../../store/package.store'
+import { useThemeStore } from '../../../store/theme.store'
 import UpdatePackageForm from '../../forms/update-package'
 import ModalComponent from '../../modal'
-import { Input, Text } from './styles'
+import { Text } from './styles'
 
 const TablePackage: React.FC = () => {
+  const theme = useTheme()
   const [openModal, setOpenModal] = useState(false)
   const { packages } = usePackageStore()
   const [selectPackages, setSelectPackages] = useState<Package>({} as Package)
   const gridRef = useRef<AgGridReact>(null)
+  const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
   const gridStyle = useMemo(() => ({ height: '400px', width: '100%' }), [])
+
+  const classNameTheme =
+    themeStore === 'dark' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'
 
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -27,14 +33,14 @@ const TablePackage: React.FC = () => {
     }
   }, [])
 
-  const onFilterTextBoxChanged = useCallback(() => {
-    if (gridRef.current) {
-      gridRef.current.api.setGridOption(
-        'quickFilterText',
-        (document.getElementById('filter-text-box') as HTMLInputElement).value,
-      )
-    }
-  }, [gridRef.current])
+  //   const onFilterTextBoxChanged = useCallback(() => {
+  //     if (gridRef.current) {
+  //       gridRef.current.api.setGridOption(
+  //         'quickFilterText',
+  //         (document.getElementById('filter-text-box') as HTMLInputElement).value,
+  //       )
+  //     }
+  //   }, [gridRef.current])
 
   const styles = {
     icon: {
@@ -64,7 +70,7 @@ const TablePackage: React.FC = () => {
     const version = data?.version || ''
     console.log('🚀 ~ versionRenderer ~ version:', data?.version)
 
-    return <Text color={theme.colors.red}>{version}</Text>
+    return <Text color={theme.COLORS.secondary}>{version}</Text>
   }
 
   const renderActions = (params: any) => {
@@ -75,10 +81,10 @@ const TablePackage: React.FC = () => {
     return (
       <Box sx={styles.icon}>
         <IconButton onClick={() => copyLinkToClipboard(link)}>
-          <ContentCopyIcon sx={{ color: theme.colors.lightGray }} />
+          <ContentCopyIcon sx={{ color: theme.COLORS.gray }} />
         </IconButton>
         <IconButton onClick={() => handleOpenModal(params)}>
-          <OpenInNewIcon sx={{ color: theme.colors.lightGray }} />
+          <OpenInNewIcon sx={{ color: theme.COLORS.gray }} />
         </IconButton>
       </Box>
     )
@@ -88,7 +94,7 @@ const TablePackage: React.FC = () => {
     {
       headerName: 'Package',
       field: 'name',
-      cellStyle: { color: theme.colors.lightGray, fontWeight: 600 },
+      cellStyle: { color: theme.COLORS.gray, fontWeight: 600 },
     },
     {
       headerName: 'Version',
@@ -108,14 +114,15 @@ const TablePackage: React.FC = () => {
     <div style={containerStyle}>
       <div className="example-wrapper">
         <div className="example-header">
-          <Input
+          {/* <Input
             id="filter-text-box"
             label="Search"
             variant="outlined"
             style={{ margin: '10px 0' }}
+            theme={theme}
             onChange={onFilterTextBoxChanged}
-          />
-          <div className="ag-theme-quartz-dark" style={gridStyle}>
+          /> */}
+          <div className={classNameTheme} style={gridStyle}>
             <AgGridReact
               ref={gridRef}
               rowStyle={{
@@ -123,12 +130,12 @@ const TablePackage: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: 400,
               }}
+              //   onGridSizeChanged={onFilterTextBoxChanged}
+              //   onFilterChanged={onFilterTextBoxChanged}
               rowData={packages}
               animateRows
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
-              pagination
-              paginationPageSize={10}
             />
           </div>
         </div>

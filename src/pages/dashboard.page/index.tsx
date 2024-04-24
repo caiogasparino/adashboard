@@ -1,7 +1,7 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Box, IconButton } from '@mui/material'
+import { Box } from '@mui/material'
 import React, { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
 import { Sidebar } from '../../components'
 import TableService from '../../components/table/table-service'
 import { TEXT } from './constants'
@@ -15,6 +15,7 @@ import {
 
 const DashScreen: React.FC = () => {
   const navigate = useNavigate()
+  const theme = useTheme()
 
   return (
     <Fragment>
@@ -25,15 +26,13 @@ const DashScreen: React.FC = () => {
             <Title>{TEXT.TITLE}</Title>
             <Box>
               <ButtonCustom
+                theme={theme}
                 variant="contained"
-                sx={{ mr: 4, width: '180px' }}
+                sx={{ width: '180px' }}
                 onClick={() => navigate('/service/create')}
               >
                 {TEXT.BUTTON}
               </ButtonCustom>
-              <IconButton onClick={() => navigate(-1)}>
-                <ArrowBackIcon />
-              </IconButton>
             </Box>
           </ContentHeader>
           <TableService />

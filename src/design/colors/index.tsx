@@ -32,3 +32,37 @@ export const colors = {
   lightCyan: '#00ffff',
   lightMagenta: '#ff00ff',
 }
+
+export const COLORS_LIGHT = {
+  background: '#F7F5F5',
+  backgroundColor: '#101621',
+  text: '#101621',
+  primary: '#3A20D9',
+  secondary: '#D83674',
+  accent: '#00ffff',
+  green: '#96E072',
+  highlight: '#ffa500',
+  muted: '#6b6b6b',
+  gray: '#A9A9A9',
+  border: '#182230',
+  overlay: 'rgba(255, 255, 255, 0.8)',
+  redRgbaLight: 'rgba(216, 54, 81, 0.212)',
+  lightGray: '#D9D9D9',
+}
+
+export const COLORS_DARK = {
+  background: '#182230',
+  backgroundColor: '#FFFFFF',
+  text: '#FFFFFF',
+  primary: '#3A20D9',
+  secondary: '#D83674',
+  accent: '#00ffff',
+  green: '#3E8914',
+  highlight: '#ffa500',
+  gray: '#6b6b6b',
+  muted: '#6b6b6b',
+  border: '#D9D9D9',
+  overlay: 'rgba(0, 0, 0, 0.8)',
+  redRgbaLight: 'rgba(216, 54, 81, 0.212)',
+  lightGray: '#D9D9D9',
+}

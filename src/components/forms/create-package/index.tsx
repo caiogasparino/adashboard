@@ -2,7 +2,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { Box, Grid, IconButton } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { colors } from '../../../design/colors'
+import { useTheme } from 'styled-components'
 import { TEXT } from './constants'
 import {
   ButtonCustom,
@@ -15,6 +15,7 @@ import {
 } from './styles'
 
 const AddPostPackageForm: React.FC = () => {
+  const theme = useTheme()
   const [packageName, setPackageName] = useState('')
   const [sizefonts, setFontSize] = useState(window.innerWidth <= 700 ? 10 : 14)
 
@@ -70,7 +71,7 @@ const AddPostPackageForm: React.FC = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.whiteDark,
+      backgroundColor: theme.COLORS.gray,
     },
     boxInputLabel: {
       marginLeft: -3,
@@ -81,7 +82,7 @@ const AddPostPackageForm: React.FC = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.grayMaxLight,
+      backgroundColor: theme.COLORS.background,
       '@media screen and (max-width: 1268px)': {
         display: 'none',
       },
@@ -110,7 +111,7 @@ const AddPostPackageForm: React.FC = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.whiteDark,
+      backgroundColor: theme.COLORS.background,
     },
     boxInputPackageCmd: {
       marginLeft: -3,
@@ -122,7 +123,7 @@ const AddPostPackageForm: React.FC = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: colors.lightGray,
+      backgroundColor: theme.COLORS.gray,
       '@media screen and (max-width: 1268px)': {
         paddingLeft: 5,
         width: '72%',
@@ -141,14 +142,16 @@ const AddPostPackageForm: React.FC = () => {
   }
 
   return (
-    <Container container sx={styles.container}>
+    <Container container theme={theme} sx={styles.container}>
       <Box sx={styles.box}>
         <Grid container sx={{ width: '100%' }}>
           <Box sx={styles.boxInput}>
-            <Text fontSize={sizefonts}>{TEXT.LABEL_PACKAGE_NAME}</Text>
+            <Text colorText={theme.COLORS.text} fontSize={sizefonts}>
+              {TEXT.LABEL_PACKAGE_NAME}
+            </Text>
           </Box>
           <Box sx={styles.boxInputLabel}>
-            <Text fontSize={16} colorText={colors.red}>
+            <Text fontSize={16} colorText={theme.COLORS.secondary}>
               {TEXT.PRESET_PACKAGE}
             </Text>
           </Box>
@@ -164,10 +167,12 @@ const AddPostPackageForm: React.FC = () => {
       <Box sx={styles.boxInputPackage}>
         <Grid container sx={{ width: '100%' }}>
           <Box sx={styles.boxInputPackageLabel}>
-            <Text fontSize={sizefonts}>{TEXT.LABEL_RUN_PACKAGE}</Text>
+            <Text colorText={theme.COLORS.text} fontSize={sizefonts}>
+              {TEXT.LABEL_RUN_PACKAGE}
+            </Text>
           </Box>
           <Box sx={styles.boxInputPackageCmd}>
-            <TextRunPackages fontSize={sizefonts} colorText={colors.primary}>
+            <TextRunPackages fontSize={sizefonts} colorText={theme.COLORS.text}>
               <Text fontSize={sizefonts}>{`${TEXT.LABEL_NPM_PACKAGE}`}</Text>
               <TextUrl fontSize={sizefonts}>{TEXT.LABEL_URL_BITBUCKET}</TextUrl>
               <Text fontSize={sizefonts}>{packageName}</Text>
@@ -177,11 +182,12 @@ const AddPostPackageForm: React.FC = () => {
                 copyLinkToClipboard(cmdPackageName)
               }}
             >
-              <ContentCopyIcon sx={{ color: colors.primary }} />
+              <ContentCopyIcon sx={{ color: theme.COLORS.text }} />
             </IconButton>
           </Box>
-          <Item item sx={styles.button}>
+          <Item item theme={theme} sx={styles.button}>
             <ButtonCustom
+              theme={theme}
               sx={{ width: '180px' }}
               variant="contained"
               onClick={handleSubmit}

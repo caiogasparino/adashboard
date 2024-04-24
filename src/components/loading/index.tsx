@@ -1,6 +1,6 @@
 import React from 'react'
 import { Oval } from 'react-loader-spinner'
-import { theme } from '../../design/theme'
+import { useTheme } from 'styled-components'
 import { LoadingText, Overlay } from './styles'
 
 interface LoadingProps {
@@ -9,6 +9,7 @@ interface LoadingProps {
 }
 
 const Loading: React.FC<LoadingProps> = ({ isLoading, spinner }) => {
+  const { COLORS } = useTheme()
   if (!isLoading) return null
 
   return (
@@ -18,8 +19,8 @@ const Loading: React.FC<LoadingProps> = ({ isLoading, spinner }) => {
           visible={true}
           height="35"
           width="35"
-          color={theme.colors.primary}
-          secondaryColor={theme.colors.primary}
+          color={COLORS.background}
+          secondaryColor={COLORS.background}
           ariaLabel="oval-loading"
           wrapperStyle={{ marginTop: '20px' }}
           wrapperClass=""

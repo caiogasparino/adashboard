@@ -1,9 +1,16 @@
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import { IconButton } from '@mui/material'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
 import { useLoading } from '../../context'
 import { images } from '../../design/images'
 import useAuthentication from '../../hooks/useAuthentication'
 import useOAuthStore from '../../store/oauth.store'
 import { initialState, usePermissionStore } from '../../store/permission.store'
+import { useThemeStore } from '../../store/theme.store'
 import { TEXT } from './constants'
 import {
   ButtonCustom,
@@ -17,11 +24,25 @@ import {
 } from './styles'
 
 export const Sidebar: React.FC = (): JSX.Element => {
+  const { theme, setTheme } = useThemeStore()
+  const { COLORS } = useTheme()
   const { logout } = useAuthentication()
   const { setLoading } = useLoading()
   const { setAccessToken } = useOAuthStore()
   const { setPermissions } = usePermissionStore()
   const navigate = useNavigate()
+  const [isMinimized, setIsMinimized] = useState(false)
+
+  const ICON = isMinimized ? (
+    <ArrowForwardIosIcon sx={{ color: COLORS.background }} />
+  ) : (
+    <ArrowBackIosIcon sx={{ color: COLORS.background }} />
+  )
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark'
+    setTheme(newTheme)
+  }
 
   const handleLogout = () => {
     setLoading(true)
@@ -38,48 +59,42 @@ export const Sidebar: React.FC = (): JSX.Element => {
   }
 
   return (
-    <Container>
+    <Container isMinimized={isMinimized}>
       <Content>
-        <Menu>
-          <Logo src={images.LOGO} alt="Logo" />
-          <MenuItem>
-            <ButtonLink
-              onClick={() => navigate('/dashboard')}
-              active={activeScreen('/dashboard')}
-            >
-              {TEXT.DASHBOARD}
-            </ButtonLink>
-          </MenuItem>
-          <MenuItem>
-            <ButtonLink
-              onClick={() => navigate('/service/create')}
-              active={activeScreen('/service/create')}
-            >
-              {TEXT.CREATESERVICE}
-            </ButtonLink>
-          </MenuItem>
-          <MenuItem>
-            <ButtonLink
-              onClick={() => navigate('/packages')}
-              active={activeScreen('/packages')}
-            >
-              {TEXT.PACKAGES}
-            </ButtonLink>
-          </MenuItem>
-          <MenuItem>
-            <ButtonLink
-              onClick={() => navigate('/package/create')}
-              active={activeScreen('/package/create')}
-            >
-              {TEXT.CREATEPACKAGE}
-            </ButtonLink>
-          </MenuItem>
-        </Menu>
-        <Footer>
-          <ButtonCustom sx={{ width: '180px' }} onClick={handleLogout}>
-            {TEXT.LOGOUT}
-          </ButtonCustom>
-        </Footer>
+        {!isMinimized && (
+          <Menu>
+            <Logo src={images.LOGO} alt="Logo" />
+            <MenuItem>
+              <ButtonLink
+                onClick={() => navigate('/dashboard')}
+                active={activeScreen('/dashboard')}
+              >
+                {TEXT.DASHBOARD}
+              </ButtonLink>
+            </MenuItem>
+            <MenuItem>
+              <ButtonLink
+                onClick={() => navigate('/packages')}
+                active={activeScreen('/packages')}
+              >
+                {TEXT.PACKAGES}
+              </ButtonLink>
+            </MenuItem>
+          </Menu>
+        )}
+        <IconButton onClick={() => setIsMinimized(!isMinimized)}>
+          {ICON}
+        </IconButton>
+        <IconButton onClick={() => toggleTheme()}>
+          <DarkModeIcon sx={{ color: COLORS.background }} />
+        </IconButton>
+        {!isMinimized && (
+          <Footer>
+            <ButtonCustom sx={{ width: '180px' }} onClick={handleLogout}>
+              {TEXT.LOGOUT}
+            </ButtonCustom>
+          </Footer>
+        )}
       </Content>
     </Container>
   )

@@ -6,15 +6,15 @@ import { AgGridReact } from 'ag-grid-react'
 import { Box, Button } from '@mui/material'
 import * as React from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { useTheme } from 'styled-components'
 import { Services } from '../../../@types/services'
-import { colors } from '../../../design/colors'
-import { theme } from '../../../design/theme'
 import { servicesmock } from '../../../pages/dashboard.page/mock'
 import {
   useDeleteService,
   useGetServices,
 } from '../../../service/dashboard/dashboard.services'
 import { useServiceStore } from '../../../store/services.store'
+import { useThemeStore } from '../../../store/theme.store'
 import Loading from '../../loading'
 import ModalComponent from '../../modal'
 import {
@@ -25,9 +25,11 @@ import {
   statusRendererBeta,
   statusRendererProd,
 } from './constants'
-import { Input, Text } from './styles'
+import { Text } from './styles'
 const TableService: React.FC = () => {
   const gridRef = useRef<AgGridReact>(null)
+  const theme = useTheme()
+  const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
   const gridStyle = useMemo(() => ({ height: '400px', width: '100%' }), [])
   const { data } = useGetServices()
@@ -37,6 +39,9 @@ const TableService: React.FC = () => {
   const [serviceSelectRow, setServiceSelectRow] = useState<Services>(
     {} as Services,
   )
+
+  const classNameTheme =
+    themeStore === 'dark' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'
 
   useCallback(() => {
     setServices(data?.services || servicesmock?.services)
@@ -60,20 +65,20 @@ const TableService: React.FC = () => {
     setOpenModal(false)
   }
 
-  const onFilterTextBoxChanged = useCallback(() => {
-    if (gridRef.current) {
-      gridRef.current.api.setGridOption(
-        'quickFilterText',
-        (document.getElementById('filter-text-box') as HTMLInputElement).value,
-      )
-    }
-  }, [gridRef.current])
+  //   const onFilterTextBoxChanged = useCallback(() => {
+  //     if (gridRef.current) {
+  //       gridRef.current.api.setGridOption(
+  //         'quickFilterText',
+  //         (document.getElementById('filter-text-box') as HTMLInputElement).value,
+  //       )
+  //     }
+  //   }, [gridRef.current])
 
   const columnDefs = [
     {
       headerName: 'Name',
       field: 'name',
-      cellStyle: { color: theme.colors.lightGray, fontWeight: 600 },
+      cellStyle: { color: theme.COLORS.gray, fontWeight: 600 },
     },
     {
       headerName: 'AProd',
@@ -87,7 +92,11 @@ const TableService: React.FC = () => {
       minWidth: 220,
       cellRenderer: statusRendererBeta,
     },
-    { headerName: 'Api', field: 'api', cellRenderer: checkboxRendererApi },
+    {
+      headerName: 'Api',
+      field: 'api',
+      cellRenderer: checkboxRendererApi,
+    },
     {
       headerName: 'Database',
       field: 'database',
@@ -110,14 +119,15 @@ const TableService: React.FC = () => {
     <div style={containerStyle}>
       <div className="example-wrapper">
         <div className="example-header">
-          <Input
+          {/* <Input
             id="filter-text-box"
+            theme={theme}
             label="Search"
             variant="outlined"
             style={{ margin: '10px 0' }}
             onChange={onFilterTextBoxChanged}
-          />
-          <div className="ag-theme-quartz-dark" style={gridStyle}>
+          /> */}
+          <div className={classNameTheme} style={gridStyle}>
             <AgGridReact
               ref={gridRef}
               rowStyle={{
@@ -125,13 +135,11 @@ const TableService: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: 400,
               }}
-              onGridSizeChanged={onFilterTextBoxChanged}
-              onFilterChanged={onFilterTextBoxChanged}
+              //   onGridSizeChanged={onFilterTextBoxChanged}
+              //   onFilterChanged={onFilterTextBoxChanged}
               rowData={data?.services || servicesmock?.services}
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
-              pagination
-              paginationPageSize={10}
             />
           </div>
         </div>
@@ -157,8 +165,8 @@ const TableService: React.FC = () => {
               sx={{
                 mt: 4,
                 width: '30%',
-                bgcolor: colors.primary,
-                ':hover': { bgcolor: colors.gray },
+                bgcolor: theme.COLORS.background,
+                ':hover': { bgcolor: theme.COLORS.gray },
               }}
             >
               Save

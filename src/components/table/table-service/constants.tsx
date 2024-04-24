@@ -7,8 +7,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip'
 import { Box, IconButton, Tooltip } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
+import { useTheme } from 'styled-components'
 import { Services } from '../../../@types/services'
-import { theme } from '../../../design/theme'
 import { Text } from './styles'
 
 export function createData(
@@ -44,20 +44,22 @@ export const styles = {
 }
 
 export const checkboxRendererApi = (params: any) => {
+  const theme = useTheme()
   const { data } = params
   return (
     <Checkbox
-      style={{ color: theme.colors.lightGray }}
+      style={{ color: theme.COLORS.gray }}
       disabled
       checked={data?.api}
     />
   )
 }
 export const checkboxRendererBase = (params: any) => {
+  const theme = useTheme()
   const { data } = params
   return (
     <Checkbox
-      style={{ color: theme.colors.lightGray }}
+      style={{ color: theme.COLORS.gray }}
       disabled
       checked={data?.database}
     />
@@ -65,11 +67,13 @@ export const checkboxRendererBase = (params: any) => {
 }
 
 export const statusRendererProd = (params: Services | any) => {
+  const theme = useTheme()
   const { data } = params
+  console.log('🚀 ~ statusRendererProd ~ theme:', theme)
   const [version, status, alerts] = data?.aproducao
 
   const color =
-    status === 'true online' ? theme.colors.lightGreen : theme.colors.red
+    status === 'true online' ? theme.COLORS.green : theme.COLORS.secondary
   const label = version ? `${version} - ${status}` : 'insight'
 
   return (
@@ -82,8 +86,8 @@ export const statusRendererProd = (params: Services | any) => {
               sx={{
                 color:
                   status === 'true online'
-                    ? theme.colors.lightGreen
-                    : theme.colors.red,
+                    ? theme.COLORS.green
+                    : theme.COLORS.secondary,
               }}
             />
           </IconButton>
@@ -94,10 +98,11 @@ export const statusRendererProd = (params: Services | any) => {
 }
 
 export const statusRendererBeta = (params: any) => {
+  const theme = useTheme()
   const { data } = params
   const [version, status, alerts] = data?.abeta || []
   const color =
-    status === 'true online' ? theme.colors.lightGreen : theme.colors.red
+    status === 'true online' ? theme.COLORS.green : theme.COLORS.secondary
   const label = version ? `${version} - ${status}` : 'insight'
   return (
     <Box>
@@ -109,8 +114,8 @@ export const statusRendererBeta = (params: any) => {
               sx={{
                 color:
                   status === 'true online'
-                    ? theme.colors.lightGreen
-                    : theme.colors.red,
+                    ? theme.COLORS.green
+                    : theme.COLORS.secondary,
               }}
             />
           </IconButton>
@@ -121,10 +126,11 @@ export const statusRendererBeta = (params: any) => {
 }
 
 export const renderVariables = (params: any) => {
+  const theme = useTheme()
   const { data } = params
   const [numbers, alerts] = data?.variables || []
   const label = numbers ? `${numbers}` : 'insight'
-  const color = alerts ? theme.colors.red : theme.colors.lightGreen
+  const color = alerts ? theme.COLORS.green : theme.COLORS.secondary
 
   return (
     <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
@@ -134,6 +140,7 @@ export const renderVariables = (params: any) => {
 }
 
 export const actionsRenderer = (params: any) => {
+  const theme = useTheme()
   const { data } = params
   console.log('🚀 ~ actionsRenderer ~ params:', data)
   return (
@@ -141,11 +148,11 @@ export const actionsRenderer = (params: any) => {
       <IconButton>
         <DeleteIcon
           onClick={() => params.colDef.cellRenderParams.handleOpenModal(data)}
-          sx={{ color: theme.colors.red }}
+          sx={{ color: theme.COLORS.secondary }}
         />
       </IconButton>
       <IconButton>
-        <EditIcon sx={{ color: theme.colors.grayMaxLight }} />
+        <EditIcon sx={{ color: theme.COLORS.gray }} />
       </IconButton>
     </Box>
   )

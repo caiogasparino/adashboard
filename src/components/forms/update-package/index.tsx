@@ -1,8 +1,8 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { Box, FormControl, Grid, IconButton } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useTheme } from 'styled-components'
 import { Package } from '../../../@types/packages'
-import { colors } from '../../../design/colors'
 import { TEXT } from './constants'
 import {
   ButtonCustom,
@@ -20,6 +20,7 @@ interface PackageProps {
 }
 
 const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
+  const theme = useTheme()
   const [packageName, setPackageName] = useState(data.name || '')
   const [sizefonts, setFontSize] = useState(window.innerWidth <= 700 ? 10 : 14)
   console.log('🚀 ~ UpdatePackageForm ~ data:', data)
@@ -55,7 +56,7 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.whiteDark,
+      backgroundColor: theme.COLORS.background,
       '@media screen and (max-width: 1268px)': {
         flexDirection: 'column',
       },
@@ -69,7 +70,7 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.grayMaxLight,
+      backgroundColor: theme.COLORS.gray,
       '@media screen and (max-width: 1268px)': {
         display: 'none',
       },
@@ -95,7 +96,7 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.whiteDark,
+      backgroundColor: theme.COLORS.background,
       '@media screen and (max-width: 1268px)': {
         display: 'none',
       },
@@ -110,7 +111,7 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: colors.lightGray,
+      backgroundColor: theme.COLORS.gray,
       '@media screen and (max-width: 1268px)': {
         width: '100%',
         marginLeft: 0,
@@ -127,7 +128,7 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
               <Text fontSize={12}>{TEXT.LABEL_PACKAGE_NAME}</Text>
             </Box>
             <Box sx={styles.boxInputLabel}>
-              <Text fontSize={16} colorText={colors.red}>
+              <Text fontSize={16} colorText={theme.COLORS.secondary}>
                 {TEXT.PRESET_PACKAGE}
               </Text>
             </Box>
@@ -146,7 +147,10 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
               <Text fontSize={12}>{TEXT.LABEL_RUN_PACKAGE}</Text>
             </Box>
             <Box sx={styles.boxInputPackageCmd}>
-              <TextRunPackages fontSize={sizefonts} colorText={colors.primary}>
+              <TextRunPackages
+                fontSize={sizefonts}
+                colorText={theme.COLORS.background}
+              >
                 <Text
                   fontSize={sizefonts}
                 >{`${TEXT.LABEL_NPM_PACKAGE}  ${'   '}`}</Text>
@@ -156,7 +160,7 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ onClose, data }) => {
                 <Text fontSize={sizefonts}>{packageName}</Text>
               </TextRunPackages>
               <IconButton onClick={() => {}}>
-                <ContentCopyIcon sx={{ color: colors.primary }} />
+                <ContentCopyIcon sx={{ color: theme.COLORS.background }} />
               </IconButton>
             </Box>
           </Grid>

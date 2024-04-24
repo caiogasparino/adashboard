@@ -1,9 +1,8 @@
 import { Button, Grid, TextField } from '@mui/material'
 import styled from 'styled-components'
-import { colors } from '../../../design/colors'
 
 export const Container = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.colors.white,
+  backgroundColor: theme.COLORS.background,
 }))
 
 export const Item = styled(Grid)(({ theme }) => ({
@@ -12,7 +11,7 @@ export const Item = styled(Grid)(({ theme }) => ({
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   '& .MuiFormControlLabel-root, & .MuiFormLabel-root': {
-    color: theme.colors.gray,
+    color: theme.COLORS.muted,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
@@ -26,31 +25,31 @@ export const Input = styled(TextField)(({ theme }) => ({
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: theme.colors.lightGray,
+      borderColor: theme.COLORS.gray,
     },
     '&:hover fieldset': {
-      borderColor: theme.colors.primary,
+      borderColor: theme.COLORS.text,
     },
     '&.Mui-focused fieldset': {
-      borderColor: theme.colors.primary,
+      borderColor: theme.COLORS.text,
     },
   },
   '& .MuiInputBase-input': {
-    color: theme.colors.primary,
+    color: theme.COLORS.text,
     fontFamily: 'Montserrat',
     fontSize: 14,
     borderRadius: 8,
   },
 
   '& .MuiInputLabel-outlined': {
-    color: theme.colors.gray,
+    color: theme.COLORS.gray,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
   },
 
   '& .MuiInputLabel-outlined.Mui-focused': {
-    color: theme.colors.primary,
+    color: theme.COLORS.text,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
@@ -60,25 +59,25 @@ export const Input = styled(TextField)(({ theme }) => ({
 export const ButtonCustom = styled(Button)(({ theme }) => ({
   '&.MuiButton-root': {
     borderRadius: 8,
-    backgroundColor: theme.colors.primary,
-    color: theme.colors.white,
+    backgroundColor: theme.COLORS.text,
+    color: theme.COLORS.background,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
     '&:hover': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.secondary,
+      color: theme.COLORS.background,
     },
     '&.Mui-disabled': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.background,
     },
   },
 }))
 
 export const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.red};
+  color: ${(props) => props.theme.COLORS.secondary};
   width: 20%;
   @media screen and (max-width: 768px) {
     font-size: 20px;
@@ -86,7 +85,7 @@ export const Title = styled.h1`
 `
 
 export const Text = styled.span`
-  color: ${colors.gray};
+  color: ${({ theme }) => theme.COLORS.gray};
   font-weight: bold;
   font-family: 'Montserrat';
   font-size: 12px;

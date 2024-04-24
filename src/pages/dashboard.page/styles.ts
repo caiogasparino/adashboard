@@ -18,7 +18,7 @@ export const Content = styled.div`
   justify-content: flex-start;
   padding: 40px;
   width: 100%;
-  background: ${(props) => props.theme.colors.white};
+  background: ${({ theme }) => theme.COLORS.backgroundColor};
   @media screen and (max-width: 768px) {
     height: auto;
   }
@@ -28,13 +28,14 @@ export const ContentHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 20px;
   justify-content: space-between;
   width: 100%;
 `
 
 export const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.red};
+  color: ${({ theme }) => theme.COLORS.secondary}; };
   width: 10%;
   @media screen and (max-width: 768px) {
     font-size: 20px;
@@ -59,18 +60,18 @@ export const Footer = styled.div`
 export const ButtonCustom = styled(Button)(({ theme }) => ({
   '&.MuiButton-root': {
     borderRadius: 8,
-    backgroundColor: theme.colors.primary,
-    color: theme.colors.white,
+    backgroundColor: theme.COLORS.background,
+    color: theme.COLORS.text,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
     '&:hover': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
     '&.Mui-disabled': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
   },
 }))

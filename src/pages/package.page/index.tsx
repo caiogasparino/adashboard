@@ -1,5 +1,4 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Box, IconButton } from '@mui/material'
+import { Box } from '@mui/material'
 import React, { Fragment, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Sidebar } from '../../components'
@@ -43,14 +42,14 @@ const PackageScreen: React.FC = () => {
             <Box>
               <ButtonCustom
                 variant="contained"
-                sx={{ width: '180px', mr: 4 }}
+                sx={{ width: '180px' }}
                 onClick={() => navigate('/package/create')}
               >
                 {TEXT.BUTTON}
               </ButtonCustom>
-              <IconButton onClick={() => navigate(-1)}>
+              {/* <IconButton onClick={() => navigate(-1)}>
                 <ArrowBackIcon />
-              </IconButton>
+              </IconButton> */}
             </Box>
           </ContentHeader>
           <TablePackage />

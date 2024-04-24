@@ -3,19 +3,20 @@ import styled from 'styled-components'
 
 interface ButtonLinkProps {
   active?: string
+  isMinimized?: boolean
 }
 
 const media = {
   mobile: '@media(max-width: 968px)',
 }
 
-export const Container = styled.div`
-  width: 300px;
+export const Container = styled.div<ButtonLinkProps>`
+  width: ${(props) => (props.isMinimized ? '60px' : '200px')};
   padding: 24px 0;
   max-width: 350px;
-  min-width: 200px;
-  border-right: 1px solid ${(props) => props.theme.colors.lightGray};
-  background: ${(props) => props.theme.colors.white};
+
+  border-right: 1px solid ${({ theme }) => theme.COLORS.border};
+  background: ${({ theme }) => theme.COLORS.backgroundColor};
   ${media.mobile} {
     display: none;
   }
@@ -29,7 +30,7 @@ export const Content = styled.div`
   height: 100%;
   width: 100%;
   max-width: 500px;
-  background: ${(props) => props.theme.colors.white};
+  background: ${({ theme }) => theme.COLORS.backgroundColor};
   ${media.mobile} {
     display: none;
   }
@@ -41,8 +42,7 @@ export const Menu = styled.div`
   justify-content: space-between;
   width: 100%;
   max-width: 500px;
-  background: ${(props) => props.theme.colors.white};
-
+  background: ${({ theme }) => theme.COLORS.backgroundColor};
   ${media.mobile} {
     display: none;
   }
@@ -64,8 +64,7 @@ export const Footer = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 500px;
-  background: ${(props) => props.theme.colors.white};
-
+  background: ${({ theme }) => theme.COLORS.backgroundColor};
   ${media.mobile} {
     display: none;
   }
@@ -80,18 +79,18 @@ export const Logo = styled.img`
 export const ButtonCustom = styled(Button)(({ theme }) => ({
   '&.MuiButton-root': {
     borderRadius: 8,
-    backgroundColor: theme.colors.primary,
-    color: theme.colors.white,
+    backgroundColor: theme.COLORS.background,
+    color: theme.COLORS.text,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
     '&:hover': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
     '&.Mui-disabled': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
   },
 }))
@@ -110,24 +109,27 @@ export const ButtonLink = styled.button<ButtonLinkProps>`
   padding: 12px 24px;
   color: ${(props) =>
     props.active === 'true'
-      ? props.theme.colors.red
-      : props.theme.colors.primary};
+      ? props.theme.COLORS.secondary
+      : props.theme.COLORS.text};
   margin: 12px 0;
-  background: ${(props) => props.active && props.theme.colors.redRgbaLight};
+  background: ${(props) =>
+    props.active
+      ? props.theme.COLORS.redRgbaLight
+      : props.theme.COLORS.background};
   border-right: 12px solid
     ${(props) =>
       props.active === 'true'
-        ? props.theme.colors.red
-        : props.theme.colors.primary};
+        ? props.theme.COLORS.secondary
+        : props.theme.COLORS.background};
   cursor: pointer;
   &:hover {
     background: ${(props) =>
       props.active === 'true'
-        ? props.theme.colors.redRgbaLight
-        : props.theme.colors.primary};
+        ? props.theme.COLORS.redRgbaLight
+        : props.theme.COLORS.overlay};
     color: ${(props) =>
       props.active === 'true'
-        ? props.theme.colors.red
-        : props.theme.colors.white};
+        ? props.theme.COLORS.secondary
+        : props.theme.COLORS.text};
   }
 `

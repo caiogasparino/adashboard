@@ -1,6 +1,6 @@
 import { Box, Button, Modal, Typography } from '@mui/material'
 import React from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { colors } from '../../design/colors'
 
 interface ModalProps {
@@ -26,6 +26,7 @@ const ModalComponent: React.FC<ModalProps> = ({
   title,
   children,
 }) => {
+  const theme = useTheme()
   return (
     <Modal
       open={open}
@@ -40,7 +41,7 @@ const ModalComponent: React.FC<ModalProps> = ({
           left: '50%',
           transform: 'translate(-50%, -50%)',
           bgcolor: 'white',
-          border: '1px solid #000',
+          border: `1px solid ${theme.COLORS.gray}`,
           borderRadius: '8px',
           boxShadow: 24,
           p: 4,

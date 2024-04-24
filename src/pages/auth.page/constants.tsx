@@ -7,7 +7,7 @@ export const {
 } = process.env
 
 export const TEXT = {
-  FOOTER: '© 2021 Alintra. Todos os direitos reservados.',
+  FOOTER: '© 2024 Alintra. Todos os direitos reservados.',
   TITLE: 'BITBUCKET',
   BUTTON: 'BITBUCKET SSO',
 }

@@ -2,13 +2,14 @@ import Delete from '@mui/icons-material/Delete'
 import { Checkbox, FormControl, Grid, IconButton } from '@mui/material'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useTheme } from 'styled-components'
 import { Variable } from '../../../@types/variables'
-import { colors } from '../../../design/colors'
 import { useCreateService } from '../../../service/dashboard/dashboard.services'
 import { TEXT } from './constants'
 import { ButtonCustom, Container, Input, Item, Text, Title } from './styles'
 
 const AddPostServiceForm: React.FC = () => {
+  const theme = useTheme()
   const { createService } = useCreateService()
   const [serviceName, setServiceName] = useState('')
   const [hasDatabase, setHasDatabase] = useState(false)
@@ -88,13 +89,13 @@ const AddPostServiceForm: React.FC = () => {
           <Text>{TEXT.APIPUBLIC}</Text>
           <Checkbox
             checked={hasApi}
-            style={{ color: colors.gray }}
+            style={{ color: theme.COLORS.gray }}
             onChange={(e) => setHasApi(e.target.checked)}
           />
           <Text>{TEXT.DATABASEACCESS}</Text>
           <Checkbox
             checked={hasDatabase}
-            style={{ color: colors.gray }}
+            style={{ color: theme.COLORS.gray }}
             onChange={(e) => setHasDatabase(e.target.checked)}
           />
         </Item>

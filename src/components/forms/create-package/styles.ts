@@ -7,7 +7,7 @@ interface TextProps {
 }
 
 export const Container = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.colors.white,
+  backgroundColor: theme.COLORS.backgroundColor,
 }))
 
 export const Item = styled(Grid)(({ theme }) => ({
@@ -16,7 +16,7 @@ export const Item = styled(Grid)(({ theme }) => ({
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   '& .MuiFormControlLabel-root, & .MuiFormLabel-root': {
-    color: theme.colors.gray,
+    color: theme.COLORS.gray,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
@@ -27,7 +27,7 @@ export const Input = styled.input`
   width: 100%;
   height: 40px;
   border: none;
-  background: ${(props) => props.theme.colors.lightGray};
+  background: ${(props) => props.theme.COLORS.background};
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   margin-left: -8px;
@@ -36,7 +36,7 @@ export const Input = styled.input`
   font-size: 16px;
   font-weight: 600;
   outline: none;
-  color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.COLORS.text};
 
   @media screen and (max-width: 768px) {
     font-size: 14px;
@@ -48,25 +48,25 @@ export const Input = styled.input`
 export const ButtonCustom = styled(Button)(({ theme }) => ({
   '&.MuiButton-root': {
     borderRadius: 8,
-    backgroundColor: theme.colors.primary,
-    color: theme.colors.white,
+    backgroundColor: theme.COLORS.background,
+    color: theme.COLORS.text,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
     '&:hover': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
     '&.Mui-disabled': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
   },
 }))
 
 export const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.red};
+  color: ${(props) => props.theme.COLORS.secondary};
   width: 20%;
 
   @media screen and (max-width: 768px) {

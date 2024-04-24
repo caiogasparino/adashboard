@@ -17,7 +17,7 @@ export const Content = styled.div`
   justify-content: flex-start;
   padding: 40px;
   width: 100%;
-  background: ${(props) => props.theme.colors.white};
+  background: ${(props) => props.theme.COLORS.background};
   @media screen and (max-width: 768px) {
     height: auto;
   }
@@ -34,7 +34,7 @@ export const ContentHeader = styled.div`
 
 export const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.red};
+  color: ${(props) => props.theme.COLORS.secondary};
   width: 20%;
   @media screen and (max-width: 768px) {
     font-size: 20px;

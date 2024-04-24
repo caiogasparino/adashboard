@@ -4,8 +4,9 @@ import { StrictMode, Suspense, lazy, useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from 'styled-components'
 import { LoadingProvider } from './context'
-import { theme } from './design/theme'
+import { THEME_DARK, THEME_LIGHT } from './design/theme'
 import IndexRoutes from './routes/index.routes'
+import { useThemeStore } from './store/theme.store'
 
 const queryClient = new QueryClient()
 
@@ -18,21 +19,28 @@ const ReactQueryDevtoolsProduction = lazy(() =>
 )
 
 function App() {
+  const { theme } = useThemeStore()
   const [showDevtools, setShowDevtools] = useState(false)
+
+  const THEME = theme === 'light' ? THEME_LIGHT : THEME_DARK
+
   useEffect(() => {
-    ;(window as any).toggleDevtools = () => setShowDevtools((old) => !old)
+    const isLocal = process.env.NODE_ENV === 'development'
+    if (isLocal) {
+      ;(window as any).toggleDevtools = () => setShowDevtools((old) => !old)
+    }
   }, [])
 
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={THEME}>
           <Toaster />
           <LoadingProvider>
             <IndexRoutes />
           </LoadingProvider>
         </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen />
+        {showDevtools && <ReactQueryDevtools initialIsOpen />}
         {showDevtools && (
           <Suspense fallback={null}>
             <ReactQueryDevtoolsProduction />

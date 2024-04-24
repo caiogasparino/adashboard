@@ -1,5 +1,9 @@
-import { colors } from '../colors'
+import { COLORS_DARK, COLORS_LIGHT } from '../colors'
 
-export const theme = {
-  colors,
+export const THEME_LIGHT = {
+  COLORS: COLORS_LIGHT,
+}
+
+export const THEME_DARK = {
+  COLORS: COLORS_DARK,
 }
