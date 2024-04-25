@@ -10,7 +10,7 @@ import { useTheme } from 'styled-components'
 import { Package } from '../../../@types/packages'
 import { usePackageStore } from '../../../store/package.store'
 import { useThemeStore } from '../../../store/theme.store'
-import UpdatePackageForm from '../../forms/update-package'
+import PackageForm from '../../forms/package-forms'
 import ModalComponent from '../../modal'
 import { Text } from './styles'
 
@@ -22,7 +22,7 @@ const TablePackage: React.FC = () => {
   const gridRef = useRef<AgGridReact>(null)
   const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
-  const gridStyle = useMemo(() => ({ height: '400px', width: '100%' }), [])
+  const gridStyle = useMemo(() => ({ height: '80vh', width: '100%' }), [])
 
   const classNameTheme =
     themeStore === 'dark' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'
@@ -32,15 +32,6 @@ const TablePackage: React.FC = () => {
       flex: 1,
     }
   }, [])
-
-  //   const onFilterTextBoxChanged = useCallback(() => {
-  //     if (gridRef.current) {
-  //       gridRef.current.api.setGridOption(
-  //         'quickFilterText',
-  //         (document.getElementById('filter-text-box') as HTMLInputElement).value,
-  //       )
-  //     }
-  //   }, [gridRef.current])
 
   const styles = {
     icon: {
@@ -114,14 +105,6 @@ const TablePackage: React.FC = () => {
     <div style={containerStyle}>
       <div className="example-wrapper">
         <div className="example-header">
-          {/* <Input
-            id="filter-text-box"
-            label="Search"
-            variant="outlined"
-            style={{ margin: '10px 0' }}
-            theme={theme}
-            onChange={onFilterTextBoxChanged}
-          /> */}
           <div className={classNameTheme} style={gridStyle}>
             <AgGridReact
               ref={gridRef}
@@ -130,8 +113,6 @@ const TablePackage: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: 400,
               }}
-              //   onGridSizeChanged={onFilterTextBoxChanged}
-              //   onFilterChanged={onFilterTextBoxChanged}
               rowData={packages}
               animateRows
               columnDefs={columnDefs}
@@ -145,7 +126,7 @@ const TablePackage: React.FC = () => {
         onClose={handleCloseModal}
         title="Package View"
       >
-        <UpdatePackageForm onClose={handleCloseModal} data={selectPackages} />
+        <PackageForm onClose={handleCloseModal} data={selectPackages} />
       </ModalComponent>
     </div>
   )

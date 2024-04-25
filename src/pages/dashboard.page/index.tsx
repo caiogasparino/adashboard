@@ -1,8 +1,9 @@
 import { Box } from '@mui/material'
-import React, { Fragment } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { Fragment, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { Sidebar } from '../../components'
+import ServiceForm from '../../components/forms/service-forms'
+import ModalComponent from '../../components/modal'
 import TableService from '../../components/table/table-service'
 import { TEXT } from './constants'
 import {
@@ -14,8 +15,13 @@ import {
 } from './styles'
 
 const DashScreen: React.FC = () => {
-  const navigate = useNavigate()
   const theme = useTheme()
+
+  const [openModal, setOpenModal] = useState(false)
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   return (
     <Fragment>
@@ -29,7 +35,7 @@ const DashScreen: React.FC = () => {
                 theme={theme}
                 variant="contained"
                 sx={{ width: '180px' }}
-                onClick={() => navigate('/service/create')}
+                onClick={() => setOpenModal(true)}
               >
                 {TEXT.BUTTON}
               </ButtonCustom>
@@ -38,6 +44,9 @@ const DashScreen: React.FC = () => {
           <TableService />
         </Content>
       </Container>
+      <ModalComponent open={openModal} onClose={handleCloseModal}>
+        <ServiceForm />
+      </ModalComponent>
     </Fragment>
   )
 }

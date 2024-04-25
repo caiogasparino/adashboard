@@ -1,7 +1,7 @@
 import Delete from '@mui/icons-material/Delete'
-import { Checkbox, FormControl, Grid, IconButton } from '@mui/material'
-import React, { useState } from 'react'
-import { colors } from '../../../design/colors'
+import { Checkbox, Grid, IconButton } from '@mui/material'
+import React, { Fragment, useState } from 'react'
+import { useTheme } from 'styled-components'
 import { TEXT } from './constants'
 import { ButtonCustom, Container, Input, Item, Text, Title } from './styles'
 
@@ -12,6 +12,7 @@ interface Variable {
 }
 
 const UpdateServiceForm: React.FC = () => {
+  const theme = useTheme()
   const [serviceName, setServiceName] = useState('')
   const [hasDatabase, setHasDatabase] = useState(false)
   const [hasApi, setHasApi] = useState(false)
@@ -39,29 +40,31 @@ const UpdateServiceForm: React.FC = () => {
     setVariables(newVariables)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
     // Handle form submission here
     console.log({ serviceName, hasDatabase, hasApi, variables })
   }
 
   return (
-    <FormControl
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{ height: '70vh', overflow: 'auto' }}
-    >
-      <Container container sx={{ mx: 'auto', paddingTop: 2 }}>
-        <Item item xs={12}>
+    <Fragment>
+      <Grid item xs={12} paddingLeft={5}>
+        <Title>{TEXT.TITLE}</Title>
+      </Grid>
+
+      <Container theme={theme} container>
+        <Item theme={theme} item xs={12}>
           <Input
+            theme={theme}
             label={TEXT.SERVICENAME}
             value={serviceName}
             required
-            onChange={(e) => setServiceName(e.target.value)}
+            onChange={e => setServiceName(e.target.value)}
             sx={{ width: '90%' }}
           />
         </Item>
         <Item
+          theme={theme}
           item
           xs={6}
           justifyContent={'space-between'}
@@ -69,17 +72,17 @@ const UpdateServiceForm: React.FC = () => {
           padding={2}
           alignItems={'center'}
         >
-          <Text>{TEXT.DATABASEACCESS}</Text>
+          <Text color={theme.COLORS.gray}>{TEXT.DATABASEACCESS}</Text>
           <Checkbox
             checked={hasDatabase}
-            style={{ color: colors.gray }}
-            onChange={(e) => setHasDatabase(e.target.checked)}
+            style={{ color: theme.COLORS.gray }}
+            onChange={e => setHasDatabase(e.target.checked)}
           />
-          <Text>{TEXT.APIPUBLIC}</Text>
+          <Text color={theme.COLORS.gray}>{TEXT.APIPUBLIC}</Text>
           <Checkbox
             checked={hasApi}
-            style={{ color: colors.gray }}
-            onChange={(e) => setHasApi(e.target.checked)}
+            style={{ color: theme.COLORS.gray }}
+            onChange={e => setHasApi(e.target.checked)}
           />
         </Item>
 
@@ -89,6 +92,7 @@ const UpdateServiceForm: React.FC = () => {
 
         {variables.map((variable, index) => (
           <Item
+            theme={theme}
             container
             justifyContent={'space-between'}
             alignItems={'center'}
@@ -96,46 +100,50 @@ const UpdateServiceForm: React.FC = () => {
             paddingTop={1}
             paddingBottom={1}
           >
-            <Item item xs={3.5}>
+            <Item theme={theme} item xs={3.5}>
               <Input
+                theme={theme}
                 label={TEXT.VARIABLENAME}
                 value={variable.name}
-                onChange={(e) =>
+                onChange={e =>
                   handleVariableChange(index, 'name', e.target.value)
                 }
                 fullWidth
               />
             </Item>
-            <Item item xs={3.5}>
+            <Item theme={theme} item xs={3.5}>
               <Input
+                theme={theme}
                 label={TEXT.PRODUCTIONVALUE}
                 value={variable.aprodvalue}
-                onChange={(e) =>
+                onChange={e =>
                   handleVariableChange(index, 'aprodvalue', e.target.value)
                 }
                 fullWidth
               />
             </Item>
-            <Item item xs={3.5}>
+            <Item theme={theme} item xs={3.5}>
               <Input
+                theme={theme}
                 label={TEXT.BETAVALUE}
                 value={variable.abetavalue}
-                onChange={(e) =>
+                onChange={e =>
                   handleVariableChange(index, 'abetavalue', e.target.value)
                 }
                 fullWidth
               />
             </Item>
-            <Item item xs={1}>
+            <Item theme={theme} item xs={1}>
               {variables.length > 1 && (
                 <IconButton onClick={() => handleDeleteVariable(index)}>
-                  <Delete />
+                  <Delete sx={{ color: theme.COLORS.gray }} />
                 </IconButton>
               )}
             </Item>
           </Item>
         ))}
         <Item
+          theme={theme}
           item
           xs={12}
           justifyContent={'flex-end'}
@@ -145,6 +153,7 @@ const UpdateServiceForm: React.FC = () => {
           alignItems={'center'}
         >
           <ButtonCustom
+            theme={theme}
             sx={{ marginRight: 2, width: '180px' }}
             variant="contained"
             onClick={handleAddVariable}
@@ -152,15 +161,16 @@ const UpdateServiceForm: React.FC = () => {
             {TEXT.ADDVARIABLE}
           </ButtonCustom>
           <ButtonCustom
+            theme={theme}
             sx={{ width: '180px' }}
             variant="contained"
-            type="submit"
+            onClick={handleSubmit}
           >
             {TEXT.SAVE}
           </ButtonCustom>
         </Item>
       </Container>
-    </FormControl>
+    </Fragment>
   )
 }
 

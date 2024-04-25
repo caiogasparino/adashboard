@@ -1,4 +1,4 @@
-import { Button, Grid } from '@mui/material'
+import { Button, Grid, TextField } from '@mui/material'
 import styled from 'styled-components'
 
 interface TextProps {
@@ -7,7 +7,7 @@ interface TextProps {
 }
 
 export const Container = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.colors.white,
+  backgroundColor: theme.COLORS.backgroundColor,
 }))
 
 export const Item = styled(Grid)(({ theme }) => ({
@@ -16,77 +16,102 @@ export const Item = styled(Grid)(({ theme }) => ({
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   '& .MuiFormControlLabel-root, & .MuiFormLabel-root': {
-    color: theme.colors.gray,
+    color: theme.COLORS.gray,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
   },
 }))
 
-export const Input = styled.input`
-  width: 100%;
-  height: 40px;
-  border: 1px solid ${(props) => props.theme.colors.lightGray};
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  margin-left: -8px;
-  padding-left: 20px;
-  font-family: 'Montserrat';
-  font-size: 16px;
-  font-weight: 600;
-  outline: none;
-  color: ${(props) => props.theme.colors.primary};
-`
+export const Input = styled(TextField)(({ theme }) => ({
+  '& .MuiInputBase-root': {
+    borderRadius: 8,
+    height: 45,
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: theme.COLORS.gray,
+    },
+    '&:hover fieldset': {
+      borderColor: theme.COLORS.background,
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: theme.COLORS.background,
+    },
+  },
+  '& .MuiInputBase-input': {
+    color: theme.COLORS.background,
+    fontFamily: 'Montserrat',
+    fontSize: 14,
+    borderRadius: 8,
+  },
+
+  '& .MuiInputLabel-outlined': {
+    color: theme.COLORS.gray,
+    lineHeight: 1,
+    fontFamily: 'Montserrat',
+    fontSize: 14,
+    fontWeight: 500,
+  },
+
+  '& .MuiInputLabel-outlined.Mui-focused': {
+    color: theme.COLORS.background,
+    fontFamily: 'Montserrat',
+    fontSize: 14,
+    fontWeight: 500,
+  },
+}))
 
 export const ButtonCustom = styled(Button)(({ theme }) => ({
   '&.MuiButton-root': {
     borderRadius: 8,
-    backgroundColor: theme.colors.primary,
-    color: theme.colors.white,
+    backgroundColor: theme.COLORS.background,
+    color: theme.COLORS.text,
     fontFamily: 'Montserrat',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
     '&:hover': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
     '&.Mui-disabled': {
-      backgroundColor: theme.colors.gray,
-      color: theme.colors.white,
+      backgroundColor: theme.COLORS.gray,
+      color: theme.COLORS.text,
     },
   },
 }))
 
 export const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.red};
-  width: 100%;
-  text-align: center;
+  color: ${props => props.theme.COLORS.secondary};
+  width: 20%;
+
   @media screen and (max-width: 768px) {
-    font-size: 16px;
+    width: auto;
   }
 `
 
 export const Text = styled.span<TextProps>`
-  color: ${(props) => props.colorText};
+  color: ${props => props.colorText};
   font-weight: bold;
   font-family: 'Montserrat';
-  font-size: ${(props) => props.fontSize || 12}px;
+  font-size: ${props => props.fontSize || 12}px;
 `
 
 export const TextUrl = styled.span<TextProps>`
-  color: ${(props) => props.colorText};
+  color: ${props => props.colorText};
   font-weight: 400;
   font-family: 'Montserrat';
-  font-size: ${(props) => props.fontSize || 12}px;
+  font-size: ${props => props.fontSize || 12}px;
 `
 
 export const TextRunPackages = styled.span<TextProps>`
-  margin-left: 5%;
-  color: ${(props) => props.colorText};
+  margin-left: 85px;
+  color: ${props => props.colorText};
   font-weight: bold;
   font-family: 'Montserrat';
-  font-size: ${(props) => props.fontSize || 12}px;
+  font-size: ${props => props.fontSize || 12}px;
+
   @media screen and (max-width: 768px) {
     margin-left: 0;
     text-align: center;

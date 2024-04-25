@@ -1,5 +1,5 @@
 export const TEXT = {
-  TITLE: 'PACKAGES',
+  TITLE: 'Packages',
   CREATEPACKAGE: 'Create Package',
   BUTTON: 'ADD PACKAGE',
 }

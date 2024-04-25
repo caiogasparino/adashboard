@@ -36,6 +36,7 @@ export const colors = {
 export const COLORS_LIGHT = {
   background: '#F7F5F5',
   backgroundColor: '#101621',
+  input: '#182230',
   text: '#101621',
   primary: '#3A20D9',
   secondary: '#D83674',
@@ -48,10 +49,12 @@ export const COLORS_LIGHT = {
   overlay: 'rgba(255, 255, 255, 0.8)',
   redRgbaLight: 'rgba(216, 54, 81, 0.212)',
   lightGray: '#D9D9D9',
+  grayMaxLight: '#e6e6e6',
 }
 
 export const COLORS_DARK = {
   background: '#182230',
+  input: '#e6e6e6',
   backgroundColor: '#FFFFFF',
   text: '#FFFFFF',
   primary: '#3A20D9',
@@ -65,4 +68,5 @@ export const COLORS_DARK = {
   overlay: 'rgba(0, 0, 0, 0.8)',
   redRgbaLight: 'rgba(216, 54, 81, 0.212)',
   lightGray: '#D9D9D9',
+  grayMaxLight: '#e6e6e6',
 }

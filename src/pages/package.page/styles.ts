@@ -5,10 +5,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   height: 100vh;
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-  }
 `
 
 export const Content = styled.div`
@@ -18,7 +14,7 @@ export const Content = styled.div`
   justify-content: flex-start;
   padding: 40px;
   width: 100%;
-  background: ${(props) => props.theme.COLORS.backgroundColor};
+  background: ${props => props.theme.COLORS.input};
   @media screen and (max-width: 768px) {
     height: auto;
   }
@@ -35,7 +31,7 @@ export const ContentHeader = styled.div`
 
 export const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.COLORS.secondary};
+  color: ${props => props.theme.COLORS.secondary};
   width: 10%;
   @media screen and (max-width: 768px) {
     font-size: 20px;
@@ -63,11 +59,11 @@ export const ButtonCustom = styled(Button)(({ theme }) => ({
     backgroundColor: theme.COLORS.background,
     color: theme.COLORS.text,
     fontFamily: 'Montserrat',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
     '&:hover': {
       backgroundColor: theme.COLORS.gray,
-      color: theme.COLORS.background,
+      color: theme.COLORS.text,
     },
     '&.Mui-disabled': {
       backgroundColor: theme.COLORS.gray,

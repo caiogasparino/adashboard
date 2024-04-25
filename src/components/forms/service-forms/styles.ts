@@ -1,8 +1,11 @@
 import { Button, Grid, TextField } from '@mui/material'
 import styled from 'styled-components'
+import { colors } from '../../../design/colors'
 
 export const Container = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.COLORS.background,
+  paddingTop: 20,
+  paddingLeft: 40,
+  backgroundColor: theme.COLORS.backgroundColor,
 }))
 
 export const Item = styled(Grid)(({ theme }) => ({
@@ -28,14 +31,14 @@ export const Input = styled(TextField)(({ theme }) => ({
       borderColor: theme.COLORS.gray,
     },
     '&:hover fieldset': {
-      borderColor: theme.COLORS.text,
+      borderColor: theme.COLORS.background,
     },
     '&.Mui-focused fieldset': {
-      borderColor: theme.COLORS.text,
+      borderColor: theme.COLORS.background,
     },
   },
   '& .MuiInputBase-input': {
-    color: theme.COLORS.text,
+    color: theme.COLORS.background,
     fontFamily: 'Montserrat',
     fontSize: 14,
     borderRadius: 8,
@@ -49,7 +52,7 @@ export const Input = styled(TextField)(({ theme }) => ({
   },
 
   '& .MuiInputLabel-outlined.Mui-focused': {
-    color: theme.COLORS.text,
+    color: theme.COLORS.background,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
@@ -59,25 +62,26 @@ export const Input = styled(TextField)(({ theme }) => ({
 export const ButtonCustom = styled(Button)(({ theme }) => ({
   '&.MuiButton-root': {
     borderRadius: 8,
-    backgroundColor: theme.COLORS.text,
-    color: theme.COLORS.background,
+    backgroundColor: theme.COLORS.background,
+    color: theme.COLORS.backgroundColor,
     fontFamily: 'Montserrat',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
     '&:hover': {
       backgroundColor: theme.COLORS.secondary,
-      color: theme.COLORS.background,
+      color: colors.white,
     },
     '&.Mui-disabled': {
-      backgroundColor: theme.COLORS.gray,
-      color: theme.COLORS.background,
+      backgroundColor: theme.COLORS.lightGray,
+      color: theme.COLORS.text,
     },
   },
 }))
 
 export const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.COLORS.secondary};
+  font-family: 'Montserrat';
+  color: ${props => props.theme.COLORS.secondary};
   width: 20%;
   @media screen and (max-width: 768px) {
     font-size: 20px;

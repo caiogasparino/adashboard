@@ -7,37 +7,32 @@ import { Box, Button } from '@mui/material'
 import * as React from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
-import { Services } from '../../../@types/services'
+import { Service } from '../../../@types/services'
 import { servicesmock } from '../../../pages/dashboard.page/mock'
-import {
-  useDeleteService,
-  useGetServices,
-} from '../../../service/dashboard/dashboard.services'
+
+import { useDeleteService } from '../../../service/services/delete-services.service'
+import { useGetServices } from '../../../service/services/get-services.service'
 import { useServiceStore } from '../../../store/services.store'
 import { useThemeStore } from '../../../store/theme.store'
+import ServiceForm from '../../forms/service-forms'
 import Loading from '../../loading'
 import ModalComponent from '../../modal'
-import {
-  actionsRenderer,
-  checkboxRendererApi,
-  checkboxRendererBase,
-  renderVariables,
-  statusRendererBeta,
-  statusRendererProd,
-} from './constants'
+import { TEXT_MODAL, columnDefs, stylesSx } from './constants'
 import { Text } from './styles'
+
 const TableService: React.FC = () => {
   const gridRef = useRef<AgGridReact>(null)
   const theme = useTheme()
   const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
-  const gridStyle = useMemo(() => ({ height: '400px', width: '100%' }), [])
+  const gridStyle = useMemo(() => ({ height: '80vh', width: '100%' }), [])
   const { data } = useGetServices()
   const { setServices } = useServiceStore()
   const { isPending, deleteService } = useDeleteService()
+  const [type, setType] = useState('edit | delete')
   const [openModal, setOpenModal] = useState(false)
-  const [serviceSelectRow, setServiceSelectRow] = useState<Services>(
-    {} as Services,
+  const [serviceSelectRow, setServiceSelectRow] = useState<Service>(
+    {} as Service,
   )
 
   const classNameTheme =
@@ -53,8 +48,14 @@ const TableService: React.FC = () => {
     }
   }, [])
 
-  const handleOpenModal = (params: any) => {
+  const handleOpenModalDelete = (params: any) => {
     setServiceSelectRow(params)
+    setType('delete')
+    setOpenModal(true)
+  }
+  const handleOpenModalUser = (params: any) => {
+    setServiceSelectRow(params)
+    setType('edit')
     setOpenModal(true)
   }
   const handleDeleteService = () => {
@@ -65,80 +66,48 @@ const TableService: React.FC = () => {
     setOpenModal(false)
   }
 
-  //   const onFilterTextBoxChanged = useCallback(() => {
-  //     if (gridRef.current) {
-  //       gridRef.current.api.setGridOption(
-  //         'quickFilterText',
-  //         (document.getElementById('filter-text-box') as HTMLInputElement).value,
-  //       )
-  //     }
-  //   }, [gridRef.current])
-
-  const columnDefs = [
-    {
-      headerName: 'Name',
-      field: 'name',
-      cellStyle: { color: theme.COLORS.gray, fontWeight: 600 },
-    },
-    {
-      headerName: 'AProd',
-      field: 'aproducao',
-      minWidth: 220,
-      cellRenderer: statusRendererProd,
-    },
-    {
-      headerName: 'ABeta',
-      field: 'abeta',
-      minWidth: 220,
-      cellRenderer: statusRendererBeta,
-    },
-    {
-      headerName: 'Api',
-      field: 'api',
-      cellRenderer: checkboxRendererApi,
-    },
-    {
-      headerName: 'Database',
-      field: 'database',
-      cellRenderer: checkboxRendererBase,
-    },
-    {
-      headerName: 'Variables',
-      field: 'variables',
-      cellRenderer: renderVariables,
-    },
-    {
-      headerName: 'Actions',
-      field: 'actions',
-      cellRenderer: actionsRenderer,
-      cellRenderParams: { handleOpenModal, handleDeleteService },
-    },
-  ]
+  const hasEditOrDelete = () => {
+    if (type === 'edit') {
+      return (
+        <React.Fragment>
+          <ServiceForm data={serviceSelectRow} type={type} />
+        </React.Fragment>
+      )
+    } else if (type === 'delete') {
+      return (
+        <React.Fragment>
+          <Box sx={stylesSx().modal}>
+            <Text color={theme.COLORS.gray}>{TEXT_MODAL}</Text>
+            {isPending && <Loading spinner isLoading={isPending} />}
+            {!isPending && (
+              <Button
+                variant="contained"
+                onClick={handleDeleteService}
+                sx={stylesSx().button}
+              >
+                Save
+              </Button>
+            )}
+          </Box>
+        </React.Fragment>
+      )
+    }
+  }
 
   return (
     <div style={containerStyle}>
       <div className="example-wrapper">
         <div className="example-header">
-          {/* <Input
-            id="filter-text-box"
-            theme={theme}
-            label="Search"
-            variant="outlined"
-            style={{ margin: '10px 0' }}
-            onChange={onFilterTextBoxChanged}
-          /> */}
           <div className={classNameTheme} style={gridStyle}>
             <AgGridReact
               ref={gridRef}
-              rowStyle={{
-                fontFamily: 'Montserrat',
-                fontSize: '14px',
-                fontWeight: 400,
-              }}
-              //   onGridSizeChanged={onFilterTextBoxChanged}
-              //   onFilterChanged={onFilterTextBoxChanged}
+              rowStyle={stylesSx().row}
               rowData={data?.services || servicesmock?.services}
-              columnDefs={columnDefs}
+              columnDefs={columnDefs({
+                handleOpenModalDelete,
+                handleOpenModalUser,
+                handleDeleteService,
+              })}
               defaultColDef={defaultColDef}
             />
           </div>
@@ -147,32 +116,9 @@ const TableService: React.FC = () => {
       <ModalComponent
         open={openModal}
         onClose={handleCloseModal}
-        title="Service Delete"
+        title={type === 'edit' ? '' : 'Delete Service'}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Text>Deseja realmente excluir o servico?</Text>
-          {isPending && <Loading spinner isLoading={isPending} />}
-          {!isPending && (
-            <Button
-              variant="contained"
-              onClick={handleDeleteService}
-              sx={{
-                mt: 4,
-                width: '30%',
-                bgcolor: theme.COLORS.background,
-                ':hover': { bgcolor: theme.COLORS.gray },
-              }}
-            >
-              Save
-            </Button>
-          )}
-        </Box>
+        {hasEditOrDelete()}
       </ModalComponent>
     </div>
   )

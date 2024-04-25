@@ -6,20 +6,13 @@ interface ButtonLinkProps {
   isMinimized?: boolean
 }
 
-const media = {
-  mobile: '@media(max-width: 968px)',
-}
-
 export const Container = styled.div<ButtonLinkProps>`
-  width: ${(props) => (props.isMinimized ? '60px' : '200px')};
+  width: ${props => (props.isMinimized ? '60px' : '280px')};
   padding: 24px 0;
   max-width: 350px;
-
+  z-index: 9999;
   border-right: 1px solid ${({ theme }) => theme.COLORS.border};
   background: ${({ theme }) => theme.COLORS.backgroundColor};
-  ${media.mobile} {
-    display: none;
-  }
 `
 
 export const Content = styled.div`
@@ -31,9 +24,6 @@ export const Content = styled.div`
   width: 100%;
   max-width: 500px;
   background: ${({ theme }) => theme.COLORS.backgroundColor};
-  ${media.mobile} {
-    display: none;
-  }
 `
 export const Menu = styled.div`
   display: flex;
@@ -43,9 +33,6 @@ export const Menu = styled.div`
   width: 100%;
   max-width: 500px;
   background: ${({ theme }) => theme.COLORS.backgroundColor};
-  ${media.mobile} {
-    display: none;
-  }
 `
 
 export const MenuItem = styled.div`
@@ -65,9 +52,6 @@ export const Footer = styled.div`
   width: 100%;
   max-width: 500px;
   background: ${({ theme }) => theme.COLORS.backgroundColor};
-  ${media.mobile} {
-    display: none;
-  }
 `
 
 export const Logo = styled.img`
@@ -82,7 +66,7 @@ export const ButtonCustom = styled(Button)(({ theme }) => ({
     backgroundColor: theme.COLORS.background,
     color: theme.COLORS.text,
     fontFamily: 'Montserrat',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
     '&:hover': {
       backgroundColor: theme.COLORS.gray,
@@ -105,29 +89,29 @@ export const ButtonLink = styled.button<ButtonLinkProps>`
   font-weight: 600;
   width: 90%;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 12px 24px;
-  color: ${(props) =>
+  color: ${props =>
     props.active === 'true'
       ? props.theme.COLORS.secondary
       : props.theme.COLORS.text};
   margin: 12px 0;
-  background: ${(props) =>
+  background: ${props =>
     props.active
       ? props.theme.COLORS.redRgbaLight
       : props.theme.COLORS.background};
   border-right: 12px solid
-    ${(props) =>
+    ${props =>
       props.active === 'true'
         ? props.theme.COLORS.secondary
         : props.theme.COLORS.background};
   cursor: pointer;
   &:hover {
-    background: ${(props) =>
+    background: ${props =>
       props.active === 'true'
         ? props.theme.COLORS.redRgbaLight
         : props.theme.COLORS.overlay};
-    color: ${(props) =>
+    color: ${props =>
       props.active === 'true'
         ? props.theme.COLORS.secondary
         : props.theme.COLORS.text};

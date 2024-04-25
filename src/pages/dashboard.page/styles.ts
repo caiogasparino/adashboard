@@ -5,10 +5,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   height: 100vh;
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-  }
 `
 
 export const Content = styled.div`
@@ -18,7 +14,7 @@ export const Content = styled.div`
   justify-content: flex-start;
   padding: 40px;
   width: 100%;
-  background: ${({ theme }) => theme.COLORS.backgroundColor};
+  background: ${({ theme }) => theme.COLORS.input};
   @media screen and (max-width: 768px) {
     height: auto;
   }
@@ -63,7 +59,7 @@ export const ButtonCustom = styled(Button)(({ theme }) => ({
     backgroundColor: theme.COLORS.background,
     color: theme.COLORS.text,
     fontFamily: 'Montserrat',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
     '&:hover': {
       backgroundColor: theme.COLORS.gray,

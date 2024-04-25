@@ -1,4 +1,5 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import TerminalIcon from '@mui/icons-material/Terminal'
 import { Box, Grid, IconButton } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -16,25 +17,20 @@ import {
 } from './styles'
 
 interface PackageProps {
-  onClose: () => void
-  data: Package
+  onClose?: () => void
+  data?: Package
 }
 
-const UpdatePackageForm: React.FC<PackageProps> = ({ data }) => {
+const PackageForm: React.FC<PackageProps> = ({ data }) => {
   const theme = useTheme()
-  const [packageName, setPackageName] = useState(data.name || '')
+  const [packageName, setPackageName] = useState(data?.name || '')
   const [sizefonts, setFontSize] = useState(window.innerWidth <= 700 ? 10 : 14)
 
-  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
-    toast.success('Pacote atualizado com sucesso!', {
-      duration: 5000,
-    })
-    console.log('EVENT', event)
-  }
+  const cmdPackageName = `${TEXT.LABEL_NPM_PACKAGE}${TEXT.LABEL_URL_BITBUCKET}${packageName}`
 
   useEffect(() => {
     const handleResize = () => {
-      setFontSize(window.innerWidth <= 700 ? 10 : 14)
+      setFontSize(window.innerWidth <= 700 ? 11 : 14)
     }
 
     window.addEventListener('resize', handleResize)
@@ -44,13 +40,31 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ data }) => {
     }
   }, [])
 
+  function containsSpace(name: string): boolean {
+    return name.includes(' ')
+  }
+
+  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
+    const hasSpace = containsSpace(packageName)
+    if (hasSpace) {
+      toast.error('Nome do pacote não pode conter espaços!', {
+        duration: 5000,
+      })
+    }
+    if (!hasSpace) {
+      toast.success('Pacote criado com sucesso!')
+      event.preventDefault()
+      console.log({})
+    }
+  }
+
   const copyLinkToClipboard = (link: string) => {
     navigator.clipboard.writeText(link)
     toast.success('Link copiado para a área de transferência!')
   }
 
   return (
-    <Container container sx={stylesSx().container}>
+    <Container container theme={theme} sx={stylesSx().container}>
       <Box sx={stylesSx().box}>
         <Grid container sx={{ width: '100%' }}>
           <Box sx={stylesSx().boxInput}>
@@ -77,12 +91,13 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ data }) => {
       </Box>
       <Box sx={stylesSx().boxInputPackage}>
         <Grid container sx={{ width: '100%' }}>
-          <Box sx={stylesSx().boxInputPackageLabel}>
-            <Text colorText={theme.COLORS.text} fontSize={sizefonts}>
-              {TEXT.LABEL_RUN_PACKAGE}
-            </Text>
-          </Box>
           <Box sx={stylesSx().boxInputPackageCmd}>
+            <IconButton
+              sx={{ color: theme.COLORS.background }}
+              onClick={() => {}}
+            >
+              <TerminalIcon sx={{ color: theme.COLORS.background }} />
+            </IconButton>
             <TextRunPackages
               fontSize={sizefonts}
               colorText={theme.COLORS.background}
@@ -99,8 +114,9 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ data }) => {
               </Text>
             </TextRunPackages>
             <IconButton
+              sx={{ color: theme.COLORS.background }}
               onClick={() => {
-                copyLinkToClipboard(packageName)
+                copyLinkToClipboard(cmdPackageName)
               }}
             >
               <ContentCopyIcon sx={{ color: theme.COLORS.background }} />
@@ -122,4 +138,4 @@ const UpdatePackageForm: React.FC<PackageProps> = ({ data }) => {
   )
 }
 
-export default UpdatePackageForm
+export default PackageForm

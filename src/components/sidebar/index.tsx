@@ -1,5 +1,5 @@
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import { IconButton } from '@mui/material'
 import React, { useState } from 'react'
@@ -34,9 +34,9 @@ export const Sidebar: React.FC = (): JSX.Element => {
   const [isMinimized, setIsMinimized] = useState(false)
 
   const ICON = isMinimized ? (
-    <ArrowForwardIosIcon sx={{ color: COLORS.background }} />
+    <ArrowCircleRightIcon sx={{ color: COLORS.background }} />
   ) : (
-    <ArrowBackIosIcon sx={{ color: COLORS.background }} />
+    <ArrowCircleLeftIcon sx={{ color: COLORS.background }} />
   )
 
   const toggleTheme = () => {

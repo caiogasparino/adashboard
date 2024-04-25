@@ -12,7 +12,7 @@ interface ModalProps {
 
 const Title = styled.h1`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.red};
+  color: ${props => props.theme.COLORS.secondary};
   font-family: 'Montserrat';
   width: 100%;
   @media screen and (max-width: 768px) {
@@ -33,6 +33,9 @@ const ModalComponent: React.FC<ModalProps> = ({
       onClose={onClose}
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
+      sx={{
+        overflowY: 'auto',
+      }}
     >
       <Box
         sx={{
@@ -40,8 +43,8 @@ const ModalComponent: React.FC<ModalProps> = ({
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          bgcolor: 'white',
-          border: `1px solid ${theme.COLORS.gray}`,
+          bgcolor: theme.COLORS.backgroundColor,
+          border: `1px solid ${theme.COLORS.input}`,
           borderRadius: '8px',
           boxShadow: 24,
           p: 4,
@@ -60,8 +63,8 @@ const ModalComponent: React.FC<ModalProps> = ({
               onClick={onClose}
               sx={{
                 mr: 1,
-                bgcolor: colors.primary,
-                ':hover': { bgcolor: colors.gray },
+                bgcolor: theme.COLORS.background,
+                ':hover': { bgcolor: theme.COLORS.gray },
               }}
             >
               Close
@@ -70,7 +73,7 @@ const ModalComponent: React.FC<ModalProps> = ({
               variant="contained"
               onClick={onClose}
               sx={{
-                bgcolor: colors.primary,
+                bgcolor: theme.COLORS.background,
                 ':hover': { bgcolor: colors.gray },
               }}
             >

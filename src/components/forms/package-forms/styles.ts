@@ -1,9 +1,12 @@
 import { Button, Grid, TextField } from '@mui/material'
 import styled from 'styled-components'
 
+interface TextProps {
+  colorText?: string
+  fontSize?: number
+}
+
 export const Container = styled(Grid)(({ theme }) => ({
-  paddingTop: 20,
-  paddingLeft: 40,
   backgroundColor: theme.COLORS.backgroundColor,
 }))
 
@@ -13,17 +16,39 @@ export const Item = styled(Grid)(({ theme }) => ({
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   '& .MuiFormControlLabel-root, & .MuiFormLabel-root': {
-    color: theme.COLORS.muted,
+    color: theme.COLORS.gray,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
   },
 }))
 
+// export const Input = styled.input`
+//   width: 100%;
+//   height: 40px;
+//   border: none;
+//   background: ${props => props.theme.COLORS.gray};
+//   color: ${props => props.theme.COLORS.backgroundColor};
+//   border-top-right-radius: 8px;
+//   border-bottom-right-radius: 8px;
+//   margin-left: -8px;
+//   padding-left: 20px;
+//   font-family: 'Montserrat';
+//   font-size: 16px;
+//   font-weight: 600;
+//   outline: none;
+
+//   @media screen and (max-width: 768px) {
+//     font-size: 14px;
+//     height: 32px;
+//     padding-left: 16px;
+//   }
+// `
+
 export const Input = styled(TextField)(({ theme }) => ({
-  width: '100%',
   '& .MuiInputBase-root': {
     borderRadius: 8,
+    height: 45,
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
@@ -45,6 +70,7 @@ export const Input = styled(TextField)(({ theme }) => ({
 
   '& .MuiInputLabel-outlined': {
     color: theme.COLORS.gray,
+    lineHeight: 1,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
@@ -79,7 +105,6 @@ export const ButtonCustom = styled(Button)(({ theme }) => ({
 
 export const Title = styled.h1`
   font-size: 20px;
-  font-family: 'Montserrat';
   color: ${props => props.theme.COLORS.secondary};
   width: 20%;
 
@@ -88,9 +113,28 @@ export const Title = styled.h1`
   }
 `
 
-export const Text = styled.span`
-  color: ${({ theme }) => theme.COLORS.gray};
+export const Text = styled.span<TextProps>`
+  color: ${props => props.colorText};
   font-weight: bold;
   font-family: 'Montserrat';
-  font-size: 12px;
+  font-size: ${props => props.fontSize || 12}px;
+`
+
+export const TextUrl = styled.span<TextProps>`
+  color: ${props => props.colorText};
+  font-weight: 400;
+  font-family: 'Montserrat';
+  font-size: ${props => props.fontSize || 12}px;
+`
+
+export const TextRunPackages = styled.span<TextProps>`
+  color: ${props => props.colorText};
+  font-weight: bold;
+  font-family: 'Montserrat';
+  font-size: ${props => props.fontSize || 12}px;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+    text-align: center;
+  }
 `
