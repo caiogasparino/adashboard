@@ -32,7 +32,8 @@ export const useCreatePackage = () => {
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'
-      toast.error(errorMessage)
+      //   toast.error(errorMessage)
+      console.error('Error creating package:', errorMessage)
     },
   })
 

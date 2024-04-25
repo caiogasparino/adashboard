@@ -13,19 +13,23 @@ export function setDefaultToken(token: string) {
 }
 
 axiosInstance.interceptors.request.use(
-  config => {
-    return config
-  },
-  async error => {
-    return Promise.reject(error)
-  },
+  config => config,
+  error => Promise.reject(error),
 )
 
 axiosInstance.interceptors.response.use(
-  response => {
-    return response
-  },
-  async error => {
+  response => response,
+  error => {
+    if (error.response) {
+      const { status } = error.response
+      if (status === 401) {
+        window.location.href = '/login'
+      }
+    } else if (error.request) {
+      console.log('Conexão falhou!')
+    } else {
+      console.log('Error', error.message)
+    }
     return Promise.reject(error)
   },
 )

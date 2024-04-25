@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetPermission = () => {
@@ -14,8 +13,8 @@ export const useGetPermission = () => {
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {
         const errorMessage = error?.response?.data?.error || 'An error occurred'
-        toast.error(errorMessage)
-        console.error('Error fetching permissions:', error)
+        // toast.error(errorMessage)
+        console.error('Error fetching permissions:', errorMessage)
         throw error
       }
     },

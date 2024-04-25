@@ -10,7 +10,7 @@ export const AuthScreen: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Content>
-        <Logo src={images.LOGO} />
+        <Logo src={images.LOGO} alt="Logo da Aplicação" />
         <h5>DASH - V.0.1</h5>
         <Button onClick={() => getAuth()}>
           <h3>{TEXT.BUTTON}</h3>

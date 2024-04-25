@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import toast from 'react-hot-toast'
 
 export const useGetVars = (serviceName?: string) => {
   const { data, isLoading, isError } = useQuery({
@@ -20,8 +19,8 @@ export const useGetVars = (serviceName?: string) => {
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {
         const errorMessage = error?.response?.data?.error || 'An error occurred'
-        toast.error(errorMessage)
-        console.error('Error getting service variables:', error)
+        // toast.error(errorMessage)
+        console.error('Error getting service variables:', errorMessage)
         throw error
       }
     },
