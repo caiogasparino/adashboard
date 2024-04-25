@@ -17,9 +17,9 @@ const Preload: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (accessToken) {
+      navigate('/dashboard')
       setDefaultToken(accessToken)
       useGetServices()
-      navigate('/dashboard')
     } else {
       navigate('/login')
     }
