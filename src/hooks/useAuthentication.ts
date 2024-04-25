@@ -14,7 +14,7 @@ const useAuthentication = () => {
     responseType: 'token',
     onSuccess: payload => {
       setAccessToken(payload.access_token)
-      navigate('/dashboard')
+      navigate('/preload')
       console.log('Success:', payload)
     },
     onError: error => {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { images } from '../../design/images'
 
 import { useGetPermission } from '../../service/permission/create-permission.service'
+import { useGetServices } from '../../service/services/get-services.service'
 import useOAuthStore from '../../store/oauth.store'
 import { usePermissionStore } from '../../store/permission.store'
 import { setDefaultToken } from '../../utils/libs/axios/client'
@@ -16,7 +17,8 @@ const Preload: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (accessToken) {
-      setDefaultToken(accessToken.toString())
+      setDefaultToken(accessToken)
+      useGetServices(accessToken)
       navigate('/dashboard')
     } else {
       navigate('/login')
