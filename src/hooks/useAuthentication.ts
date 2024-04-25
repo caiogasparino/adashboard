@@ -1,9 +1,7 @@
 import { useOAuth2 } from '@tasoskakour/react-use-oauth2'
 import { useNavigate } from 'react-router-dom'
-import useOAuthStore from '../store/oauth.store'
 
 const useAuthentication = () => {
-  const { setAccessToken } = useOAuthStore()
   const navigate = useNavigate()
 
   const { data, loading, error, getAuth, logout } = useOAuth2({
@@ -13,7 +11,6 @@ const useAuthentication = () => {
     scope: 'account',
     responseType: 'token',
     onSuccess: payload => {
-      setAccessToken(payload.access_token)
       navigate('/preload')
       console.log('Success:', payload)
     },

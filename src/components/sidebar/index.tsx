@@ -49,6 +49,7 @@ export const Sidebar: React.FC = (): JSX.Element => {
     setTimeout(() => {
       logout()
       setAccessToken('')
+      localStorage.removeItem('accessToken')
       setPermissions(initialState)
       navigate('/login')
     }, 2000)

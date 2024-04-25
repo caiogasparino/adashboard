@@ -11,7 +11,6 @@ import { Service } from '../../../@types/services'
 import { servicesmock } from '../../../pages/dashboard.page/mock'
 
 import { useDeleteService } from '../../../service/services/delete-services.service'
-import useOAuthStore from '../../../store/oauth.store'
 import { useServiceStore } from '../../../store/services.store'
 import { useThemeStore } from '../../../store/theme.store'
 import ServiceForm from '../../forms/service-forms'
@@ -22,7 +21,6 @@ import { Text } from './styles'
 
 const TableService: React.FC = () => {
   const gridRef = useRef<AgGridReact>(null)
-  const { accessToken } = useOAuthStore()
   const theme = useTheme()
   const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])

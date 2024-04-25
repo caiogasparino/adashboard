@@ -3,7 +3,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools/build/modern/
 import { StrictMode, Suspense, lazy, useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from 'styled-components'
-import { LoadingProvider } from './context'
+import Loading from './components/loading'
+import { LoadingProvider, useLoading } from './context'
 import { THEME_DARK, THEME_LIGHT } from './design/theme'
 import IndexRoutes from './routes/index.routes'
 import { useThemeStore } from './store/theme.store'
@@ -19,6 +20,7 @@ const ReactQueryDevtoolsProduction = lazy(() =>
 )
 
 function App() {
+  const { isLoading } = useLoading()
   const { theme } = useThemeStore()
   const [showDevtools, setShowDevtools] = useState(false)
 
@@ -34,6 +36,7 @@ function App() {
         <ThemeProvider theme={THEME}>
           <Toaster />
           <LoadingProvider>
+            <Loading spinner={false} isLoading={isLoading} />
             <IndexRoutes />
           </LoadingProvider>
         </ThemeProvider>

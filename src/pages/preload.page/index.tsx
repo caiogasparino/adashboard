@@ -4,21 +4,21 @@ import { images } from '../../design/images'
 
 import { useGetPermission } from '../../service/permission/create-permission.service'
 import { useGetServices } from '../../service/services/get-services.service'
-import useOAuthStore from '../../store/oauth.store'
 import { usePermissionStore } from '../../store/permission.store'
 import { setDefaultToken } from '../../utils/libs/axios/client'
 import { Container, Content, Logo } from './styles'
 
 const Preload: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
-  const { accessToken } = useOAuthStore()
   const { permission, isLoading, isError } = useGetPermission()
   const { setPermissions } = usePermissionStore()
+  const accessToken = localStorage.getItem('accessToken')
+  console.log('🚀 ~ accessToken:', accessToken)
 
   useEffect(() => {
     if (accessToken) {
       setDefaultToken(accessToken)
-      useGetServices(accessToken)
+      useGetServices()
       navigate('/dashboard')
     } else {
       navigate('/login')
