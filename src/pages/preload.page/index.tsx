@@ -5,6 +5,7 @@ import { images } from '../../design/images'
 import { useGetPermission } from '../../service/permission/create-permission.service'
 import useOAuthStore from '../../store/oauth.store'
 import { usePermissionStore } from '../../store/permission.store'
+import { setDefaultToken } from '../../utils/libs/axios/client'
 import { Container, Content, Logo } from './styles'
 
 const Preload: React.FC = (): JSX.Element => {
@@ -21,6 +22,7 @@ const Preload: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (accessToken) {
+      setDefaultToken(accessToken)
       navigate('/dashboard')
     } else {
       navigate('/login')
