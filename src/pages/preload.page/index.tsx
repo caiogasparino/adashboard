@@ -12,7 +12,7 @@ const Preload: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
   const { permission, isLoading, isError } = useGetPermission()
   const { setPermissions } = usePermissionStore()
-  const accessToken = localStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('access_token')
   console.log('🚀 ~ accessToken:', accessToken)
 
   useEffect(() => {
