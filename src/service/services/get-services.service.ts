@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ServicesResponse } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
 
-export const useGetServices = () => {
+export const useGetServices = (accessToken?: string | null) => {
   const { isFetching, error, data, isLoading } = useQuery<
     ServicesResponse,
     Error
@@ -14,6 +14,9 @@ export const useGetServices = () => {
         const response = await axiosClient({
           method: 'get',
           url: '/services',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         })
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {

@@ -92,7 +92,6 @@ export const checkboxRendererBase = (params: any) => {
 export const statusRendererProd = (params: Services | any) => {
   const theme = useTheme()
   const { data } = params
-  console.log('🚀 ~ statusRendererProd ~ theme:', theme)
   const [version, status, ...alerts] = data?.aproducao
 
   const color =
@@ -173,7 +172,6 @@ export const renderVariables = (params: any) => {
 export const actionsRenderer = (params: any) => {
   const theme = useTheme()
   const { data } = params
-  console.log('🚀 ~ actionsRenderer ~ params:', data)
   return (
     <Box sx={stylesSx().icon}>
       <IconButton>

@@ -5,13 +5,14 @@ import { AgGridReact } from 'ag-grid-react'
 
 import { Box, Button } from '@mui/material'
 import * as React from 'react'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { Service } from '../../../@types/services'
 import { servicesmock } from '../../../pages/dashboard.page/mock'
 
 import { useDeleteService } from '../../../service/services/delete-services.service'
 import { useGetServices } from '../../../service/services/get-services.service'
+import useOAuthStore from '../../../store/oauth.store'
 import { useServiceStore } from '../../../store/services.store'
 import { useThemeStore } from '../../../store/theme.store'
 import ServiceForm from '../../forms/service-forms'
@@ -22,11 +23,12 @@ import { Text } from './styles'
 
 const TableService: React.FC = () => {
   const gridRef = useRef<AgGridReact>(null)
+  const { accessToken } = useOAuthStore()
   const theme = useTheme()
   const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
   const gridStyle = useMemo(() => ({ height: '80vh', width: '100%' }), [])
-  const { data } = useGetServices()
+  const { data } = useGetServices(accessToken)
   const { setServices } = useServiceStore()
   const { isPending, deleteService } = useDeleteService()
   const [type, setType] = useState('edit | delete')
@@ -38,7 +40,7 @@ const TableService: React.FC = () => {
   const classNameTheme =
     themeStore === 'dark' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'
 
-  useCallback(() => {
+  useEffect(() => {
     setServices(data?.services || servicesmock?.services)
   }, [data])
 

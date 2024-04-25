@@ -59,8 +59,6 @@ const TablePackage: React.FC = () => {
   const versionRenderer = (params: any) => {
     const { data } = params
     const version = data?.version || ''
-    console.log('🚀 ~ versionRenderer ~ version:', data?.version)
-
     return <Text color={theme.COLORS.secondary}>{version}</Text>
   }
 
