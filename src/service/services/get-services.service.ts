@@ -25,10 +25,8 @@ export const useGetServices = () => {
       }
     },
 
-    refetchInterval: 30000,
+    refetchInterval: 100000,
   })
-
-  console.log('🚀 ~ useGetServices ~ data:', data)
 
   return { isFetching, isLoading, error, data }
 }

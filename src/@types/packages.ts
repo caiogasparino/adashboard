@@ -9,6 +9,6 @@ export interface PackageLink {
   link: string
 }
 
-export interface PackageList {
+export interface PackageResponse {
   packages: Package[]
 }

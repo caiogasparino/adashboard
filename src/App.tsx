@@ -12,7 +12,7 @@ const queryClient = new QueryClient()
 
 const ReactQueryDevtoolsProduction = lazy(() =>
   import('@tanstack/react-query-devtools/build/modern/production.js').then(
-    (d) => ({
+    d => ({
       default: d.ReactQueryDevtools,
     }),
   ),
@@ -25,10 +25,7 @@ function App() {
   const THEME = theme === 'light' ? THEME_LIGHT : THEME_DARK
 
   useEffect(() => {
-    const isLocal = process.env.NODE_ENV === 'development'
-    if (isLocal) {
-      ;(window as any).toggleDevtools = () => setShowDevtools((old) => !old)
-    }
+    ;(window as any).toggleDevtools = () => setShowDevtools(old => !old)
   }, [])
 
   return (

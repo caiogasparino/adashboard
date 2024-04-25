@@ -10,8 +10,6 @@ export const useCreateVars = () => {
     data,
   } = useMutation({
     mutationFn: async (serviceName?: string, variables?: Variable[]) => {
-      console.log('🚀 ~ useCreateVars ~ variables:', variables)
-      console.log('🚀 ~ useCreateVars ~ serviceName:', serviceName)
       return axiosClient({
         method: 'post',
         url: `/service/${serviceName}/variables`,
@@ -27,11 +25,10 @@ export const useCreateVars = () => {
     mutationKey: ['createVars'],
 
     onSuccess: () => {
-      toast.success('Service created successfully!')
+      toast.success('Variable created successfully!')
     },
 
     onError: (error: { response: { data: { error: string } } }) => {
-      console.log('🚀 ~ useCreateService ~ error:', error)
       const errorMessage = error?.response?.data?.error || 'An error occurred'
       toast.error(errorMessage)
     },

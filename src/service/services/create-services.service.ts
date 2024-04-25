@@ -31,7 +31,6 @@ export const useCreateService = () => {
     },
 
     onError: (error: { response: { data: { error: string } } }) => {
-      console.log('🚀 ~ useCreateService ~ error:', error)
       const errorMessage = error?.response?.data?.error || 'An error occurred'
       toast.error(errorMessage)
     },
