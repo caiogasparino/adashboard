@@ -4,8 +4,12 @@ const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 })
 
-export function setDefaultToken(token: string | undefined) {
-  axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`
+export function setDefaultToken(token: string) {
+  if (token) {
+    axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`
+  } else {
+    delete axiosInstance.defaults.headers.common.Authorization
+  }
 }
 
 axiosInstance.interceptors.request.use(
@@ -13,7 +17,7 @@ axiosInstance.interceptors.request.use(
     return config
   },
   async error => {
-    return await Promise.reject(error)
+    return Promise.reject(error)
   },
 )
 
@@ -22,8 +26,8 @@ axiosInstance.interceptors.response.use(
     return response
   },
   async error => {
-    return await Promise.reject(error)
+    return Promise.reject(error)
   },
 )
 
-export { axiosInstance }
+export default axiosInstance

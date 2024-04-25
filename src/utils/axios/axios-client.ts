@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { axiosInstance } from '../libs/axios/client'
+import axiosInstance from '../libs/axios/client'
 
 export type ParamsClientType = AxiosRequestConfig['params']
 
@@ -15,6 +15,10 @@ export async function axiosClient({
   responseType = 'json',
   ...restConfig
 }: AxiosClientProps): Promise<AxiosResponse<any>> {
+  if (!method) {
+    method = 'get'
+  }
+
   const response = await axiosInstance({
     method,
     url,
@@ -22,8 +26,8 @@ export async function axiosClient({
     headers: {
       ...(headers || {}),
       Authorization:
-        headers?.Authorization ||
-        `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}`,
+        `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}` ||
+        headers?.Authorization,
     },
     responseType,
     ...restConfig,
