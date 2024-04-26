@@ -7,7 +7,7 @@ import { Button, Container, Content, Footer, Logo } from './styles'
 
 export const AuthScreen: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
-  const { getAuth, loading, data } = useAuthentication()
+  const { getAuth, data } = useAuthentication()
 
   useEffect(() => {
     if (data?.access_token) {
