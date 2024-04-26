@@ -1,5 +1,8 @@
+import { QueryClient } from '@tanstack/react-query'
 import { useOAuth2 } from '@tasoskakour/react-use-oauth2'
 import { useNavigate } from 'react-router-dom'
+
+const queryClient = new QueryClient()
 
 const useAuthentication = () => {
   const navigate = useNavigate()
@@ -11,6 +14,7 @@ const useAuthentication = () => {
     scope: 'account',
     responseType: 'token',
     onSuccess: payload => {
+      queryClient.setQueryData(['access_token'], payload.access_token)
       navigate('/preload')
       console.log('Success:', payload)
     },

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { images } from '../../design/images'
 
+import { useQuery } from '@tanstack/react-query'
 import { useGetPermission } from '../../service/permission/create-permission.service'
 import { useGetServices } from '../../service/services/get-services.service'
 import { usePermissionStore } from '../../store/permission.store'
@@ -12,8 +13,12 @@ const Preload: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
   const { permission, isLoading, isError } = useGetPermission()
   const { setPermissions } = usePermissionStore()
-  const accessToken = localStorage.getItem('access_token')
-  console.log('🚀 ~ accessToken:', accessToken)
+  const { data: accessToken } = useQuery({
+    queryKey: ['accessToken'],
+    queryFn: () => {
+      return localStorage.getItem('accessToken')
+    },
+  })
 
   useEffect(() => {
     if (accessToken) {
