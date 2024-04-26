@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { Variable } from '../../@types/variables'
 import { axiosClient } from '../../utils/axios/axios-client'
 export const useCreateVars = () => {
+  const accessToken = localStorage.getItem('accessToken')
   const {
     mutate: createVars,
     isPending,
@@ -13,6 +14,9 @@ export const useCreateVars = () => {
       return axiosClient({
         method: 'post',
         url: `/service/${serviceName}/variables`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
         data: {
           variables: variables?.map(variable => ({
             name: variable.name,

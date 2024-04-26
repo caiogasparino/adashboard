@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
 export const useGetVars = (serviceName?: string) => {
+  const accessToken = localStorage.getItem('accessToken')
   const { data, isLoading, isError } = useQuery({
     queryKey: ['getVars', serviceName],
 
@@ -12,7 +13,7 @@ export const useGetVars = (serviceName?: string) => {
           `${process.env.REACT_APP_API_UR}/service/${serviceName}/variables`,
           {
             headers: {
-              Authorization: `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         )

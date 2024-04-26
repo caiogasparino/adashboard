@@ -2,13 +2,17 @@ import { useQuery } from '@tanstack/react-query'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetPermission = () => {
+  const accessToken = localStorage.getItem('accessToken')
   const { data, isLoading, isError } = useQuery({
     queryKey: ['getPermission'],
     queryFn: async () => {
       try {
         const response = await axiosClient({
           method: 'get',
-          url: `${process.env.REACT_APP_API_URL}/permission`,
+          url: '/permission',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         })
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {

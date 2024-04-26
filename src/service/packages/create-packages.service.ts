@@ -6,6 +6,7 @@ import { Package } from '../../@types/packages'
 import { useGetPackages } from './get-packages.service'
 
 export const useCreatePackage = () => {
+  const accessToken = localStorage.getItem('accessToken')
   const {
     mutate: createPackage,
     isPending,
@@ -16,6 +17,9 @@ export const useCreatePackage = () => {
       return axiosClient({
         method: 'post',
         url: '/package',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
         data: {
           name: packages.name,
           version: packages.version,

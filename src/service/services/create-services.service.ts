@@ -4,7 +4,7 @@ import { Service } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from './get-services.service'
 
-export const useCreateService = () => {
+export const useCreateService = (accessToken: string) => {
   const {
     mutate: createService,
     isPending,
@@ -15,6 +15,9 @@ export const useCreateService = () => {
       return axiosClient({
         method: 'post',
         url: '/service',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
         data: {
           name: service.name,
           database: service.database,
@@ -27,7 +30,7 @@ export const useCreateService = () => {
 
     onSuccess: () => {
       toast.success('Service created successfully!')
-      useGetServices()
+      useGetServices(accessToken)
     },
 
     onError: (error: { response: { data: { error: string } } }) => {
