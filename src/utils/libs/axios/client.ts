@@ -4,34 +4,26 @@ const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 })
 
-export function setDefaultToken(token: string) {
-  if (token) {
-    axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`
-  } else {
-    delete axiosInstance.defaults.headers.common.Authorization
-  }
+export function setDefaultToken(token: string | undefined) {
+  axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`
 }
 
 axiosInstance.interceptors.request.use(
-  config => config,
-  error => Promise.reject(error),
-)
-
-axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response) {
-      const { status } = error.response
-      if (status === 401) {
-        window.location.href = '/login'
-      }
-    } else if (error.request) {
-      console.log('Conexão falhou!')
-    } else {
-      console.log('Error', error.message)
-    }
-    return Promise.reject(error)
+  config => {
+    return config
+  },
+  async error => {
+    return await Promise.reject(error)
   },
 )
 
-export default axiosInstance
+axiosInstance.interceptors.response.use(
+  response => {
+    return response
+  },
+  async error => {
+    return await Promise.reject(error)
+  },
+)
+
+export { axiosInstance }

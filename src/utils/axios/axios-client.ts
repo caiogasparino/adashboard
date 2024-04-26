@@ -1,6 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import useOAuthStore from '../../store/oauth.store'
-import axiosInstance from '../libs/axios/client'
+import { axiosInstance } from '../libs/axios/client'
 
 export type ParamsClientType = AxiosRequestConfig['params']
 
@@ -12,29 +11,17 @@ export async function axiosClient({
   method = 'get',
   url,
   params,
-  headers,
   responseType = 'json',
   ...restConfig
 }: AxiosClientProps): Promise<AxiosResponse<any>> {
   if (!method) {
     method = 'get'
   }
-  const { accessToken: token } = useOAuthStore()
-
-  const accessToken = headers?.Authorization?.split('Bearer ')[1] || token || ''
-
-  const authHeaders = accessToken
-    ? { Authorization: `Bearer ${accessToken}` }
-    : {}
 
   const response = await axiosInstance({
     method,
     url,
     params,
-    headers: {
-      ...authHeaders,
-      ...(headers || {}),
-    },
     responseType,
     ...restConfig,
   })

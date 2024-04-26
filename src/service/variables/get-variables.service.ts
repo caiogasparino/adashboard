@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetVars = (serviceName?: string) => {
   const accessToken = localStorage.getItem('accessToken')
@@ -9,14 +9,13 @@ export const useGetVars = (serviceName?: string) => {
     queryFn: async () => {
       try {
         if (!serviceName) return
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_UR}/service/${serviceName}/variables`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+        const response = await axiosClient({
+          method: 'get',
+          url: `/service/${serviceName}/variables`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
           },
-        )
+        })
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {
         const errorMessage = error?.response?.data?.error || 'An error occurred'
