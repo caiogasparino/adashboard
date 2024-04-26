@@ -1,9 +1,9 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { ServicesResponse } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
 
-export const useGetServices = (accessToken: string) => {
-  const queryClient = useQueryClient()
+export const useGetServices = () => {
+  const accessToken = localStorage.getItem('accessToken')
   const { isFetching, error, data, isLoading } = useQuery<
     ServicesResponse,
     Error

@@ -4,7 +4,8 @@ import { Service } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from './get-services.service'
 
-export const useCreateService = (accessToken: string) => {
+export const useCreateService = () => {
+  const accessToken = localStorage.getItem('accessToken')
   const {
     mutate: createService,
     isPending,
@@ -30,7 +31,7 @@ export const useCreateService = (accessToken: string) => {
 
     onSuccess: () => {
       toast.success('Service created successfully!')
-      useGetServices(accessToken)
+      useGetServices()
     },
 
     onError: (error: { response: { data: { error: string } } }) => {
