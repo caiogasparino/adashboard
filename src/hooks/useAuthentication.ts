@@ -1,6 +1,8 @@
 import { useOAuth2 } from '@tasoskakour/react-use-oauth2'
+import { useNavigate } from 'react-router-dom'
 
 const useAuthentication = () => {
+  const navigate = useNavigate()
   const { data, loading, error, getAuth, logout } = useOAuth2({
     authorizeUrl: 'https://bitbucket.org/site/oauth2/authorize',
     clientId: process.env.REACT_APP_BITBUCKET_CLIENT_ID || '',
@@ -10,6 +12,7 @@ const useAuthentication = () => {
     onSuccess: payload => {
       localStorage.setItem('accessToken', payload.access_token)
       console.log('Success:', payload)
+      navigate('/dashboard')
     },
     onError: error => {
       console.log('Error:', error)
