@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { ServicesResponse } from '../../@types/services'
 
-const url = process.env.REACT_APP_API_URL
-
 export const useGetServices = () => {
   const accessToken = localStorage.getItem('accessToken')
   const { isFetching, error, data, isLoading } = useQuery<
@@ -13,7 +11,7 @@ export const useGetServices = () => {
 
     queryFn: async () => {
       try {
-        const response = await fetch(`${url}/services`, {
+        const response = await fetch('https://api.dev.allintra.app/services', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${accessToken}`,
