@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 })
 
-export function setDefaultToken(token: string | undefined) {
+export function setDefaultToken(token: string | any) {
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`
 }
 

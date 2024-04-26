@@ -5,7 +5,6 @@ import { images } from '../../design/images'
 import { useGetPermission } from '../../service/permission/create-permission.service'
 import { useGetServices } from '../../service/services/get-services.service'
 import { usePermissionStore } from '../../store/permission.store'
-import { setDefaultToken } from '../../utils/libs/axios/client'
 import { Container, Content, Logo } from './styles'
 
 const Preload: React.FC = (): JSX.Element => {
@@ -15,12 +14,10 @@ const Preload: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken')
-    if (accessToken) {
-      setDefaultToken(accessToken)
-      useGetServices()
-      navigate('/dashboard')
-    } else {
+    if (!accessToken) {
       navigate('/login')
+    } else {
+      navigate('/dashboard')
     }
   }, [navigate, useGetServices])
 

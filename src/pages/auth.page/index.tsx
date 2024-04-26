@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Loading from '../../components/loading'
 import { images } from '../../design/images'
 import useAuthentication from '../../hooks/useAuthentication'
 import { TEXT } from './constants'
@@ -22,11 +21,7 @@ export const AuthScreen: React.FC = (): JSX.Element => {
         <Logo src={images.LOGO} alt="Logo da Aplicação" />
         <h5>DASH - V.0.1</h5>
         <Button onClick={() => getAuth()}>
-          {loading ? (
-            <Loading spinner isLoading={loading} />
-          ) : (
-            <h3>{TEXT.BUTTON}</h3>
-          )}
+          <h3>{TEXT.BUTTON}</h3>
         </Button>
         <Footer>
           <p>{TEXT.FOOTER}</p>
