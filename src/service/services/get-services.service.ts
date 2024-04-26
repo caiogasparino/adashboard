@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { ServicesResponse } from '../../@types/services'
-import { axiosClient } from '../../utils/axios/axios-client'
+
+const url = process.env.REACT_APP_API_URL
 
 export const useGetServices = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -12,14 +13,18 @@ export const useGetServices = () => {
 
     queryFn: async () => {
       try {
-        const response = await axiosClient({
-          method: 'get',
-          url: '/services',
+        const response = await fetch(`${url}/services`, {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        return response.data
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch services')
+        }
+
+        return response.json()
       } catch (error: { response: { data: { error: string } } } | any) {
         const errorMessage = error?.response?.data?.error || 'An error occurred'
         // toast.error(errorMessage)
