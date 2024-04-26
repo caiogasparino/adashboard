@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { images } from '../../design/images'
 
-import { useQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query' // Importe useQueryClient
 import { useGetPermission } from '../../service/permission/create-permission.service'
 import { useGetServices } from '../../service/services/get-services.service'
 import { usePermissionStore } from '../../store/permission.store'
@@ -13,22 +13,19 @@ const Preload: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
   const { permission, isLoading, isError } = useGetPermission()
   const { setPermissions } = usePermissionStore()
-  const { data: accessToken } = useQuery({
-    queryKey: ['accessToken'],
-    queryFn: () => {
-      return localStorage.getItem('accessToken')
-    },
-  })
+  const queryClient = useQueryClient()
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken')
     if (accessToken) {
-      navigate('/dashboard')
       setDefaultToken(accessToken)
+      queryClient.setQueryData(['accessToken'], accessToken)
+      navigate('/dashboard')
       useGetServices()
     } else {
       navigate('/login')
     }
-  }, [accessToken, navigate])
+  }, [navigate, queryClient, useGetServices])
 
   useEffect(() => {
     if (!isLoading && !isError) {

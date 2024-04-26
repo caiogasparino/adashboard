@@ -1,8 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ServicesResponse } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetServices = () => {
+  const queryClient = useQueryClient()
   const { isFetching, error, data, isLoading } = useQuery<
     ServicesResponse,
     Error
@@ -10,10 +11,14 @@ export const useGetServices = () => {
     queryKey: ['getServices'],
 
     queryFn: async () => {
+      const accessToken = queryClient.getQueryData<string>(['accessToken'])
       try {
         const response = await axiosClient({
           method: 'get',
           url: '/services',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         })
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {
