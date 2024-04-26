@@ -12,7 +12,7 @@ const useAuthentication = () => {
     responseType: 'token',
     onSuccess: payload => {
       localStorage.setItem('accessToken', payload.access_token)
-      navigate('/')
+      navigate('/dashboard')
       console.log('Success:', payload)
     },
     onError: error => {
