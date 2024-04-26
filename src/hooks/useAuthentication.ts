@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 const useAuthentication = () => {
   const navigate = useNavigate()
-
   const { data, loading, error, getAuth, logout } = useOAuth2({
     authorizeUrl: 'https://bitbucket.org/site/oauth2/authorize',
     clientId: process.env.REACT_APP_BITBUCKET_CLIENT_ID || '',

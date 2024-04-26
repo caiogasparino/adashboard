@@ -9,9 +9,8 @@ import { useMemo, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { Service } from '../../../@types/services'
 import { servicesmock } from '../../../pages/dashboard.page/mock'
-
 import { useDeleteService } from '../../../service/services/delete-services.service'
-import { useServiceStore } from '../../../store/services.store'
+import { useGetServices } from '../../../service/services/get-services.service'
 import { useThemeStore } from '../../../store/theme.store'
 import ServiceForm from '../../forms/service-forms'
 import Loading from '../../loading'
@@ -25,7 +24,7 @@ const TableService: React.FC = () => {
   const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
   const gridStyle = useMemo(() => ({ height: '80vh', width: '100%' }), [])
-  const { services } = useServiceStore()
+  const { data } = useGetServices()
   const { isPending, deleteService } = useDeleteService()
   const [type, setType] = useState('edit | delete')
   const [openModal, setOpenModal] = useState(false)
@@ -96,7 +95,7 @@ const TableService: React.FC = () => {
             <AgGridReact
               ref={gridRef}
               rowStyle={stylesSx().row}
-              rowData={services || servicesmock?.services}
+              rowData={data?.services || servicesmock?.services}
               columnDefs={columnDefs({
                 handleOpenModalDelete,
                 handleOpenModalUser,
