@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { images } from '../../design/images'
 
+import Loading from '../../components/loading'
 import { useGetPermission } from '../../service/permission/create-permission.service'
-import { useGetServices } from '../../service/services/get-services.service'
+// import { useGetServices } from '../../service/services/get-services.service'
 import { usePermissionStore } from '../../store/permission.store'
 import { Container, Content, Logo } from './styles'
 
-const Preload: React.FC = (): JSX.Element => {
+export const Preload: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
   const { permission, isLoading, isError } = useGetPermission()
   const { setPermissions } = usePermissionStore()
@@ -19,7 +20,7 @@ const Preload: React.FC = (): JSX.Element => {
     } else {
       navigate('/dashboard')
     }
-  }, [navigate, useGetServices])
+  }, [navigate])
 
   useEffect(() => {
     if (!isLoading && !isError) {
@@ -32,8 +33,7 @@ const Preload: React.FC = (): JSX.Element => {
       <Content>
         <Logo src={images.LOGO} alt="Logo" />
       </Content>
+      <Loading isLoading={isLoading} spinner />
     </Container>
   )
 }
-
-export default Preload

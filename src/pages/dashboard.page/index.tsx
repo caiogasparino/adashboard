@@ -5,7 +5,7 @@ import { Sidebar } from '../../components'
 import ServiceForm from '../../components/forms/service-forms'
 import ModalComponent from '../../components/modal'
 import TableService from '../../components/table/table-service'
-import { useGetServices } from '../../service/services/get-services.service'
+// import { useGetServices } from '../../service/services/get-services.service'
 import { setDefaultToken } from '../../utils/libs/axios/client'
 import { TEXT } from './constants'
 import {
@@ -16,7 +16,7 @@ import {
   Title,
 } from './styles'
 
-const DashScreen: React.FC = () => {
+export const DashScreen: React.FC = () => {
   const theme = useTheme()
 
   const [openModal, setOpenModal] = useState(false)
@@ -25,7 +25,7 @@ const DashScreen: React.FC = () => {
     const accessToken = localStorage.getItem('accessToken')
     const fetchData = async () => {
       setDefaultToken(accessToken)
-      useGetServices()
+      //   useGetServices()
     }
     fetchData()
   }, [])
@@ -61,5 +61,3 @@ const DashScreen: React.FC = () => {
     </Fragment>
   )
 }
-
-export default DashScreen

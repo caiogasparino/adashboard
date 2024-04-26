@@ -5,12 +5,13 @@ import { AgGridReact } from 'ag-grid-react'
 
 import { Box, Button } from '@mui/material'
 import * as React from 'react'
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { Service } from '../../../@types/services'
 import { servicesmock } from '../../../pages/dashboard.page/mock'
 import { useDeleteService } from '../../../service/services/delete-services.service'
 import { useGetServices } from '../../../service/services/get-services.service'
+import { useServiceStore } from '../../../store/services.store'
 import { useThemeStore } from '../../../store/theme.store'
 import ServiceForm from '../../forms/service-forms'
 import Loading from '../../loading'
@@ -24,10 +25,11 @@ const TableService: React.FC = () => {
   const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
   const gridStyle = useMemo(() => ({ height: '80vh', width: '100%' }), [])
-  const { data } = useGetServices()
   const { isPending, deleteService } = useDeleteService()
   const [type, setType] = useState('edit | delete')
   const [openModal, setOpenModal] = useState(false)
+  const { data, isLoading } = useGetServices()
+  const { setServices } = useServiceStore()
   const [serviceSelectRow, setServiceSelectRow] = useState<Service>(
     {} as Service,
   )
@@ -40,6 +42,10 @@ const TableService: React.FC = () => {
       flex: 1,
     }
   }, [])
+
+  useCallback(() => {
+    setServices(data?.services || [])
+  }, [data?.services])
 
   const handleOpenModalDelete = (params: any) => {
     setServiceSelectRow(params)
@@ -92,17 +98,20 @@ const TableService: React.FC = () => {
       <div className="example-wrapper">
         <div className="example-header">
           <div className={classNameTheme} style={gridStyle}>
-            <AgGridReact
-              ref={gridRef}
-              rowStyle={stylesSx().row}
-              rowData={data?.services || servicesmock?.services}
-              columnDefs={columnDefs({
-                handleOpenModalDelete,
-                handleOpenModalUser,
-                handleDeleteService,
-              })}
-              defaultColDef={defaultColDef}
-            />
+            {isLoading && <Loading isLoading={isLoading} spinner />}
+            {!isLoading && (
+              <AgGridReact
+                ref={gridRef}
+                rowStyle={stylesSx().row}
+                rowData={data?.services || servicesmock?.services}
+                columnDefs={columnDefs({
+                  handleOpenModalDelete,
+                  handleOpenModalUser,
+                  handleDeleteService,
+                })}
+                defaultColDef={defaultColDef}
+              />
+            )}
           </div>
         </div>
       </div>

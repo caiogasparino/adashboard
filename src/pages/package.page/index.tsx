@@ -17,7 +17,7 @@ import {
   Title,
 } from './styles'
 
-const PackageScreen: React.FC = () => {
+export const PackageScreen: React.FC = () => {
   const { isLoading, setLoading } = useLoading()
   const { setPackages } = usePackageStore()
   const [openModal, setOpenModal] = useState(false)
@@ -66,5 +66,3 @@ const PackageScreen: React.FC = () => {
     </Fragment>
   )
 }
-
-export default PackageScreen

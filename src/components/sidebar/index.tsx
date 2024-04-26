@@ -7,9 +7,6 @@ import { useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 import { useLoading } from '../../context'
 import { images } from '../../design/images'
-import useAuthentication from '../../hooks/useAuthentication'
-import useOAuthStore from '../../store/oauth.store'
-import { initialState, usePermissionStore } from '../../store/permission.store'
 import { useThemeStore } from '../../store/theme.store'
 import { TEXT } from './constants'
 import {
@@ -26,14 +23,11 @@ import {
 export const Sidebar: React.FC = (): JSX.Element => {
   const { theme, setTheme } = useThemeStore()
   const { COLORS } = useTheme()
-  const { logout } = useAuthentication()
   const { setLoading } = useLoading()
-  const { setAccessToken } = useOAuthStore()
-  const { setPermissions } = usePermissionStore()
   const navigate = useNavigate()
-  const [isMinimized, setIsMinimized] = useState(false)
+  const [isMin, setIsMinimized] = useState(false)
 
-  const ICON = isMinimized ? (
+  const ICON = isMin ? (
     <ArrowCircleRightIcon sx={{ color: COLORS.background }} />
   ) : (
     <ArrowCircleLeftIcon sx={{ color: COLORS.background }} />
@@ -46,13 +40,7 @@ export const Sidebar: React.FC = (): JSX.Element => {
 
   const handleLogout = () => {
     setLoading(true)
-    setTimeout(() => {
-      logout()
-      setAccessToken('')
-      localStorage.removeItem('accessToken')
-      setPermissions(initialState)
-      navigate('/login')
-    }, 2000)
+    navigate('/logout')
   }
 
   const activeScreen = (path: string) => {
@@ -60,9 +48,9 @@ export const Sidebar: React.FC = (): JSX.Element => {
   }
 
   return (
-    <Container isMinimized={isMinimized}>
+    <Container isMin={isMin}>
       <Content>
-        {!isMinimized && (
+        {!isMin && (
           <Menu>
             <Logo src={images.LOGO} alt="Logo" />
             <MenuItem>
@@ -83,13 +71,11 @@ export const Sidebar: React.FC = (): JSX.Element => {
             </MenuItem>
           </Menu>
         )}
-        <IconButton onClick={() => setIsMinimized(!isMinimized)}>
-          {ICON}
-        </IconButton>
+        <IconButton onClick={() => setIsMinimized(!isMin)}>{ICON}</IconButton>
         <IconButton onClick={() => toggleTheme()}>
           <DarkModeIcon sx={{ color: COLORS.background }} />
         </IconButton>
-        {!isMinimized && (
+        {!isMin && (
           <Footer>
             <ButtonCustom sx={{ width: '180px' }} onClick={handleLogout}>
               {TEXT.LOGOUT}

@@ -1,19 +1,11 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
 import { images } from '../../design/images'
 import useAuthentication from '../../hooks/useAuthentication'
 import { TEXT } from './constants'
 import { Button, Container, Content, Footer, Logo } from './styles'
 
 export const AuthScreen: React.FC = (): JSX.Element => {
-  const navigate = useNavigate()
-  const { getAuth, data } = useAuthentication()
-
-  useEffect(() => {
-    if (data?.access_token) {
-      navigate('/dashboard')
-    }
-  }, [data])
+  const { getAuth } = useAuthentication()
 
   return (
     <Container>

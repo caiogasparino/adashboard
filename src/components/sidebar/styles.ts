@@ -3,11 +3,11 @@ import styled from 'styled-components'
 
 interface ButtonLinkProps {
   active?: string
-  isMinimized?: boolean
+  isMin?: boolean
 }
 
 export const Container = styled.div<ButtonLinkProps>`
-  width: ${props => (props.isMinimized ? '60px' : '280px')};
+  width: ${props => (props.isMin ? '60px' : '280px')};
   padding: 24px 0;
   max-width: 350px;
   z-index: 9999;
