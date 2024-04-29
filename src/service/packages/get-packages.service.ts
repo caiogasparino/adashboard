@@ -3,7 +3,6 @@ import { PackageResponse } from '../../@types/packages'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetPackages = () => {
-  const accessToken = localStorage.getItem('accessToken')
   const { isFetching, error, data, isLoading } = useQuery<
     PackageResponse,
     Error
@@ -15,10 +14,6 @@ export const useGetPackages = () => {
         const response = await axiosClient({
           method: 'get',
           url: '/packages',
-
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
         })
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {

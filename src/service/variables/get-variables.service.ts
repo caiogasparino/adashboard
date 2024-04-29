@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetVars = (serviceName?: string) => {
-  const accessToken = localStorage.getItem('accessToken')
   const { data, isLoading, isError } = useQuery({
     queryKey: ['getVars', serviceName],
 
@@ -12,9 +11,6 @@ export const useGetVars = (serviceName?: string) => {
         const response = await axiosClient({
           method: 'get',
           url: `/service/${serviceName}/variables`,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
         })
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {

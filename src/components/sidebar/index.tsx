@@ -1,9 +1,12 @@
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
+import InventoryIcon from '@mui/icons-material/Inventory'
+import LogoutIcon from '@mui/icons-material/Logout'
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard'
 import { IconButton } from '@mui/material'
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 import { useLoading } from '../../context'
 import { images } from '../../design/images'
@@ -22,10 +25,11 @@ import {
 
 export const Sidebar: React.FC = (): JSX.Element => {
   const { theme, setTheme } = useThemeStore()
+  const location = useLocation()
   const { COLORS } = useTheme()
   const { setLoading } = useLoading()
   const navigate = useNavigate()
-  const [isMin, setIsMinimized] = useState(false)
+  const [isMin, setIsMinimized] = useState(location.state?.isMin || false)
 
   const ICON = isMin ? (
     <ArrowCircleRightIcon sx={{ color: COLORS.background }} />
@@ -45,6 +49,16 @@ export const Sidebar: React.FC = (): JSX.Element => {
 
   const activeScreen = (path: string) => {
     if (location.pathname === path) return 'true'
+  }
+
+  const handleBntDashboard = () => {
+    navigate('/dashboard', { state: { isMin: true } })
+    activeScreen('/dashboard')
+  }
+
+  const handleBntPackages = () => {
+    navigate('/packages', { state: { isMin: true } })
+    activeScreen('/packages')
   }
 
   return (
@@ -72,9 +86,36 @@ export const Sidebar: React.FC = (): JSX.Element => {
           </Menu>
         )}
         <IconButton onClick={() => setIsMinimized(!isMin)}>{ICON}</IconButton>
+        {isMin && (
+          <>
+            <IconButton onClick={handleBntDashboard}>
+              <SpaceDashboardIcon
+                sx={{
+                  color: activeScreen('/dashboard')
+                    ? COLORS.secondary
+                    : COLORS.background,
+                }}
+              />
+            </IconButton>
+            <IconButton onClick={handleBntPackages}>
+              <InventoryIcon
+                sx={{
+                  color: activeScreen('/packages')
+                    ? COLORS.secondary
+                    : COLORS.background,
+                }}
+              />
+            </IconButton>
+          </>
+        )}
         <IconButton onClick={() => toggleTheme()}>
           <DarkModeIcon sx={{ color: COLORS.background }} />
         </IconButton>
+        {isMin && (
+          <IconButton onClick={handleLogout}>
+            <LogoutIcon sx={{ color: COLORS.background }} />
+          </IconButton>
+        )}
         {!isMin && (
           <Footer>
             <ButtonCustom sx={{ width: '180px' }} onClick={handleLogout}>

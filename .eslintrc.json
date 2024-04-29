@@ -29,7 +29,8 @@
     "@typescript-eslint/no-explicit-any": "off",
     "comma-dangle": "off",
     "@ts-expect-error": "off",
-    "multiline-ternary": "off"
+    "multiline-ternary": "off",
+    "indent": "off"
   },
   "overrides": [
     {

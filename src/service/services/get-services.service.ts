@@ -3,7 +3,6 @@ import { ServicesResponse } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useGetServices = () => {
-  const accessToken = localStorage.getItem('accessToken')
   const { isFetching, error, data, isLoading } = useQuery<
     ServicesResponse,
     Error
@@ -15,9 +14,6 @@ export const useGetServices = () => {
         const response = await axiosClient({
           method: 'get',
           url: '/services',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
         })
         return response.data
       } catch (error: { response: { data: { error: string } } } | any) {

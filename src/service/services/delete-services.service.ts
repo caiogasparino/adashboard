@@ -3,7 +3,6 @@ import toast from 'react-hot-toast'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 export const useDeleteService = () => {
-  const accessToken = localStorage.getItem('accessToken')
   const {
     mutate: deleteService,
     isPending,
@@ -14,9 +13,6 @@ export const useDeleteService = () => {
       return axiosClient({
         method: 'delete',
         url: `/service/${serviceName}`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
       }).then(response => response.data)
     },
     mutationKey: ['deleteService'],

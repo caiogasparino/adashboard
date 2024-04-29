@@ -1,4 +1,0 @@
-[[redirects]]
-  from = "https://allintradash.netlify.app/oauth/callback"
-  to = "/dashboard"
-  status = 200

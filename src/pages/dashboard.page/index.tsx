@@ -5,7 +5,6 @@ import { Sidebar } from '../../components'
 import ServiceForm from '../../components/forms/service-forms'
 import ModalComponent from '../../components/modal'
 import TableService from '../../components/table/table-service'
-// import { useGetServices } from '../../service/services/get-services.service'
 import { setDefaultToken } from '../../utils/libs/axios/client'
 import { TEXT } from './constants'
 import {
@@ -23,9 +22,9 @@ export const DashScreen: React.FC = () => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken')
+
     const fetchData = async () => {
       setDefaultToken(accessToken)
-      //   useGetServices()
     }
     fetchData()
   }, [])

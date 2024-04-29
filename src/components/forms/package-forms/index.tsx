@@ -5,6 +5,9 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTheme } from 'styled-components'
 import { Package } from '../../../@types/packages'
+import { useCreatePackage } from '../../../service/packages/create-packages.service'
+import { useUpdatePackage } from '../../../service/packages/update-packages.service'
+import Loading from '../../loading'
 import { TEXT, stylesSx } from './constants'
 import {
   ButtonCustom,
@@ -23,6 +26,8 @@ interface PackageProps {
 
 const PackageForm: React.FC<PackageProps> = ({ data }) => {
   const theme = useTheme()
+  const { createPackage, isPending } = useCreatePackage()
+  const { updatePackage, isPending: isPendingUpdate } = useUpdatePackage()
   const [packageName, setPackageName] = useState(data?.name || '')
   const [sizefonts, setFontSize] = useState(window.innerWidth <= 700 ? 10 : 14)
 
@@ -44,7 +49,7 @@ const PackageForm: React.FC<PackageProps> = ({ data }) => {
     return name.includes(' ')
   }
 
-  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
+  const handleSubmit = () => {
     const hasSpace = containsSpace(packageName)
     if (hasSpace) {
       toast.error('Nome do pacote não pode conter espaços!', {
@@ -52,9 +57,11 @@ const PackageForm: React.FC<PackageProps> = ({ data }) => {
       })
     }
     if (!hasSpace) {
-      toast.success('Pacote criado com sucesso!')
-      event.preventDefault()
-      console.log({})
+      if (data) {
+        updatePackage({ name: packageName, id: data.id })
+      } else {
+        createPackage({ name: packageName })
+      }
     }
   }
 
@@ -73,7 +80,7 @@ const PackageForm: React.FC<PackageProps> = ({ data }) => {
             </Text>
           </Box>
           <Box sx={stylesSx().boxInputLabel}>
-            <Text fontSize={16} colorText={theme.COLORS.secondary}>
+            <Text fontSize={12} colorText={theme.COLORS.secondary}>
               {TEXT.PRESET_PACKAGE}
             </Text>
           </Box>
@@ -123,14 +130,22 @@ const PackageForm: React.FC<PackageProps> = ({ data }) => {
             </IconButton>
           </Box>
           <Item item theme={theme} sx={stylesSx().button}>
-            <ButtonCustom
-              theme={theme}
-              sx={{ width: '180px' }}
-              variant="contained"
-              onClick={handleSubmit}
-            >
-              {TEXT.BUTTON_SAVE}
-            </ButtonCustom>
+            {isPending || isPendingUpdate ? (
+              <Loading
+                spinner
+                isLoading={isPending}
+                color={theme.COLORS.background}
+              />
+            ) : (
+              <ButtonCustom
+                theme={theme}
+                sx={{ width: '180px' }}
+                variant="contained"
+                onClick={handleSubmit}
+              >
+                {TEXT.BUTTON_SAVE}
+              </ButtonCustom>
+            )}
           </Item>
         </Grid>
       </Box>

@@ -7,7 +7,9 @@ import { useTheme } from 'styled-components'
 import { Service } from '../../../@types/services'
 import { Variable } from '../../../@types/variables'
 import { useCreateService } from '../../../service/services/create-services.service'
+import { useUpdateService } from '../../../service/services/update-services.service'
 import { useGetVars } from '../../../service/variables/get-variables.service'
+import Loading from '../../loading'
 import { TEXT, TOAST_TEXT } from './constants'
 import { ButtonCustom, Container, Input, Item, Text, Title } from './styles'
 
@@ -18,7 +20,8 @@ interface ServiceProps {
 
 const ServiceForm: React.FC<ServiceProps> = ({ data, type }) => {
   const theme = useTheme()
-  const { createService } = useCreateService()
+  const { createService, isPending } = useCreateService()
+  const { updateService, isPending: isPendingUpdate } = useUpdateService()
   const { vars, isLoading } = useGetVars(data?.name)
   const [serviceName, setServiceName] = useState(data?.name || '')
   const [hasDatabase, setHasDatabase] = useState(data ? data.database : false)
@@ -29,10 +32,8 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type }) => {
 
   useEffect(() => {
     if (!isLoading && vars && vars.variables) {
-      // Se os dados de variáveis estiverem disponíveis, atualize o estado
       setVariables(vars.variables)
     } else {
-      // Caso contrário, inicialize com uma variável vazia
       setVariables([{ name: '', aprodvalue: '', abetavalue: '' }])
     }
   }, [isLoading, vars])
@@ -58,15 +59,15 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type }) => {
   }
 
   const handleSubmit = async () => {
-    if (!serviceName.match(/^[a-z0-9-]+$/)) {
-      toast.error(TOAST_TEXT.REGEX, {
+    if (!serviceName) {
+      toast.error(TOAST_TEXT.EMPTY, {
         duration: 5000,
       })
       return
     }
 
-    if (!serviceName) {
-      toast.error(TOAST_TEXT.EMPTY, {
+    if (!serviceName.match(/^[a-z0-9-]+$/)) {
+      toast.error(TOAST_TEXT.REGEX, {
         duration: 5000,
       })
       return
@@ -76,22 +77,25 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type }) => {
       Object.values(variable).some(value => value === ''),
     )
 
-    if (variablesContainEmptyStrings) {
-      await createService({
-        name: serviceName,
-        database: hasDatabase,
-        api: hasApi,
-        variables: [],
-      })
-      return
-    }
-
-    await createService({
+    const serviceData = {
       name: serviceName,
       database: hasDatabase,
       api: hasApi,
-      variables,
-    })
+      variables: variablesContainEmptyStrings ? [] : variables,
+    }
+
+    try {
+      if (variablesContainEmptyStrings) {
+        ;(type === 'edit' ? updateService : createService)(serviceData)
+      } else {
+        ;(type === 'edit' ? updateService : createService)({
+          ...serviceData,
+          variables,
+        })
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
   }
 
   return (
@@ -223,20 +227,30 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type }) => {
           marginRight={10}
           alignItems={'center'}
         >
-          <ButtonCustom
-            sx={{ marginRight: 2, width: '180px' }}
-            variant="contained"
-            onClick={handleAddVariable}
-          >
-            {TEXT.ADDVARIABLE}
-          </ButtonCustom>
-          <ButtonCustom
-            sx={{ width: '180px' }}
-            variant="contained"
-            onClick={handleSubmit}
-          >
-            {TEXT.SAVE}
-          </ButtonCustom>
+          {isPending || isPendingUpdate ? (
+            <Loading
+              spinner
+              isLoading={isPending}
+              color={theme.COLORS.background}
+            />
+          ) : (
+            <>
+              <ButtonCustom
+                sx={{ marginRight: 2, width: '180px' }}
+                variant="contained"
+                onClick={handleAddVariable}
+              >
+                {TEXT.ADDVARIABLE}
+              </ButtonCustom>
+              <ButtonCustom
+                sx={{ width: '180px' }}
+                variant="contained"
+                onClick={handleSubmit}
+              >
+                {TEXT.SAVE}
+              </ButtonCustom>
+            </>
+          )}
         </Item>
       </Container>
     </Fragment>

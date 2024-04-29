@@ -1,5 +1,6 @@
 import { useOAuth2 } from '@tasoskakour/react-use-oauth2'
 import { useNavigate } from 'react-router-dom'
+import { setDefaultToken } from '../utils/libs/axios/client'
 
 const useAuthentication = () => {
   const navigate = useNavigate()
@@ -11,6 +12,7 @@ const useAuthentication = () => {
     responseType: 'token',
     onSuccess: payload => {
       localStorage.setItem('accessToken', payload.access_token)
+      setDefaultToken(payload.access_token)
       console.log('Success:', payload)
       navigate('/dashboard')
     },

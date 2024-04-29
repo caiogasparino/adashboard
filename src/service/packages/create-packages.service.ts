@@ -6,7 +6,6 @@ import { Package } from '../../@types/packages'
 import { useGetPackages } from './get-packages.service'
 
 export const useCreatePackage = () => {
-  const accessToken = localStorage.getItem('accessToken')
   const {
     mutate: createPackage,
     isPending,
@@ -17,13 +16,8 @@ export const useCreatePackage = () => {
       return axiosClient({
         method: 'post',
         url: '/package',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
         data: {
           name: packages.name,
-          version: packages.version,
-          links: packages.links,
         },
       })
     },
@@ -36,7 +30,7 @@ export const useCreatePackage = () => {
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'
-      //   toast.error(errorMessage)
+      toast.error(errorMessage)
       console.error('Error creating package:', errorMessage)
     },
   })
