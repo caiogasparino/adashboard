@@ -9,6 +9,7 @@ import { Box, IconButton, Tooltip } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import { useTheme } from 'styled-components'
 import { Services } from '../../../@types/services'
+import { usePermissionStore } from '../../../store/permission.store'
 import { Text } from './styles'
 
 export const TEXT_MODAL = 'Deseja realmente excluir o servico?'
@@ -25,17 +26,7 @@ export function createData(
   return { services, prod, beta, dba, api, vars, actions }
 }
 
-export const rows = [
-  createData(
-    'Service Name',
-    'Status Prod',
-    'Status Beta',
-    'Status DBA',
-    'Status API',
-    0,
-    0,
-  ),
-]
+export const rows = [createData('Service Name', 'Status Prod', 'Status Beta', 'Status DBA', 'Status API', 0, 0)]
 
 export const stylesSx = () => {
   const theme = useTheme()
@@ -69,24 +60,12 @@ export const stylesSx = () => {
 export const checkboxRendererApi = (params: any) => {
   const theme = useTheme()
   const { data } = params
-  return (
-    <Checkbox
-      style={{ color: theme.COLORS.gray }}
-      disabled
-      checked={data?.api}
-    />
-  )
+  return <Checkbox style={{ color: theme.COLORS.gray }} disabled checked={data?.api} />
 }
 export const checkboxRendererBase = (params: any) => {
   const theme = useTheme()
   const { data } = params
-  return (
-    <Checkbox
-      style={{ color: theme.COLORS.gray }}
-      disabled
-      checked={data?.database}
-    />
-  )
+  return <Checkbox style={{ color: theme.COLORS.gray }} disabled checked={data?.database} />
 }
 
 export const statusRendererProd = (params: Services | any) => {
@@ -94,8 +73,7 @@ export const statusRendererProd = (params: Services | any) => {
   const { data } = params
   const [version, status, ...alerts] = data?.aproducao
 
-  const color =
-    status === 'true online' ? theme.COLORS.green : theme.COLORS.secondary
+  const color = status === 'true online' ? theme.COLORS.green : theme.COLORS.secondary
   const filterStatus = status === 'true online' ? 'online' : 'unavailable'
   const label = version ? `${version} - ${filterStatus}` : 'insight'
 
@@ -103,17 +81,11 @@ export const statusRendererProd = (params: Services | any) => {
     <Box>
       <Text color={color}>{label}</Text>
       {alerts.length > 0 && (
-        <Tooltip
-          title={alerts.join(' - ')}
-          style={{ fontFamily: 'Montserrat' }}
-        >
+        <Tooltip title={alerts.join(' - ')} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
             <PrivacyTipIcon
               sx={{
-                color:
-                  filterStatus === 'online'
-                    ? theme.COLORS.green
-                    : theme.COLORS.secondary,
+                color: filterStatus === 'online' ? theme.COLORS.green : theme.COLORS.secondary,
               }}
             />
           </IconButton>
@@ -127,25 +99,18 @@ export const statusRendererBeta = (params: any) => {
   const theme = useTheme()
   const { data } = params
   const [version, status, ...alerts] = data?.abeta || []
-  const color =
-    status === 'true online' ? theme.COLORS.green : theme.COLORS.secondary
+  const color = status === 'true online' ? theme.COLORS.green : theme.COLORS.secondary
   const filterStatus = status === 'true online' ? 'online' : 'unavailable'
   const label = version ? `${version} - ${filterStatus}` : 'insight'
   return (
     <Box>
       <Text color={color}>{label}</Text>
       {alerts.length > 0 && (
-        <Tooltip
-          title={alerts.join(' - ')}
-          style={{ fontFamily: 'Montserrat' }}
-        >
+        <Tooltip title={alerts.join(' - ')} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
             <PrivacyTipIcon
               sx={{
-                color:
-                  filterStatus === 'online'
-                    ? theme.COLORS.green
-                    : theme.COLORS.secondary,
+                color: filterStatus === 'online' ? theme.COLORS.green : theme.COLORS.secondary,
               }}
             />
           </IconButton>
@@ -158,37 +123,45 @@ export const statusRendererBeta = (params: any) => {
 export const renderVariables = (params: any) => {
   const theme = useTheme()
   const { data } = params
-  const [numbers, alerts] = data?.variables || []
+  const [numbers, ...alerts] = data?.variables || []
   const label = numbers ? `${numbers}` : '0'
-  const color = alerts ? theme.COLORS.green : theme.COLORS.secondary
+  const color = alerts && alerts.length > 0 ? theme.COLORS.secondary : theme.COLORS.background
 
   return (
-    <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
+    <Box>
       <Text color={color}>{label}</Text>
-    </Tooltip>
+      {alerts.length > 0 && (
+        <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
+          <IconButton>
+            <PrivacyTipIcon
+              sx={{
+                color: alerts && alerts.length > 0 ? theme.COLORS.secondary : theme.COLORS.green,
+              }}
+            />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Box>
   )
 }
 
 export const actionsRenderer = (params: any) => {
   const theme = useTheme()
+  const { permissions } = usePermissionStore()
   const { data } = params
   return (
     <Box sx={stylesSx().icon}>
-      <IconButton>
-        <DeleteIcon
-          onClick={() =>
-            params.colDef.cellRenderParams.handleOpenModalDelete(data)
-          }
-          sx={{ color: theme.COLORS.secondary }}
-        />
+      <IconButton
+        onClick={() => params.colDef.cellRenderParams.handleOpenModalDelete(data)}
+        disabled={!permissions?.service?.delete}
+      >
+        <DeleteIcon sx={{ color: theme.COLORS.secondary }} />
       </IconButton>
-      <IconButton>
-        <EditIcon
-          onClick={() =>
-            params.colDef.cellRenderParams.handleOpenModalUser(data)
-          }
-          sx={{ color: theme.COLORS.gray }}
-        />
+      <IconButton
+        onClick={() => params.colDef.cellRenderParams.handleOpenModalUser(data)}
+        disabled={!permissions?.service?.edit}
+      >
+        <EditIcon sx={{ color: theme.COLORS.gray }} />
       </IconButton>
     </Box>
   )
@@ -200,11 +173,7 @@ type PropsDefs = {
   handleDeleteService: (data: any) => void
 }
 
-export const columnDefs = ({
-  handleOpenModalDelete,
-  handleOpenModalUser,
-  handleDeleteService,
-}: PropsDefs) => {
+export const columnDefs = ({ handleOpenModalDelete, handleOpenModalUser, handleDeleteService }: PropsDefs) => {
   const theme = useTheme()
   return [
     {

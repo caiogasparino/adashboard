@@ -7,20 +7,16 @@ import ModalComponent from '../../components/modal'
 import TablePackage from '../../components/table/table-packages'
 import { useLoading } from '../../context'
 import { usePackageStore } from '../../store/package.store'
+import { usePermissionStore } from '../../store/permission.store'
 import { TEXT } from './constants'
 import { packages } from './mock'
-import {
-  ButtonCustom,
-  Container,
-  Content,
-  ContentHeader,
-  Title,
-} from './styles'
+import { ButtonCustom, Container, Content, ContentHeader, Title } from './styles'
 
 export const PackageScreen: React.FC = () => {
   const { isLoading, setLoading } = useLoading()
   const { setPackages } = usePackageStore()
   const [openModal, setOpenModal] = useState(false)
+  const { permissions } = usePermissionStore()
 
   const handleCloseModal = () => {
     setOpenModal(false)
@@ -45,6 +41,7 @@ export const PackageScreen: React.FC = () => {
             <Title>{TEXT.TITLE}</Title>
             <Box>
               <ButtonCustom
+                disabled={!permissions.packages.create}
                 variant="contained"
                 sx={{ width: '180px' }}
                 onClick={() => setOpenModal(true)}
@@ -56,11 +53,7 @@ export const PackageScreen: React.FC = () => {
           <TablePackage />
         </Content>
       </Container>
-      <ModalComponent
-        open={openModal}
-        onClose={handleCloseModal}
-        title={'Create Package'}
-      >
+      <ModalComponent open={openModal} onClose={handleCloseModal} title={'Create Package'}>
         <PackageForm />
       </ModalComponent>
     </Fragment>

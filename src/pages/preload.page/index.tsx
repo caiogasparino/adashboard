@@ -3,22 +3,23 @@ import { useNavigate } from 'react-router-dom'
 import { images } from '../../design/images'
 
 import Loading from '../../components/loading'
-import { useGetPermission } from '../../service/permission/create-permission.service'
-// import { useGetServices } from '../../service/services/get-services.service'
+import { useGetPermission } from '../../service/permission/get-permission.service'
 import { usePermissionStore } from '../../store/permission.store'
 import { Container, Content, Logo } from './styles'
 
-export const Preload: React.FC = (): JSX.Element => {
+export const PreloadScreen: React.FC = (): JSX.Element => {
+  const accessToken = localStorage.getItem('accessToken')
   const navigate = useNavigate()
   const { permission, isLoading, isError } = useGetPermission()
   const { setPermissions } = usePermissionStore()
 
+  const isLoggedIn = !!accessToken && !!permission?.UserAuthorized
+
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken')
-    if (!accessToken) {
-      navigate('/login')
-    } else {
+    if (isLoggedIn) {
       navigate('/dashboard')
+    } else {
+      navigate('/login')
     }
   }, [navigate])
 

@@ -1,33 +1,18 @@
 import { Box } from '@mui/material'
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { Sidebar } from '../../components'
 import ServiceForm from '../../components/forms/service-forms'
 import ModalComponent from '../../components/modal'
 import TableService from '../../components/table/table-service'
-import { setDefaultToken } from '../../utils/libs/axios/client'
+import { usePermissionStore } from '../../store/permission.store'
 import { TEXT } from './constants'
-import {
-  ButtonCustom,
-  Container,
-  Content,
-  ContentHeader,
-  Title,
-} from './styles'
+import { ButtonCustom, Container, Content, ContentHeader, Title } from './styles'
 
 export const DashScreen: React.FC = () => {
   const theme = useTheme()
-
   const [openModal, setOpenModal] = useState(false)
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken')
-
-    const fetchData = async () => {
-      setDefaultToken(accessToken)
-    }
-    fetchData()
-  }, [])
+  const { permissions } = usePermissionStore()
 
   const handleCloseModal = () => {
     setOpenModal(false)
@@ -42,6 +27,7 @@ export const DashScreen: React.FC = () => {
             <Title>{TEXT.TITLE}</Title>
             <Box>
               <ButtonCustom
+                disabled={!permissions.service.create}
                 theme={theme}
                 variant="contained"
                 sx={{ width: '180px' }}
@@ -55,7 +41,7 @@ export const DashScreen: React.FC = () => {
         </Content>
       </Container>
       <ModalComponent open={openModal} onClose={handleCloseModal}>
-        <ServiceForm />
+        <ServiceForm onClose={handleCloseModal} />
       </ModalComponent>
     </Fragment>
   )

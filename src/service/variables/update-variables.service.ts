@@ -4,19 +4,19 @@ import { Variable } from '../../@types/variables'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from '../services/get-services.service'
 
-interface CreateVarsProps {
+interface UpdateVarsProps {
   serviceName: string
   variables: Variable[]
 }
-export const useCreateVars = () => {
+export const useUpdateVars = () => {
   const { refetchData: refetchServices } = useGetServices()
   const {
-    mutate: createVars,
+    mutate: updateVars,
     isPending,
     error,
     data,
   } = useMutation({
-    mutationFn: async ({ serviceName, variables }: CreateVarsProps) => {
+    mutationFn: async ({ serviceName, variables }: UpdateVarsProps) => {
       return axiosClient({
         method: 'post',
         url: `/service/${serviceName}/variables`,
@@ -29,19 +29,19 @@ export const useCreateVars = () => {
         },
       }).then(response => response.data)
     },
-    mutationKey: ['createVars'],
+    mutationKey: ['updateVars'],
 
     onSuccess: () => {
-      toast.success('Variable created successfully!')
+      toast.success('Variable updated successfully!')
       refetchServices()
     },
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'
       toast.error(errorMessage)
-      console.error('Error creating variable:', errorMessage)
+      console.error('Error updating variable:', errorMessage)
     },
   })
 
-  return { createVars, isPending, error, data }
+  return { updateVars, isPending, error, data }
 }

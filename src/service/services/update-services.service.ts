@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Service } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
+import { useGetServices } from './get-services.service'
 
 export const useUpdateService = () => {
+  const { refetchData: refetchServices } = useGetServices()
   const {
     mutate: updateService,
     isPending,
@@ -12,7 +14,7 @@ export const useUpdateService = () => {
   } = useMutation({
     mutationFn: async (service: Service) => {
       return axiosClient({
-        method: 'put',
+        method: 'post',
         url: '/service',
         data: {
           name: service.name,
@@ -26,6 +28,7 @@ export const useUpdateService = () => {
 
     onSuccess: () => {
       toast.success('Service updated successfully!')
+      refetchServices()
     },
 
     onError: (error: { response: { data: { error: string } } }) => {

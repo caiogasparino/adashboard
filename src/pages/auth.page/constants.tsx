@@ -10,4 +10,5 @@ export const TEXT = {
   FOOTER: '© 2024 Alintra. Todos os direitos reservados.',
   TITLE: 'BITBUCKET',
   BUTTON: 'BITBUCKET SSO',
+  AUTHORIZED: 'User not authorized',
 }

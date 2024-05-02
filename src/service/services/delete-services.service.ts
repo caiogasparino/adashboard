@@ -1,13 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { axiosClient } from '../../utils/axios/axios-client'
+import { useGetServices } from './get-services.service'
 
 export const useDeleteService = () => {
+  const { refetchData: refetchServices } = useGetServices()
   const {
     mutate: deleteService,
     isPending,
     error,
-    data,
+    data: deleteServiceData,
   } = useMutation({
     mutationFn: (serviceName: string) => {
       return axiosClient({
@@ -19,14 +21,15 @@ export const useDeleteService = () => {
 
     onSuccess: () => {
       toast.success('Service deleted successfully!')
+      refetchServices()
     },
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'
-      //   toast.error(errorMessage)
+      toast.error(errorMessage)
       console.error('Error deleting service:', errorMessage)
     },
   })
 
-  return { deleteService, isPending, error, data }
+  return { deleteService, isPending, error, deleteServiceData }
 }

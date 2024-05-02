@@ -1,6 +1,6 @@
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
+// import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
+// import DarkModeIcon from '@mui/icons-material/DarkMode'
 import InventoryIcon from '@mui/icons-material/Inventory'
 import LogoutIcon from '@mui/icons-material/Logout'
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard'
@@ -34,11 +34,11 @@ export const Sidebar: React.FC = (): JSX.Element => {
   const ICON = isMin ? (
     <ArrowCircleRightIcon sx={{ color: COLORS.background }} />
   ) : (
-    <ArrowCircleLeftIcon sx={{ color: COLORS.background }} />
+    <></>
   )
 
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark'
+    const newTheme = theme === 'dark' ? 'dark' : 'dark'
     setTheme(newTheme)
   }
 
@@ -109,7 +109,7 @@ export const Sidebar: React.FC = (): JSX.Element => {
           </>
         )}
         <IconButton onClick={() => toggleTheme()}>
-          <DarkModeIcon sx={{ color: COLORS.background }} />
+          {/* <DarkModeIcon sx={{ color: COLORS.background }} /> */}
         </IconButton>
         {isMin && (
           <IconButton onClick={handleLogout}>

@@ -5,15 +5,14 @@ import { images } from '../../design/images'
 import Loading from '../../components/loading'
 import { useLoading } from '../../context'
 import useAuthentication from '../../hooks/useAuthentication'
-// import { useGetServices } from '../../service/services/get-services.service'
 import useOAuthStore from '../../store/oauth.store'
-import { initialState, usePermissionStore } from '../../store/permission.store'
+import { initialPermissions, usePermissionStore } from '../../store/permission.store'
 import { Container, Content, Logo } from './styles'
 
 export const LogoutScreen: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
   const { logout } = useAuthentication()
-  const { isLoading } = useLoading()
+  const { isLoading, setLoading } = useLoading()
   const { setAccessToken } = useOAuthStore()
   const { setPermissions } = usePermissionStore()
 
@@ -22,7 +21,10 @@ export const LogoutScreen: React.FC = (): JSX.Element => {
       logout()
       setAccessToken('')
       localStorage.removeItem('accessToken')
-      setPermissions(initialState)
+      localStorage.removeItem('permissions')
+      setPermissions(initialPermissions)
+      setAccessToken(null)
+      setLoading(false)
       navigate('/login')
     }, 2000)
   }, [navigate])

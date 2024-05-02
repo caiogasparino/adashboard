@@ -29,6 +29,11 @@ export const Title = styled.h1`
   margin-bottom: 24px;
 `
 
+export const Text = styled.h4`
+  margin-bottom: 5px;
+  color: ${colors.red};
+`
+
 export const Description = styled.p`
   margin-bottom: 24px;
   color: ${colors.white};

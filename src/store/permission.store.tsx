@@ -6,7 +6,7 @@ type PermissionStore = {
   setPermissions: (permissions: Permission) => void
 }
 
-export const initialState: Permission = {
+export const initialPermissions: Permission = JSON.parse(localStorage.getItem('permissions') || 'null') || {
   service: {
     create: false,
     delete: false,
@@ -25,7 +25,10 @@ export const initialState: Permission = {
   UserAuthorized: false,
 }
 
-export const usePermissionStore = create<PermissionStore>((set) => ({
-  permissions: initialState,
-  setPermissions: (permissions) => set({ permissions }),
+export const usePermissionStore = create<PermissionStore>(set => ({
+  permissions: initialPermissions,
+  setPermissions: permissions => {
+    localStorage.setItem('permissions', JSON.stringify(permissions))
+    set({ permissions })
+  },
 }))

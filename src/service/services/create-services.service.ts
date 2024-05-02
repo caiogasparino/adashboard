@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Service } from '../../@types/services'
 import { axiosClient } from '../../utils/axios/axios-client'
+import { useGetServices } from './get-services.service'
 
 export const useCreateService = () => {
+  const { refetchData: refetchServices } = useGetServices()
   const {
     mutate: createService,
     isPending,
@@ -26,6 +28,7 @@ export const useCreateService = () => {
 
     onSuccess: () => {
       toast.success('Service created successfully!')
+      refetchServices()
     },
 
     onError: (error: { response: { data: { error: string } } }) => {

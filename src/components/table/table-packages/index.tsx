@@ -9,6 +9,7 @@ import toast from 'react-hot-toast'
 import { useTheme } from 'styled-components'
 import { Package } from '../../../@types/packages'
 import { usePackageStore } from '../../../store/package.store'
+import { usePermissionStore } from '../../../store/permission.store'
 import { useThemeStore } from '../../../store/theme.store'
 import PackageForm from '../../forms/package-forms'
 import ModalComponent from '../../modal'
@@ -23,9 +24,9 @@ const TablePackage: React.FC = () => {
   const { theme: themeStore } = useThemeStore()
   const containerStyle = useMemo(() => ({ width: '100%', height: '10px' }), [])
   const gridStyle = useMemo(() => ({ height: '80vh', width: '100%' }), [])
+  const { permissions } = usePermissionStore()
 
-  const classNameTheme =
-    themeStore === 'dark' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'
+  const classNameTheme = themeStore === 'dark' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'
 
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -72,7 +73,7 @@ const TablePackage: React.FC = () => {
         <IconButton onClick={() => copyLinkToClipboard(link)}>
           <ContentCopyIcon sx={{ color: theme.COLORS.gray }} />
         </IconButton>
-        <IconButton onClick={() => handleOpenModal(params)}>
+        <IconButton disabled={!permissions?.packages?.edit} onClick={() => handleOpenModal(params)}>
           <OpenInNewIcon sx={{ color: theme.COLORS.gray }} />
         </IconButton>
       </Box>
@@ -119,11 +120,7 @@ const TablePackage: React.FC = () => {
           </div>
         </div>
       </div>
-      <ModalComponent
-        open={openModal}
-        onClose={handleCloseModal}
-        title="Package View"
-      >
+      <ModalComponent open={openModal} onClose={handleCloseModal} title="Package View">
         <PackageForm onClose={handleCloseModal} data={selectPackages} />
       </ModalComponent>
     </div>

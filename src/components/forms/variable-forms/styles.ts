@@ -2,6 +2,10 @@ import { Button, Grid, TextField } from '@mui/material'
 import styled from 'styled-components'
 import { colors } from '../../../design/colors'
 
+interface PropsInput {
+  clicked?: boolean
+}
+
 export const Container = styled(Grid)(({ theme }) => ({
   paddingTop: 20,
   paddingLeft: 40,
@@ -21,7 +25,7 @@ export const Item = styled(Grid)(({ theme }) => ({
   },
 }))
 
-export const Input = styled(TextField)(({ theme }) => ({
+export const Input = styled(TextField)<PropsInput>(({ theme, clicked }) => ({
   width: '100%',
   '& .MuiInputBase-root': {
     borderRadius: 8,
@@ -30,14 +34,14 @@ export const Input = styled(TextField)(({ theme }) => ({
 
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: theme.COLORS.gray,
+      borderColor: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
     },
     '&.Mui-disabled': {
       '& fieldset': {
-        borderColor: theme.COLORS.gray,
+        borderColor: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
       },
       '&:hover fieldset': {
-        borderColor: theme.COLORS.gray,
+        borderColor: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
       },
     },
     '&:hover fieldset': {
@@ -48,23 +52,25 @@ export const Input = styled(TextField)(({ theme }) => ({
     },
   },
   '& .MuiInputBase-input': {
-    color: theme.COLORS.gray,
+    color: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
     fontFamily: 'Montserrat',
     fontSize: 14,
     borderRadius: 8,
     '&.Mui-disabled': {
-      color: theme.COLORS.gray,
+      color: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
       opacity: 0.6,
-      '-webkit-text-fill-color': theme.COLORS.gray,
+      '-webkit-text-fill-color': clicked
+        ? theme.COLORS.secondary
+        : theme.COLORS.gray,
     },
   },
   '& .MuiInputLabel-outlined': {
-    color: theme.COLORS.gray,
+    color: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
     fontFamily: 'Montserrat',
     fontSize: 14,
     fontWeight: 500,
     '&.Mui-disabled': {
-      color: theme.COLORS.gray,
+      color: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
     },
   },
   '& .MuiInputLabel-outlined.Mui-focused': {
@@ -87,8 +93,8 @@ export const ButtonCustom = styled(Button)(({ theme }) => ({
       backgroundColor: theme.COLORS.secondary,
       color: colors.white,
     },
-    '&.Mui-disabled': {
-      backgroundColor: theme.COLORS.gray,
+    '& .Mui-disabled': {
+      backgroundColor: theme.COLORS.lightGray,
       color: theme.COLORS.text,
     },
   },

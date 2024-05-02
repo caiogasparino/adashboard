@@ -4,19 +4,21 @@ import { Variable } from '../../@types/variables'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from '../services/get-services.service'
 
-interface CreateVarsProps {
+interface DeleteVarsProps {
   serviceName: string
   variables: Variable[]
 }
-export const useCreateVars = () => {
+
+export const useDeleteVars = () => {
   const { refetchData: refetchServices } = useGetServices()
   const {
-    mutate: createVars,
+    mutate: deleteVars,
     isPending,
     error,
     data,
   } = useMutation({
-    mutationFn: async ({ serviceName, variables }: CreateVarsProps) => {
+    mutationFn: async ({ serviceName, variables }: DeleteVarsProps) => {
+      console.log('🚀 ~ mutationFn: ~ variables:', variables)
       return axiosClient({
         method: 'post',
         url: `/service/${serviceName}/variables`,
@@ -29,19 +31,19 @@ export const useCreateVars = () => {
         },
       }).then(response => response.data)
     },
-    mutationKey: ['createVars'],
+    mutationKey: ['deleteVars'],
 
     onSuccess: () => {
-      toast.success('Variable created successfully!')
+      toast.success('Variable deleted successfully!')
       refetchServices()
     },
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'
       toast.error(errorMessage)
-      console.error('Error creating variable:', errorMessage)
+      console.error('Error deleting variable:', errorMessage)
     },
   })
 
-  return { createVars, isPending, error, data }
+  return { deleteVars, isPending, error, data }
 }

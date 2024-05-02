@@ -5,9 +5,9 @@ import { AuthScreen } from '../pages/auth.page'
 import { DashScreen } from '../pages/dashboard.page'
 import { LogoutScreen } from '../pages/logout.page'
 import { PackageScreen } from '../pages/package.page'
-import { Preload } from '../pages/preload.page'
+import { PreloadScreen } from '../pages/preload.page'
 
-const IndexRoutes: React.FC = () => {
+export const IndexRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -16,10 +16,8 @@ const IndexRoutes: React.FC = () => {
         <Route element={<LogoutScreen />} path="/logout" />
         <Route element={<DashScreen />} path="/dashboard" />
         <Route element={<PackageScreen />} path="/packages" />
-        <Route element={<Preload />} path="/" />
+        <Route element={<PreloadScreen />} path="/" />
       </Routes>
     </BrowserRouter>
   )
 }
-
-export default IndexRoutes

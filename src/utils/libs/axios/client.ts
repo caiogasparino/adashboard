@@ -10,6 +10,9 @@ export function setDefaultToken(token: string | any) {
 
 axiosInstance.interceptors.request.use(
   config => {
+    if (!axiosInstance.defaults.headers.common.Authorization) {
+      return Promise.reject(new Error('Token not set. Please set the token before making requests.'))
+    }
     return config
   },
   async error => {

@@ -52,7 +52,6 @@ export const Footer = styled.div`
     flex-direction: column;
   }
 `
-
 export const ButtonCustom = styled(Button)(({ theme }) => ({
   '&.MuiButton-root': {
     borderRadius: 8,
@@ -67,7 +66,7 @@ export const ButtonCustom = styled(Button)(({ theme }) => ({
     },
     '&.Mui-disabled': {
       backgroundColor: theme.COLORS.gray,
-      color: theme.COLORS.background,
+      color: theme.COLORS.text,
     },
   },
 }))

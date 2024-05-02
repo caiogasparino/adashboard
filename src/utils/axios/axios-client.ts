@@ -8,14 +8,14 @@ type AxiosClientProps = Omit<AxiosRequestConfig, 'params'> & {
 }
 
 export async function axiosClient({
-  method = 'get',
+  method,
   url,
   params,
   responseType = 'json',
   ...restConfig
 }: AxiosClientProps): Promise<AxiosResponse<any>> {
-  if (!method) {
-    method = 'get'
+  if (!axiosInstance.defaults.headers.common.Authorization) {
+    throw new Error('Token not set. Please set the token before making requests.')
   }
 
   const response = await axiosInstance({
