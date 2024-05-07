@@ -200,7 +200,7 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
       }
       setTimeout(() => {
         onClose()
-      }, 4000)
+      }, 3000)
     } catch (error) {
       console.error('Error:', error)
     }

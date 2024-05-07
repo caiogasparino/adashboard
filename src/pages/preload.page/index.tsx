@@ -12,7 +12,7 @@ export const PreloadScreen: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
   const { loading, data } = useAuthentication()
   const { getPermission } = useGetPermission()
-  const { isLoading } = useLoading()
+  const { isLoading, setLoading } = useLoading()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +22,7 @@ export const PreloadScreen: React.FC = (): JSX.Element => {
         navigate('/dashboard')
       } else {
         navigate('/login')
+        setLoading(false)
       }
     }
     fetchData()
