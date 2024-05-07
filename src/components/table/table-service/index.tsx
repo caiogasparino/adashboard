@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { Service } from '../../../@types/services'
+import { useLoading } from '../../../context'
 import { servicesmock } from '../../../pages/dashboard.page/mock'
 import { useDeleteService } from '../../../service/services/delete-services.service'
 import { useGetServices } from '../../../service/services/get-services.service'
@@ -30,7 +31,8 @@ const TableService: React.FC = () => {
   const { isPending, deleteService } = useDeleteService()
   const [type, setType] = useState('edit | delete')
   const [openModal, setOpenModal] = useState(false)
-  const { data, isLoading, refetchData } = useGetServices()
+  const { getServices } = useGetServices()
+  const { isLoading } = useLoading()
   const { services } = useServiceStore()
   const [serviceSelectRow, setServiceSelectRow] = useState<Service>({} as Service)
 
@@ -44,8 +46,12 @@ const TableService: React.FC = () => {
 
   useEffect(() => {
     setDefaultToken(accessToken)
-    refetchData()
-  }, [data])
+
+    const fetchServices = async () => {
+      await getServices()
+    }
+    fetchServices()
+  }, [])
 
   const handleOpenModalDelete = (params: any) => {
     setServiceSelectRow(params)
@@ -61,7 +67,7 @@ const TableService: React.FC = () => {
     deleteService(serviceSelectRow.name)
     setTimeout(() => {
       setOpenModal(false)
-    }, 2000)
+    }, 3000)
   }
 
   const handleCloseModal = () => {

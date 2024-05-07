@@ -3,38 +3,36 @@ import { useNavigate } from 'react-router-dom'
 import { images } from '../../design/images'
 
 import Loading from '../../components/loading'
+import { useLoading } from '../../context'
+import useAuthentication from '../../hooks/useAuthentication'
 import { useGetPermission } from '../../service/permission/get-permission.service'
-import { usePermissionStore } from '../../store/permission.store'
 import { Container, Content, Logo } from './styles'
 
 export const PreloadScreen: React.FC = (): JSX.Element => {
-  const accessToken = localStorage.getItem('accessToken')
   const navigate = useNavigate()
-  const { permission, isLoading, isError } = useGetPermission()
-  const { setPermissions } = usePermissionStore()
-
-  const isLoggedIn = !!accessToken && !!permission?.UserAuthorized
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/dashboard')
-    } else {
-      navigate('/login')
-    }
-  }, [navigate])
+  const { loading, data } = useAuthentication()
+  const { getPermission } = useGetPermission()
+  const { isLoading } = useLoading()
 
   useEffect(() => {
-    if (!isLoading && !isError) {
-      setPermissions(permission)
+    const fetchData = async () => {
+      const permissions = await getPermission()
+      console.log('🚀 ~ fetchData ~ response:', permissions?.UserAuthorized)
+      if (permissions?.UserAuthorized === true) {
+        navigate('/dashboard')
+      } else {
+        navigate('/login')
+      }
     }
-  }, [permission, isLoading, isError, setPermissions])
+    fetchData()
+  }, [navigate, data])
 
   return (
     <Container>
       <Content>
         <Logo src={images.LOGO} alt="Logo" />
+        <Loading isLoading={isLoading || loading} spinner />
       </Content>
-      <Loading isLoading={isLoading} spinner />
     </Container>
   )
 }

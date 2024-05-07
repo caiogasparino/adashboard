@@ -1,11 +1,8 @@
 import { useOAuth2 } from '@tasoskakour/react-use-oauth2'
 import { useNavigate } from 'react-router-dom'
-import { usePermissionStore } from '../store/permission.store'
 import { setDefaultToken } from '../utils/libs/axios/client'
 
 const useAuthentication = () => {
-  const { permissions } = usePermissionStore()
-  const isNotAuthorizedLogIn = !permissions?.UserAuthorized
   const navigate = useNavigate()
   const { data, loading, error, getAuth, logout } = useOAuth2({
     authorizeUrl: 'https://bitbucket.org/site/oauth2/authorize',
@@ -16,8 +13,7 @@ const useAuthentication = () => {
     onSuccess: payload => {
       localStorage.setItem('accessToken', payload.access_token)
       setDefaultToken(payload.access_token)
-      console.log('Success:', payload)
-      isNotAuthorizedLogIn ? navigate('/login') : navigate('/dashboard')
+      navigate('/')
     },
     onError: error => {
       console.log('Error:', error)

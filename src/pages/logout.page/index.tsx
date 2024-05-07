@@ -1,33 +1,32 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { images } from '../../design/images'
 
+import { useNavigate } from 'react-router-dom'
 import Loading from '../../components/loading'
 import { useLoading } from '../../context'
-import useAuthentication from '../../hooks/useAuthentication'
 import useOAuthStore from '../../store/oauth.store'
-import { initialPermissions, usePermissionStore } from '../../store/permission.store'
+import { authUserState, initialPermissions, usePermissionStore } from '../../store/permission.store'
 import { Container, Content, Logo } from './styles'
 
 export const LogoutScreen: React.FC = (): JSX.Element => {
   const navigate = useNavigate()
-  const { logout } = useAuthentication()
   const { isLoading, setLoading } = useLoading()
   const { setAccessToken } = useOAuthStore()
-  const { setPermissions } = usePermissionStore()
+  const { setPermissions, setAuthUser } = usePermissionStore()
 
   useEffect(() => {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('permissions')
+    setAccessToken('')
+    setPermissions(initialPermissions)
+    setAuthUser(authUserState)
+    setAccessToken(null)
+
     setTimeout(() => {
-      logout()
-      setAccessToken('')
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('permissions')
-      setPermissions(initialPermissions)
-      setAccessToken(null)
-      setLoading(false)
       navigate('/login')
-    }, 2000)
-  }, [navigate])
+      setLoading(false)
+    }, 3000)
+  }, [])
 
   return (
     <Container>

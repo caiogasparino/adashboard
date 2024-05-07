@@ -5,6 +5,7 @@ import { Oval } from 'react-loader-spinner'
 import { useTheme } from 'styled-components'
 import { Service } from '../../../@types/services'
 import { Variable } from '../../../@types/variables'
+import { useLoading } from '../../../context'
 import { useCreateService } from '../../../service/services/create-services.service'
 import { useCreateVars } from '../../../service/variables/create-variables.service'
 import { useDeleteVars } from '../../../service/variables/delete-variables.service'
@@ -30,37 +31,35 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
   const { createService, isPending } = useCreateService()
   const { permissions } = usePermissionStore()
 
-  const { vars, isLoading } = useGetVars(data?.name)
+  const { getVariables, isLoading: isLoadingVars } = useGetVars(data?.name)
+  const { isLoading } = useLoading()
   const [serviceName, setServiceName] = useState<string>(data?.name || '')
   const [hasDatabase, setHasDatabase] = useState(data ? data.database : false)
   const [hasApi, setHasApi] = useState(data ? data.api : false)
   const [clickedIcons, setClickedIcons] = useState<boolean[]>([])
   const [deletedVariables, setDeletedVariables] = useState<Variable[]>([])
-  const [loading, setLoading] = useState(false)
+
   const [variables, setVariables] = useState<(Variable & { isNew?: boolean })[]>(
-    vars?.variables?.map((variable: Variable) => ({
+    data?.variables?.map((variable: Variable) => ({
       ...variable,
       isNew: false,
     })) || [],
   )
 
-  const loadingsVars = isLoading
   const loadingButton = isPending || isPendingCreateVars || isPendingUpdateVars || isPendingDeleteVars
 
-  if (loadingButton && !loading) {
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 4000)
-  }
-
   useEffect(() => {
-    if (!isLoading && vars && vars.variables) {
-      setVariables(vars.variables)
-    } else {
-      setVariables([{ name: '', aprodvalue: '', abetavalue: '', isNew: true }])
+    const fetchVariables = async () => {
+      const vars = await getVariables()
+      if (vars && vars.variables) {
+        setVariables(vars.variables)
+      } else {
+        setVariables([{ name: '', aprodvalue: '', abetavalue: '', isNew: true }])
+      }
     }
-  }, [isLoading, vars])
+
+    fetchVariables()
+  }, [])
 
   const handleVariableChange = (index: number, key: keyof Variable, value: string) => {
     const newVariables = [...variables]
@@ -101,7 +100,7 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
 
     if (!serviceName.match(/^[a-z0-9-]+$/)) {
       toast.error(TOAST_TEXT.REGEX, {
-        duration: 5000,
+        duration: 2000,
       })
       return
     }
@@ -241,7 +240,7 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
           />
         </Item>
 
-        {isLoading && (
+        {type === 'edit' && isLoading && !isLoadingVars && (
           <Item
             container
             justifyContent={'center'}
@@ -273,7 +272,7 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
           handleVariableChange={handleVariableChange}
           handleDeleteVariable={handleDeleteVariable}
           clickedIcons={clickedIcons}
-          isLoading={loadingsVars}
+          isLoading={type === 'edit' ? isLoading : isLoadingVars}
         />
         <Item
           item
@@ -284,8 +283,8 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
           marginRight={10}
           alignItems={'center'}
         >
-          {loading ? (
-            <Loading spinner isLoading={loading} color={theme.COLORS.background} />
+          {loadingButton ? (
+            <Loading spinner isLoading={loadingButton} color={theme.COLORS.background} />
           ) : (
             <>
               <ButtonCustom

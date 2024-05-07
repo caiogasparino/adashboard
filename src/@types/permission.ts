@@ -16,3 +16,7 @@ export interface Permission {
   }
   UserAuthorized: boolean
 }
+
+export interface AuthUser {
+  UserAuthorized: boolean | null
+}

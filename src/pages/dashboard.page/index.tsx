@@ -5,6 +5,7 @@ import { Sidebar } from '../../components'
 import ServiceForm from '../../components/forms/service-forms'
 import ModalComponent from '../../components/modal'
 import TableService from '../../components/table/table-service'
+import { useLoading } from '../../context'
 import { usePermissionStore } from '../../store/permission.store'
 import { TEXT } from './constants'
 import { ButtonCustom, Container, Content, ContentHeader, Title } from './styles'
@@ -12,10 +13,16 @@ import { ButtonCustom, Container, Content, ContentHeader, Title } from './styles
 export const DashScreen: React.FC = () => {
   const theme = useTheme()
   const [openModal, setOpenModal] = useState(false)
+  const { setLoading } = useLoading()
   const { permissions } = usePermissionStore()
 
   const handleCloseModal = () => {
     setOpenModal(false)
+    setLoading(false)
+  }
+
+  const handleOpenModal = () => {
+    setOpenModal(true)
   }
 
   return (
@@ -31,7 +38,7 @@ export const DashScreen: React.FC = () => {
                 theme={theme}
                 variant="contained"
                 sx={{ width: '180px' }}
-                onClick={() => setOpenModal(true)}
+                onClick={handleOpenModal}
               >
                 {TEXT.BUTTON}
               </ButtonCustom>
