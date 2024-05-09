@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { useLoading } from '../../context'
 import { usePermissionStore } from '../../store/permission.store'
 import { axiosClient } from '../../utils/axios/axios-client'
@@ -30,11 +29,5 @@ export const useGetPermission = () => {
     }
   }
 
-  const { data, isLoading, isError, isFetching } = useQuery({
-    queryKey: ['getPermission'],
-    queryFn: getPermission,
-    enabled: false,
-  })
-
-  return { permission: data, isLoading, isError, isFetching, getPermission }
+  return { getPermission }
 }

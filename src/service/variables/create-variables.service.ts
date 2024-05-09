@@ -1,15 +1,20 @@
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Variable } from '../../@types/variables'
+import { useLoading } from '../../context'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from '../services/get-services.service'
+import { useGetVars } from './get-variables.service'
 
 interface CreateVarsProps {
   serviceName: string
   variables: Variable[]
 }
+
 export const useCreateVars = () => {
-  const { refetchData: refetchServices } = useGetServices()
+  const { getServices } = useGetServices()
+  const { getVariables } = useGetVars()
+  const { setLoading } = useLoading()
   const {
     mutate: createVars,
     isPending,
@@ -17,7 +22,8 @@ export const useCreateVars = () => {
     data,
   } = useMutation({
     mutationFn: async ({ serviceName, variables }: CreateVarsProps) => {
-      return axiosClient({
+      setLoading(true)
+      const response = await axiosClient({
         method: 'post',
         url: `/service/${serviceName}/variables`,
         data: {
@@ -27,14 +33,15 @@ export const useCreateVars = () => {
             abetavalue: variable.abetavalue,
           })),
         },
-      }).then(response => response.data)
+      })
+      setTimeout(() => {
+        getVariables(serviceName)
+        getServices()
+        toast.success('Variable created successfully!')
+      }, 3000)
+      return response.data
     },
     mutationKey: ['createVars'],
-
-    onSuccess: () => {
-      toast.success('Variable created successfully!')
-      refetchServices()
-    },
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'

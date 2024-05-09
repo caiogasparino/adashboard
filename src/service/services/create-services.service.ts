@@ -1,11 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Service } from '../../@types/services'
+import { useLoading } from '../../context'
+import useVariableStore from '../../store/variable.store'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from './get-services.service'
 
 export const useCreateService = () => {
-  const { refetchData: refetchServices } = useGetServices()
+  const { getServices } = useGetServices()
+  const { setVariables } = useVariableStore()
+  const { setLoading } = useLoading()
   const {
     mutate: createService,
     isPending,
@@ -13,7 +17,8 @@ export const useCreateService = () => {
     data,
   } = useMutation({
     mutationFn: async (service: Service) => {
-      return axiosClient({
+      setLoading(true)
+      const response = await axiosClient({
         method: 'post',
         url: '/service',
         data: {
@@ -23,13 +28,15 @@ export const useCreateService = () => {
           variables: service.variables,
         },
       })
+      setTimeout(() => {
+        setVariables([])
+        getServices()
+        setLoading(false)
+        toast.success('Service created successfully!')
+      }, 3000)
+      return response.data
     },
     mutationKey: ['createService'],
-
-    onSuccess: () => {
-      toast.success('Service created successfully!')
-      refetchServices()
-    },
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'

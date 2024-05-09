@@ -3,9 +3,12 @@ import toast from 'react-hot-toast'
 import { axiosClient } from '../../utils/axios/axios-client'
 
 import { Package } from '../../@types/packages'
+import { useLoading } from '../../context'
 import { useGetPackages } from './get-packages.service'
 
 export const useCreatePackage = () => {
+  const { getPackages } = useGetPackages()
+  const { setLoading } = useLoading()
   const {
     mutate: createPackage,
     isPending,
@@ -13,20 +16,23 @@ export const useCreatePackage = () => {
     data,
   } = useMutation({
     mutationFn: async (packages: Package) => {
-      return axiosClient({
+      setLoading(true)
+      const response = await axiosClient({
         method: 'post',
         url: '/package',
         data: {
           name: packages.name,
         },
       })
+      setTimeout(() => {
+        getPackages()
+        setLoading(false)
+        toast.success('Package created successfully!')
+      }, 3000)
+      return response.data
     },
-    mutationKey: ['createPackage'],
 
-    onSuccess: () => {
-      toast.success('Package created successfully!')
-      useGetPackages()
-    },
+    mutationKey: ['createPackage'],
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'

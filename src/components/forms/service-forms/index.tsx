@@ -12,7 +12,7 @@ import { useDeleteVars } from '../../../service/variables/delete-variables.servi
 import { useGetVars } from '../../../service/variables/get-variables.service'
 import { useUpdateVars } from '../../../service/variables/update-variables.service'
 import { usePermissionStore } from '../../../store/permission.store'
-import Loading from '../../loading'
+import useVariableStore from '../../../store/variable.store'
 import { VariableForm } from '../variable-forms'
 import { TEXT, TOAST_TEXT } from './constants'
 import { ButtonCustom, Container, Input, Item, Text, Title } from './styles'
@@ -20,37 +20,29 @@ import { ButtonCustom, Container, Input, Item, Text, Title } from './styles'
 interface ServiceProps {
   data?: Service
   type?: 'edit' | 'delete'
-  onClose: () => void
+  onClose?: () => void
 }
 
-const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
+const ServiceForm: React.FC<ServiceProps> = ({ data, type }) => {
   const theme = useTheme()
-  const { deleteVars, isPending: isPendingDeleteVars } = useDeleteVars()
-  const { createVars, isPending: isPendingCreateVars } = useCreateVars()
-  const { updateVars, isPending: isPendingUpdateVars } = useUpdateVars()
-  const { createService, isPending } = useCreateService()
+  const { deleteVars } = useDeleteVars()
+  const { createVars } = useCreateVars()
+  const { updateVars } = useUpdateVars()
+  const { createService } = useCreateService()
   const { permissions } = usePermissionStore()
 
-  const { getVariables, isLoading: isLoadingVars } = useGetVars(data?.name)
+  const { getVariables } = useGetVars()
   const { isLoading } = useLoading()
   const [serviceName, setServiceName] = useState<string>(data?.name || '')
   const [hasDatabase, setHasDatabase] = useState(data ? data.database : false)
   const [hasApi, setHasApi] = useState(data ? data.api : false)
   const [clickedIcons, setClickedIcons] = useState<boolean[]>([])
   const [deletedVariables, setDeletedVariables] = useState<Variable[]>([])
-
-  const [variables, setVariables] = useState<(Variable & { isNew?: boolean })[]>(
-    data?.variables?.map((variable: Variable) => ({
-      ...variable,
-      isNew: false,
-    })) || [],
-  )
-
-  const loadingButton = isPending || isPendingCreateVars || isPendingUpdateVars || isPendingDeleteVars
+  const { variables, setVariables } = useVariableStore()
 
   useEffect(() => {
     const fetchVariables = async () => {
-      const vars = await getVariables()
+      const vars = await getVariables(data?.name)
       if (vars && vars.variables) {
         setVariables(vars.variables)
       } else {
@@ -69,6 +61,7 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
 
   const handleAddVariable = () => {
     setVariables([...variables, { name: '', aprodvalue: '', abetavalue: '', isNew: true }])
+    setClickedIcons([false])
   }
 
   const handleDeleteVariable = (index: number) => {
@@ -187,7 +180,6 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
               })
             }
           }
-
           if (deletedVariables.length > 0) {
             deleteVars({ serviceName, variables: deletedVariables })
           }
@@ -198,9 +190,7 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
           })
         }
       }
-      setTimeout(() => {
-        onClose()
-      }, 3000)
+      setClickedIcons([false])
     } catch (error) {
       console.error('Error:', error)
     }
@@ -240,7 +230,7 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
           />
         </Item>
 
-        {type === 'edit' && isLoading && !isLoadingVars && (
+        {isLoading && (
           <Item
             container
             justifyContent={'center'}
@@ -269,10 +259,11 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
         </Grid>
         <VariableForm
           data={variables}
+          serverName={data?.name}
           handleVariableChange={handleVariableChange}
           handleDeleteVariable={handleDeleteVariable}
           clickedIcons={clickedIcons}
-          isLoading={type === 'edit' ? isLoading : isLoadingVars}
+          isLoading={isLoading}
         />
         <Item
           item
@@ -283,28 +274,22 @@ const ServiceForm: React.FC<ServiceProps> = ({ data, type, onClose }) => {
           marginRight={10}
           alignItems={'center'}
         >
-          {loadingButton ? (
-            <Loading spinner isLoading={loadingButton} color={theme.COLORS.background} />
-          ) : (
-            <>
-              <ButtonCustom
-                disabled={!permissions.variables.create}
-                sx={{ marginRight: 2, width: '180px' }}
-                variant="contained"
-                onClick={handleAddVariable}
-              >
-                {TEXT.ADDVARIABLE}
-              </ButtonCustom>
-              <ButtonCustom
-                disabled={!permissions.variables.create}
-                sx={{ width: '180px' }}
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                {TEXT.SAVE}
-              </ButtonCustom>
-            </>
-          )}
+          <ButtonCustom
+            disabled={!permissions.variables.create}
+            sx={{ marginRight: 2, width: '180px' }}
+            variant="contained"
+            onClick={handleAddVariable}
+          >
+            {TEXT.ADDVARIABLE}
+          </ButtonCustom>
+          <ButtonCustom
+            disabled={!permissions.variables.create}
+            sx={{ width: '180px' }}
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            {TEXT.SAVE}
+          </ButtonCustom>
         </Item>
       </Container>
     </Fragment>

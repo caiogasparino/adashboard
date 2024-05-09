@@ -15,6 +15,7 @@ interface DeletableIconProps {
 
 interface VariableProps {
   data: (Variable & { isNew?: boolean })[]
+  serverName?: string
   isLoading: boolean
   handleVariableChange: (index: number, key: keyof Variable, value: string) => void
   handleDeleteVariable: (index: number) => void
@@ -28,7 +29,6 @@ export const VariableForm: React.FC<VariableProps> = ({
   clickedIcons,
   isLoading,
 }): JSX.Element => {
-  console.log('🚀 ~ clickedIcons:', clickedIcons)
   const theme = useTheme()
   const { permissions } = usePermissionStore()
 

@@ -1,11 +1,13 @@
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Service } from '../../@types/services'
+import { useLoading } from '../../context'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from './get-services.service'
 
 export const useUpdateService = () => {
-  const { refetchData: refetchServices } = useGetServices()
+  const { getServices } = useGetServices()
+  const { setLoading } = useLoading()
   const {
     mutate: updateService,
     isPending,
@@ -13,7 +15,8 @@ export const useUpdateService = () => {
     data,
   } = useMutation({
     mutationFn: async (service: Service) => {
-      return axiosClient({
+      setLoading(true)
+      const response = await axiosClient({
         method: 'post',
         url: '/service',
         data: {
@@ -23,13 +26,15 @@ export const useUpdateService = () => {
           variables: service.variables,
         },
       })
+      setTimeout(() => {
+        getServices()
+        setLoading(false)
+        toast.success('Service updated successfully!')
+      }, 3000)
+      return response.data
     },
-    mutationKey: ['updateService'],
 
-    onSuccess: () => {
-      toast.success('Service updated successfully!')
-      refetchServices()
-    },
+    mutationKey: ['updateService'],
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'

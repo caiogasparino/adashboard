@@ -1,4 +1,5 @@
-import { Box, Button, Modal, Typography } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
 import React from 'react'
 import styled, { useTheme } from 'styled-components'
 import { colors } from '../../design/colors'
@@ -20,12 +21,7 @@ const Title = styled.h1`
   }
 `
 
-const ModalComponent: React.FC<ModalProps> = ({
-  open,
-  onClose,
-  title,
-  children,
-}) => {
+const ModalComponent: React.FC<ModalProps> = ({ open, onClose, title, children }) => {
   const theme = useTheme()
   return (
     <Modal
@@ -50,6 +46,9 @@ const ModalComponent: React.FC<ModalProps> = ({
           p: 4,
         }}
       >
+        <IconButton sx={{ position: 'absolute', top: 10, right: 10 }}>
+          <CloseIcon sx={{ color: theme.COLORS.secondary }} onClick={onClose} />
+        </IconButton>
         {title && <Title>{title}</Title>}
         {children && (
           <Typography variant="body1" id="modal-description">

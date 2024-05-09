@@ -19,8 +19,8 @@ export const useGetServices = () => {
           method: 'get',
           url: '/services',
         })
+        setServices(response.data.services)
         setLoading(false)
-        setServices(response.data.services || [])
         return response.data
       }
     } catch (error: { response: { data: { error: string } } } | any) {
@@ -28,13 +28,14 @@ export const useGetServices = () => {
       if (error?.response?.data?.error === 'Unauthorized user token') {
         navigate('/login')
       }
+
       const errorMessage = error?.response?.data?.error || 'An error occurred'
       console.error('Error getting services:', errorMessage)
       throw error
     }
   }
 
-  const { isFetching, error, data, isLoading } = useQuery<ServicesResponse, Error>({
+  const { isFetching, error, data, isLoading, refetch } = useQuery<ServicesResponse, Error>({
     queryKey: ['getServices'],
     queryFn: getServices,
     enabled: false,
@@ -42,11 +43,5 @@ export const useGetServices = () => {
     staleTime: 0,
   })
 
-  const refetchData = async () => {
-    setTimeout(async () => {
-      getServices()
-    }, 4000)
-  }
-
-  return { isFetching, isLoading, error, data, getServices, refetchData }
+  return { isFetching, isLoading, error, data, refetch, getServices }
 }

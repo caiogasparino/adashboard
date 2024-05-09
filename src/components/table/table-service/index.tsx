@@ -8,8 +8,6 @@ import * as React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { Service } from '../../../@types/services'
-import { useLoading } from '../../../context'
-import { servicesmock } from '../../../pages/dashboard.page/mock'
 import { useDeleteService } from '../../../service/services/delete-services.service'
 import { useGetServices } from '../../../service/services/get-services.service'
 import { useServiceStore } from '../../../store/services.store'
@@ -32,9 +30,14 @@ const TableService: React.FC = () => {
   const [type, setType] = useState('edit | delete')
   const [openModal, setOpenModal] = useState(false)
   const { getServices } = useGetServices()
-  const { isLoading } = useLoading()
-  const { services } = useServiceStore()
+  const { services, setServices } = useServiceStore()
+
   const [serviceSelectRow, setServiceSelectRow] = useState<Service>({} as Service)
+
+  const [deleteTrue, setDeleteTrue] = useState<{ deleteTrue: boolean; serverName: string }>({
+    deleteTrue: false,
+    serverName: '',
+  })
 
   const classNameTheme = themeStore === 'dark' ? 'ag-theme-quartz' : 'ag-theme-quartz-dark'
 
@@ -46,9 +49,11 @@ const TableService: React.FC = () => {
 
   useEffect(() => {
     setDefaultToken(accessToken)
-
     const fetchServices = async () => {
-      await getServices()
+      const response = await getServices()
+      if (response) {
+        setServices(response.data)
+      }
     }
     fetchServices()
   }, [])
@@ -65,9 +70,10 @@ const TableService: React.FC = () => {
   }
   const handleDeleteService = () => {
     deleteService(serviceSelectRow.name)
+    setDeleteTrue({ deleteTrue: true, serverName: serviceSelectRow.name })
     setTimeout(() => {
       setOpenModal(false)
-    }, 3000)
+    }, 1000)
   }
 
   const handleCloseModal = () => {
@@ -103,20 +109,18 @@ const TableService: React.FC = () => {
       <div className="example-wrapper">
         <div className="example-header">
           <div className={classNameTheme} style={gridStyle}>
-            {isLoading && <Loading isLoading={isLoading} spinner />}
-            {!isLoading && (
-              <AgGridReact
-                ref={gridRef}
-                rowStyle={stylesSx().row}
-                rowData={services || servicesmock?.services}
-                columnDefs={columnDefs({
-                  handleOpenModalDelete,
-                  handleOpenModalUser,
-                  handleDeleteService,
-                })}
-                defaultColDef={defaultColDef}
-              />
-            )}
+            <AgGridReact
+              ref={gridRef}
+              rowStyle={stylesSx().row}
+              rowData={services}
+              columnDefs={columnDefs({
+                handleOpenModalDelete,
+                handleOpenModalUser,
+                handleDeleteService,
+                deleteTrue,
+              })}
+              defaultColDef={defaultColDef}
+            />
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ export const AuthScreen: React.FC = (): JSX.Element => {
       <Content>
         <Logo src={images.LOGO} alt="Application Image" />
         <h5>DASH - V.0.1</h5>
-        {!authUser && !loading && !isLoading && <Text>{TEXT.AUTHORIZED}</Text>}
+        {authUser !== null && !authUser && !loading && !isLoading && <Text>{TEXT.AUTHORIZED}</Text>}
         {(loading || (isLoading && data)) && <Loading isLoading={loading || isLoading} spinner color="white" />}
 
         {!loading && (

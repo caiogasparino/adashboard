@@ -54,19 +54,19 @@ export const Input = styled(TextField)<PropsInput>(({ theme, clicked }) => ({
   '& .MuiInputBase-input': {
     color: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
     fontFamily: 'Montserrat',
+    textDecoration: clicked ? 'line-through' : 'normal',
     fontSize: 14,
     borderRadius: 8,
     '&.Mui-disabled': {
       color: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
       opacity: 0.6,
-      '-webkit-text-fill-color': clicked
-        ? theme.COLORS.secondary
-        : theme.COLORS.gray,
+      '-webkit-text-fill-color': clicked ? theme.COLORS.secondary : theme.COLORS.gray,
     },
   },
   '& .MuiInputLabel-outlined': {
     color: clicked ? theme.COLORS.secondary : theme.COLORS.gray,
     fontFamily: 'Montserrat',
+    textDecoration: clicked ? 'line-through' : 'normal',
     fontSize: 14,
     fontWeight: 500,
     '&.Mui-disabled': {

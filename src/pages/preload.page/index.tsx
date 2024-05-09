@@ -17,7 +17,6 @@ export const PreloadScreen: React.FC = (): JSX.Element => {
   useEffect(() => {
     const fetchData = async () => {
       const permissions = await getPermission()
-      console.log('🚀 ~ fetchData ~ response:', permissions?.UserAuthorized)
       if (permissions?.UserAuthorized === true) {
         navigate('/dashboard')
       } else {

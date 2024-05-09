@@ -1,8 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { Variable } from '../../@types/variables'
+import { useLoading } from '../../context'
 import { axiosClient } from '../../utils/axios/axios-client'
 import { useGetServices } from '../services/get-services.service'
+import { useGetVars } from './get-variables.service'
 
 interface DeleteVarsProps {
   serviceName: string
@@ -10,7 +12,9 @@ interface DeleteVarsProps {
 }
 
 export const useDeleteVars = () => {
-  const { refetchData: refetchServices } = useGetServices()
+  const { getServices } = useGetServices()
+  const { getVariables } = useGetVars()
+  const { setLoading } = useLoading()
   const {
     mutate: deleteVars,
     isPending,
@@ -18,8 +22,8 @@ export const useDeleteVars = () => {
     data,
   } = useMutation({
     mutationFn: async ({ serviceName, variables }: DeleteVarsProps) => {
-      console.log('🚀 ~ mutationFn: ~ variables:', variables)
-      return axiosClient({
+      setLoading(true)
+      const response = await axiosClient({
         method: 'post',
         url: `/service/${serviceName}/variables`,
         data: {
@@ -29,14 +33,16 @@ export const useDeleteVars = () => {
             abetavalue: variable.abetavalue,
           })),
         },
-      }).then(response => response.data)
+      })
+      setTimeout(() => {
+        getVariables(serviceName)
+        getServices()
+        toast.success('Variable deleted successfully!')
+      }, 3000)
+
+      return response.data
     },
     mutationKey: ['deleteVars'],
-
-    onSuccess: () => {
-      toast.success('Variable deleted successfully!')
-      refetchServices()
-    },
 
     onError: (error: { response: { data: { error: string } } }) => {
       const errorMessage = error?.response?.data?.error || 'An error occurred'

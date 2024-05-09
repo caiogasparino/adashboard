@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { Services } from '../@types/services'
 
 type ServiceStore = {
-  services: Services[] | []
+  services: Services[]
   setServices: (services: Services[]) => void
 }
 

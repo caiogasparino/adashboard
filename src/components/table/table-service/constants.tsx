@@ -57,15 +57,30 @@ export const stylesSx = () => {
   }
 }
 
-export const checkboxRendererApi = (params: any) => {
+const nameRenderer = (params: any) => {
+  console.log('🚀 ~ nameRenderer ~ params:', params.colDef.cellRenderParams.deleteTrue.serverName)
   const theme = useTheme()
   const { data } = params
-  return <Checkbox style={{ color: theme.COLORS.gray }} disabled checked={data?.api} />
-}
-export const checkboxRendererBase = (params: any) => {
-  const theme = useTheme()
-  const { data } = params
-  return <Checkbox style={{ color: theme.COLORS.gray }} disabled checked={data?.database} />
+  return (
+    <Box>
+      <Text
+        color={theme.COLORS.gray}
+        fontWeight={600}
+        width={'100%'}
+        style={{
+          color:
+            params.colDef.cellRenderParams.deleteTrue.serverName === data?.name
+              ? theme.COLORS.secondary
+              : theme.COLORS.gray,
+          textDecoration:
+            params.colDef.cellRenderParams.deleteTrue.serverName === data?.name ? 'line-through' : 'normal',
+          textDecorationColor: theme.COLORS.secondary,
+        }}
+      >
+        {data?.name}
+      </Text>
+    </Box>
+  )
 }
 
 export const statusRendererProd = (params: Services | any) => {
@@ -79,7 +94,16 @@ export const statusRendererProd = (params: Services | any) => {
 
   return (
     <Box>
-      <Text color={color}>{label}</Text>
+      <Text
+        color={params.colDef.cellRenderParams.deleteTrue.serverName === data?.name ? theme.COLORS.secondary : color}
+        style={{
+          textDecoration:
+            params.colDef.cellRenderParams.deleteTrue.serverName === data?.name ? 'line-through' : 'normal',
+          textDecorationColor: theme.COLORS.secondary,
+        }}
+      >
+        {label}
+      </Text>
       {alerts.length > 0 && (
         <Tooltip title={alerts.join(' - ')} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
@@ -104,7 +128,16 @@ export const statusRendererBeta = (params: any) => {
   const label = version ? `${version} - ${filterStatus}` : 'insight'
   return (
     <Box>
-      <Text color={color}>{label}</Text>
+      <Text
+        color={params.colDef.cellRenderParams.deleteTrue.serverName === data?.name ? theme.COLORS.secondary : color}
+        style={{
+          textDecoration:
+            params.colDef.cellRenderParams.deleteTrue.serverName === data?.name ? 'line-through' : 'normal',
+          textDecorationColor: theme.COLORS.secondary,
+        }}
+      >
+        {label}
+      </Text>
       {alerts.length > 0 && (
         <Tooltip title={alerts.join(' - ')} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
@@ -120,6 +153,17 @@ export const statusRendererBeta = (params: any) => {
   )
 }
 
+export const checkboxRendererApi = (params: any) => {
+  const theme = useTheme()
+  const { data } = params
+  return <Checkbox style={{ color: theme.COLORS.gray }} disabled checked={data?.api} />
+}
+export const checkboxRendererBase = (params: any) => {
+  const theme = useTheme()
+  const { data } = params
+  return <Checkbox style={{ color: theme.COLORS.gray }} disabled checked={data?.database} />
+}
+
 export const renderVariables = (params: any) => {
   const theme = useTheme()
   const { data } = params
@@ -131,7 +175,7 @@ export const renderVariables = (params: any) => {
     <Box>
       <Text color={color}>{label}</Text>
       {alerts.length > 0 && (
-        <Tooltip title={alerts} style={{ fontFamily: 'Montserrat' }}>
+        <Tooltip title={alerts.join(' - ')} style={{ fontFamily: 'Montserrat' }}>
           <IconButton>
             <PrivacyTipIcon
               sx={{
@@ -171,27 +215,36 @@ type PropsDefs = {
   handleOpenModalDelete: (data: any) => void
   handleOpenModalUser: (data: any) => void
   handleDeleteService: (data: any) => void
+  deleteTrue: { deleteTrue: boolean; serverName: string }
 }
 
-export const columnDefs = ({ handleOpenModalDelete, handleOpenModalUser, handleDeleteService }: PropsDefs) => {
-  const theme = useTheme()
+export const columnDefs = ({
+  handleOpenModalDelete,
+  handleOpenModalUser,
+  handleDeleteService,
+  deleteTrue,
+}: PropsDefs) => {
   return [
     {
       headerName: 'Name',
       field: 'name',
-      cellStyle: { color: theme.COLORS.gray, fontWeight: 600 },
+      minWidth: 330,
+      cellRenderer: nameRenderer,
+      cellRenderParams: { deleteTrue },
     },
     {
       headerName: 'AProd',
       field: 'aproducao',
       minWidth: 220,
       cellRenderer: statusRendererProd,
+      cellRenderParams: { deleteTrue },
     },
     {
       headerName: 'ABeta',
       field: 'abeta',
       minWidth: 220,
       cellRenderer: statusRendererBeta,
+      cellRenderParams: { deleteTrue },
     },
     {
       headerName: 'Api',
